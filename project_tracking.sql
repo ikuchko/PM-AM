@@ -64,16 +64,16 @@ ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
 
 
 --
--- Name: role; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: roles; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
-CREATE TABLE role (
+CREATE TABLE roles (
     id integer NOT NULL,
     name character varying
 );
 
 
-ALTER TABLE role OWNER TO "Guest";
+ALTER TABLE roles OWNER TO "Guest";
 
 --
 -- Name: role_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
@@ -93,7 +93,7 @@ ALTER TABLE role_id_seq OWNER TO "Guest";
 -- Name: role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
 --
 
-ALTER SEQUENCE role_id_seq OWNED BY role.id;
+ALTER SEQUENCE role_id_seq OWNED BY roles.id;
 
 
 --
@@ -248,7 +248,7 @@ ALTER TABLE ONLY messages ALTER COLUMN id SET DEFAULT nextval('messages_id_seq':
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
-ALTER TABLE ONLY role ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclass);
+ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regclass);
 
 
 --
@@ -295,18 +295,18 @@ SELECT pg_catalog.setval('messages_id_seq', 1, false);
 
 
 --
--- Data for Name: role; Type: TABLE DATA; Schema: public; Owner: Guest
---
-
-COPY role (id, name) FROM stdin;
-\.
-
-
---
 -- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
 SELECT pg_catalog.setval('role_id_seq', 1, false);
+
+
+--
+-- Data for Name: roles; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY roles (id, name) FROM stdin;
+\.
 
 
 --
@@ -381,7 +381,7 @@ ALTER TABLE ONLY messages
 -- Name: role_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
 --
 
-ALTER TABLE ONLY role
+ALTER TABLE ONLY roles
     ADD CONSTRAINT role_pkey PRIMARY KEY (id);
 
 
