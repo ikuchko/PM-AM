@@ -9,12 +9,7 @@ public class RoleTest {
   public DatabaseRule database = new DatabaseRule();
 
   @Test
-  public void role_createsNewRole() {
-    Role newRole = new Role("PM");
-    newRole.save();
-    Role savedRole = Role.find(newRole.getTitle());
-    assertEquals(newRole.getTitle(), "PM");
-    assertTrue(savedRole.equals(newRole));
+  public void roleNameById() {
+    assertEquals(1, Role.getId("PM"));
   }
-
 }
