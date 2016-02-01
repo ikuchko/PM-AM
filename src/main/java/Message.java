@@ -47,58 +47,43 @@ public class Message {
   }
 
   public void save() {
-    String sql = "INSERT INTO messages(description, user_id) VALUES (:title, :creatorId, TO_DATE(:dateCreated, 'YYYY-MM-DD'), :status, :description, :typeTaskId, :developerId)";
+    String sql = "INSERT INTO messages(description, user_id) VALUES (:description, :userId)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
-        .addParameter("title", this.mTitle)
-        .addParameter("creatorId", this.mCreatorId)
-        .addParameter("dateCreated", this.mDateCreated)
-        .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
-        .addParameter("typeTaskId", this.mTypeTaskId)
-        .addParameter("developerId", this.mDeveloperId)
+        .addParameter("userId", this.mUserId)
         .executeUpdate()
         .getKey();
     }
   }
 
-  public static Epic find(int id) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mDeveloperId FROM tasks WHERE id = :id";
+  public static Message find(int id) {
+    String sql = "SELECT id AS mId,  description AS mDescription, user_id AS mUserId FROM messages WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
-      Epic epic = con.createQuery(sql)
+      Message message = con.createQuery(sql)
       .addParameter("id", id)
-      .executeAndFetchFirst(Epic.class);
-    return epic;
+      .executeAndFetchFirst(Message.class);
+    return message;
     }
   }
 
   public void delete() {
     try(Connection con = DB.sql2o.open()) {
-    String deleteEpic = "DELETE FROM tasks WHERE id = :id;";
-    con.createQuery(deleteEpic)
+    String deleteMessage = "DELETE FROM messages WHERE id = :id;";
+    con.createQuery(deleteMessage)
       .addParameter("id", mId)
       .executeUpdate();
     }
   }
 
-  public void update(String newTitle, int newCreatorId, String newDateCreated, String newStatus, String newDescription, int newTypeTaskId, int newDeveloperId) {
-    mTitle = newTitle;
-    mCreatorId = newCreatorId;
-    mDateCreated = newDateCreated;
-    mStatus = newStatus;
+  public void update(String newDescription, int newUserId) {
     mDescription = newDescription;
-    mTypeTaskId = newTypeTaskId;
-    mDeveloperId = newDeveloperId;
+    mUserId = newUserId;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET title = :title, creator_user_id = :creatorId, date_created = (TO_DATE(:dateCreated, 'YYYY-MM-DD')), status = :status, description = :description, type_task_id = :typeTaskId, developer_id = :developerId";
+      String sql = "UPDATE messages SET description = :description, user_id = :userId";
       con.createQuery(sql)
-      .addParameter("title", newTitle)
-      .addParameter("creatorId", newCreatorId)
-      .addParameter("dateCreated", newDateCreated)
-      .addParameter("status", newStatus)
       .addParameter("description", newDescription)
-      .addParameter("typeTaskId", newTypeTaskId)
-      .addParameter("developerId", newDeveloperId)
+      .addParameter("userId", newUserId)
       .executeUpdate();
     }
   }
