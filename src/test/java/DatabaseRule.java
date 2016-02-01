@@ -8,13 +8,17 @@ public class DatabaseRule extends ExternalResource {
    }
 
   protected void after() {
-    // try(Connection con = DB.sql2o.open()) {
-    //    String deleteStoresBrandsQuery = "DELETE FROM stores_brands *;";
-    //    String deleteStoresQuery = "DELETE FROM stores *;";
-    //    String deleteBrandsQuery = "DELETE FROM brands *;";
-    //    con.createQuery(deleteStoresBrandsQuery).executeUpdate();
-    //    con.createQuery(deleteStoresQuery).executeUpdate();
-    //    con.createQuery(deleteBrandsQuery).executeUpdate();
-    // }
+    try(Connection con = DB.sql2o.open()) {
+      String deleteTasksMessagesQuery = "DELETE FROM tasks_messages *;";
+       String deleteMessagesBrandsQuery = "DELETE FROM messages *;";
+       String deleteTasksQuery = "DELETE FROM tasks *;";
+       String deleteTypeTaskQuery = "DELETE FROM type_task *;";
+       String deleteUsersQuery = "DELETE FROM users *;";
+       con.createQuery(deleteTasksMessagesQuery).executeUpdate();
+       con.createQuery(deleteMessagesBrandsQuery).executeUpdate();
+       con.createQuery(deleteTasksQuery).executeUpdate();
+       con.createQuery(deleteTypeTaskQuery).executeUpdate();
+       con.createQuery(deleteUsersQuery).executeUpdate();
+    }
   }
 }
