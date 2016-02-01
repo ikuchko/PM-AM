@@ -1,0 +1,88 @@
+.navbar {
+  margin-top: 15px;
+}
+
+.navbar-form {
+  position: absolute;
+  right: 9px;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Oswald', sans-serif;
+}
+
+h3, h4, p {
+  font-family: 'Montserrat', sans-serif;
+}
+
+a {
+  text-decoration: none !important;
+  color: #947133;
+}
+
+.navbar, .panel-grey {
+  background-color: #ccc !important;
+  border-color: rgba(56, 51, 51, 0.21);
+}
+
+.panel-title {
+  font-size: 18px;
+}
+
+.jumbotron {
+  background-color: #F8F8F8;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding: 15px;
+}
+
+.mini-jumbotron {
+  padding: 15px !important;
+}
+
+#righ-float-button{
+  float: right;
+}
+
+.bg-warning .bg-success {
+  padding: 10px;
+}
+
+.form-horizontal {
+  padding: 10px;
+}
+
+.input {
+  width: 100%;
+}
+
+.important {
+  font-size: 25px;
+}
+
+.small {
+  max-width: 180px;
+}
+
+.fix-width-7p {
+  width: 70%;
+}
+
+button {
+  background-color: #eee !important;
+}
+
+.small-text {
+  font-size: 10px;
+  color: #B73398;
+}
+
+.link {
+  background:none!important;
+  border:none;
+  padding:0!important;
+  font: inherit;
+  cursor: pointer;
+  color: #947133;
+}
