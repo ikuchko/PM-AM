@@ -104,11 +104,11 @@ CREATE TABLE tasks (
     id integer NOT NULL,
     title character varying,
     creator_user_id integer,
-    date_created date,
     status character varying,
     description text,
     type_task_id integer,
-    developer_id integer
+    developer_id integer,
+    date_created timestamp without time zone DEFAULT now()
 );
 
 
@@ -298,7 +298,7 @@ SELECT pg_catalog.setval('messages_id_seq', 1, false);
 -- Name: role_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('role_id_seq', 1, false);
+SELECT pg_catalog.setval('role_id_seq', 2, true);
 
 
 --
@@ -306,6 +306,8 @@ SELECT pg_catalog.setval('role_id_seq', 1, false);
 --
 
 COPY roles (id, name) FROM stdin;
+1	PM
+2	Developer
 \.
 
 
@@ -313,7 +315,7 @@ COPY roles (id, name) FROM stdin;
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY tasks (id, title, creator_user_id, date_created, status, description, type_task_id, developer_id) FROM stdin;
+COPY tasks (id, title, creator_user_id, status, description, type_task_id, developer_id, date_created) FROM stdin;
 \.
 
 
@@ -321,7 +323,7 @@ COPY tasks (id, title, creator_user_id, date_created, status, description, type_
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 1, false);
+SELECT pg_catalog.setval('tasks_id_seq', 1, true);
 
 
 --
