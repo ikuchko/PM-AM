@@ -6,12 +6,15 @@ import org.sql2o.*;
 public class Epic {
   private int mId;
   private String mTitle;
+  private User mCreator;
   private int mCreatorId;
   private String mDateCreated;
   private String mStatus;
   private String mDescription;
   private int mTypeTaskId;
-  private int mDeveloperId;
+  private User mImplementer;
+  private int mImplementerId;
+
 
   public int getId(){
     return mId;
@@ -19,6 +22,10 @@ public class Epic {
 
   public String getTitle() {
     return mTitle;
+  }
+
+  public User getCreator() {
+    return mCreator;
   }
 
   public int getCreatorId() {
@@ -41,17 +48,23 @@ public class Epic {
     return mTypeTaskId;
   }
 
-  public int getDeveloperId() {
-    return mDeveloperId;
+  public User getImplementer() {
+    return mImplementer;
   }
 
-  public Epic(String title, int creatorId, String status, String description, int typeTaskId, int developerId) {
+  public int getImplementerId() {
+    return mImplementerId;
+  }
+
+  public Epic(String title, int creatorId, String status, String description, int typeTaskId, int implementerId) {
      this.mTitle = title;
+     this.mCreator = User.find(creatorId);
      this.mCreatorId = creatorId;
      this.mStatus = status;
      this.mDescription = description;
      this.mTypeTaskId = typeTaskId;
-     this.mDeveloperId = developerId;
+     this.mImplementer = User.find(implementerId);
+     this.mImplementerId = implementerId;
   }
 
   @Override
@@ -61,38 +74,38 @@ public class Epic {
     } else {
       Epic newEpic = (Epic) otherEpic;
       return this.getTitle().equals(newEpic.getTitle()) &&
-            this.getCreatorId() == (newEpic.getCreatorId()) &&
+            this.getCreator() == (newEpic.getCreator()) &&
             this.getStatus().equals(newEpic.getStatus()) &&
             this.getDescription().equals(newEpic.getDescription()) &&
             this.getTypeTaskId() == (newEpic.getTypeTaskId()) &&
-            this.getDeveloperId() == (newEpic.getDeveloperId());
+            this.getImplementerId() == (newEpic.getImplementerId());
     }
   }
 
   public static List<Epic> all() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mDeveloperId FROM tasks";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementer FROM tasks";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Epic.class);
     }
   }
 
   public void save() {
-    String sql = "INSERT INTO tasks(title, creator_user_id, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, :status, :description, :typeTaskId, :developerId)";
+    String sql = "INSERT INTO tasks(title, creator_user_id, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, :status, :description, :typeTaskId, :implementerId)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
-        .addParameter("creatorId", this.mCreatorId)
+        .addParameter("creatorId", User.find(mCreatorId))
         .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
         .addParameter("typeTaskId", this.mTypeTaskId)
-        .addParameter("developerId", this.mDeveloperId)
+        .addParameter("implementerId", User.find(mImplementerId))
         .executeUpdate()
         .getKey();
     }
   }
 
   public static Epic find(int id) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mDeveloperId FROM tasks WHERE id = :id";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       Epic epic = con.createQuery(sql)
       .addParameter("id", id)
@@ -114,30 +127,35 @@ public class Epic {
     mTitle = newTitle;
     mDescription = newDescription;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET title = :title, description = :description";
+      String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
       con.createQuery(sql)
+      .addParameter("id", mId)    
       .addParameter("title", newTitle)
       .addParameter("description", newDescription)
       .executeUpdate();
+
     }
   }
 
   public void updateStatus(String newStatus) {
     mStatus = newStatus;
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET status = :status";
+      String sql = "UPDATE tasks SET status = :status WHERE id = :id";
       con.createQuery(sql)
+      .addParameter("id", mId)
       .addParameter("status", newStatus)
       .executeUpdate();
     }
   }
 
-  public void updateDeveloper(int newDeveloperId) {
-    mDeveloperId = newDeveloperId;
+  public void updateImplementer(int newImplementerId) {
+    mImplementerId = newImplementerId;
+    mImplementer = User.find(mImplementerId);
     try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET developer_id = :developerId";
+      String sql = "UPDATE tasks SET developer_id = :implementer WHERE id = :id";
       con.createQuery(sql)
-      .addParameter("developerId", newDeveloperId)
+      .addParameter("id", mId)
+      .addParameter("implementer", newImplementerId)
       .executeUpdate();
     }
   }

@@ -60,9 +60,9 @@ public class EpicTest {
   public void Epic_updateDeveloper() {
     Epic epic = new Epic("Title", 1, "In Progress", "This isn't a real epic", 1, 2);
     epic.save();
-    epic.updateDeveloper(4);
-    assertEquals(epic.getDeveloperId(), 4);
-    assertEquals(Epic.find(epic.getId()).getDeveloperId(), 4);
+    epic.updateImplementer(4);
+    assertEquals(epic.getImplementerId(), 4);
+    assertEquals(Epic.find(epic.getId()).getImplementerId(), 4);
   }
 
 }
