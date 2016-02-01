@@ -3,83 +3,51 @@ import java.util.ArrayList;
 import java.util.List;
 import org.sql2o.*;
 
-public class Epic {
+public class Message {
   private int mId;
-  private String mTitle;
-  private int mCreatorId;
-  private String mDateCreated;
-  private String mStatus;
   private String mDescription;
-  private int mTypeTaskId;
-  private int mDeveloperId;
+  private int mUserId;
+
 
   public int getId(){
     return mId;
-  }
-
-  public String getTitle() {
-    return mTitle;
-  }
-
-  public int getCreatorId() {
-    return mCreatorId;
-  }
-
-  public String getDateCreated() {
-    return mDateCreated;
-  }
-
-  public String getStatus() {
-    return mStatus;
   }
 
   public String getDescription() {
     return mDescription;
   }
 
-  public int getTypeTaskId() {
-    return mTypeTaskId;
+  public int getUserId() {
+    return mUserId;
   }
 
-  public int getDeveloperId() {
-    return mDeveloperId;
-  }
 
-  public Epic(String title, int creatorId, String dateCreated, String status, String description, int typeTaskId, int developerId) {
-     this.mTitle = title;
-     this.mCreatorId = creatorId;
-     this.mDateCreated = dateCreated;
-     this.mStatus = status;
+
+  public Message(String description, int userId) {
      this.mDescription = description;
-     this.mTypeTaskId = typeTaskId;
-     this.mDeveloperId = developerId;
+     this.mUserId = userId;
   }
 
   @Override
-  public boolean equals(Object otherEpic) {
-    if (!(otherEpic instanceof Epic)) {
+  public boolean equals(Object otherMessage) {
+    if (!(otherMessage instanceof Message)) {
       return false;
     } else {
-      Epic newEpic = (Epic) otherEpic;
-      return this.getTitle().equals(newEpic.getTitle()) &&
-            this.getCreatorId() == (newEpic.getCreatorId()) &&
-            this.getDateCreated().equals(newEpic.getDateCreated()) &&
-            this.getStatus().equals(newEpic.getStatus()) &&
-            this.getDescription().equals(newEpic.getDescription()) &&
-            this.getTypeTaskId() == (newEpic.getTypeTaskId()) &&
-            this.getDeveloperId() == (newEpic.getDeveloperId());
+      Message newMessage = (Message) otherMessage;
+      return this.getDescription().equals(newMessage.getDescription()) &&
+             this.getUserId() == (newMessage.getUserId());
     }
   }
 
-  public static List<Epic> all() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mDeveloperId FROM tasks";
+  public static List<Message> all() {
+    String sql = "SELECT id AS mId,  description AS mDescription, user_id AS mUserId FROM messages";
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(Epic.class);
+      return con.createQuery(sql).executeAndFetch(Message.class);
     }
   }
 
   public void save() {
-    String sql = "INSERT INTO tasks(title, creator_user_id, date_created, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, TO_DATE(:dateCreated, 'YYYY-MM-DD'), :status, :description, :typeTaskId, :developerId)";
+    String sql = "INSERT INTO messages(description, user_id) VALUES (:title, :creatorId, TO_DATE(:dateCreated, 'YYYY-MM-DD'), :status, :description, :typeTaskId, :developerId)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
@@ -134,5 +102,4 @@ public class Epic {
       .executeUpdate();
     }
   }
-
 }
