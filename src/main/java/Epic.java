@@ -134,44 +134,5 @@ public class Epic {
       .executeUpdate();
     }
   }
-  //
-  // public void addBrand(int brandId) {
-  // try(Connection con = DB.sql2o.open()) {
-  //   String sql = "INSERT INTO stores_brands(store_id, brand_id)  VALUES (:storeId, :brandId)";
-  //   con.createQuery(sql)
-  //     .addParameter("storeId", this.getId())
-  //     .addParameter("brandId", brandId)
-  //     .executeUpdate();
-  //   }
-  // }
-  //
-  // public List<Brand> getAllBrands(){
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT brands.id AS mId, brands.name AS mName, brands.specialty AS mSpecialty FROM brands INNER JOIN stores_brands ON brands.id = stores_brands.brand_id WHERE stores_brands.store_id = :id";
-  //     List<Brand> brandList = con.createQuery(sql)
-  //       .addParameter("id", mId)
-  //       .executeAndFetch(Brand.class);
-  //     return brandList;
-  //   }
-  // }
-  //
-  // public List<Brand> getAllSpecialties(){
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT brands.id AS mId, brands.specialty AS mSpecialty FROM brands INNER JOIN stores_brands ON brands.id = stores_brands.brand_id WHERE stores_brands.store_id = :id";
-  //     List<Brand> brandList = con.createQuery(sql)
-  //       .addParameter("id", mId)
-  //       .executeAndFetch(Brand.class);
-  //     return brandList;
-  //   }
-  // }
-  //
-  // public static List<Epic> storeSearch(String userInput){
-  //   try(Connection con = DB.sql2o.open()) {
-  //     String sql = "SELECT id AS mId, name AS mName FROM stores WHERE name LIKE :userInput";
-  //     List<Store> storeList = con.createQuery(sql)
-  //       .addParameter("userInput", "%" + userInput + "%")
-  //       .executeAndFetch(Store.class);
-  //     return storeList;
-  //   }
-  // }
+
 }
