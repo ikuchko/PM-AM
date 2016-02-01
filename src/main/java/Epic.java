@@ -12,6 +12,7 @@ public class Epic {
   private String mDescription;
   private int mTypeTaskId;
   private int mDeveloperId;
+  private String mTaskType;
 
   public int getId(){
     return mId;
@@ -77,14 +78,14 @@ public class Epic {
   }
 
   public void save() {
-    String sql = "INSERT INTO tasks(title, creator_user_id, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, :status, :description, :typeTaskId, :developerId)";
+    String sql = "INSERT INTO tasks(title, creator_user_id, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, :status, :description, ((SELECT id FROM type_task WHERE type_task.name LIKE :taskType)), :developerId)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
         .addParameter("creatorId", this.mCreatorId)
         .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
-        .addParameter("typeTaskId", this.mTypeTaskId)
+        .addParameter("taskType", this.mTaskType)
         .addParameter("developerId", this.mDeveloperId)
         .executeUpdate()
         .getKey();
