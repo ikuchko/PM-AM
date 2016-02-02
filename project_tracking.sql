@@ -203,6 +203,40 @@ ALTER SEQUENCE tasks_messages_id_seq OWNED BY tasks_messages.id;
 
 
 --
+-- Name: tasks_relationships; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE tasks_relationships (
+    id integer NOT NULL,
+    main_task_id integer,
+    subtask_id integer
+);
+
+
+ALTER TABLE tasks_relationships OWNER TO "Guest";
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE tasks_relationships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tasks_relationships_id_seq OWNER TO "Guest";
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE tasks_relationships_id_seq OWNED BY tasks_relationships.id;
+
+
+--
 -- Name: type_task; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
@@ -309,6 +343,13 @@ ALTER TABLE ONLY tasks_messages ALTER COLUMN id SET DEFAULT nextval('tasks_messa
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
+ALTER TABLE ONLY tasks_relationships ALTER COLUMN id SET DEFAULT nextval('tasks_relationships_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+--
+
 ALTER TABLE ONLY type_task ALTER COLUMN id SET DEFAULT nextval('type_task_id_seq'::regclass);
 
 
@@ -397,6 +438,21 @@ SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
 
 
 --
+-- Data for Name: tasks_relationships; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
+\.
+
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('tasks_relationships_id_seq', 1, false);
+
+
+--
 -- Data for Name: type_task; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
@@ -468,6 +524,14 @@ ALTER TABLE ONLY tasks_messages
 
 ALTER TABLE ONLY tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasks_relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+--
+
+ALTER TABLE ONLY tasks_relationships
+    ADD CONSTRAINT tasks_relationships_pkey PRIMARY KEY (id);
 
 
 --
