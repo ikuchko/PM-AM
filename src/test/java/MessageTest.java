@@ -18,7 +18,7 @@ public class MessageTest {
   public void save_savesMessageIntoDatabase() {
     Message message = new Message("description", 1, 1);
     message.save();
-    assertEquals("description", Message.find(message.getId()).getDescription());
+    assertEquals("description", Message.find(message.getId()).getMessage());
   }
 
   @Test
@@ -34,8 +34,8 @@ public class MessageTest {
     Message message = new Message("Title", 1, 1);
     message.save();
     message.update("Joe", 7);
-    assertEquals(message.getDescription(), "Joe");
-    assertEquals(Message.find(message.getId()).getDescription(), "Joe");
+    assertEquals(message.getMessage(), "Joe");
+    assertEquals(Message.find(message.getId()).getMessage(), "Joe");
   }
 
   @Test

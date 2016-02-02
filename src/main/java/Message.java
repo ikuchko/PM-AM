@@ -4,7 +4,7 @@ import org.sql2o.*;
 
 public class Message {
   private int mId;
-  private String mDescription;
+  private String mMessage;
   private int mTaskId;
   private int mUserId;
   private String mDateCreated;
@@ -13,8 +13,8 @@ public class Message {
     return mId;
   }
 
-  public String getDescription() {
-    return mDescription;
+  public String getMessage() {
+    return mMessage;
   }
 
   public int getUserId() {
@@ -30,7 +30,7 @@ public class Message {
   }
 
   public Message(String description, int userId, int taskId) {
-     this.mDescription = description;
+     this.mMessage = description;
      this.mUserId = userId;
      this.mTaskId = taskId;
   }
@@ -41,14 +41,14 @@ public class Message {
       return false;
     } else {
       Message newMessage = (Message) otherMessage;
-      return this.getDescription().equals(newMessage.getDescription()) &&
+      return this.getMessage().equals(newMessage.getMessage()) &&
              this.getUserId() == (newMessage.getUserId()) &&
              this.getDateCreated().equals(newMessage.getDateCreated());
     }
   }
 
   public static List<Message> all() {
-    String sql = "SELECT id AS mId,  description AS mDescription, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages";
+    String sql = "SELECT id AS mId,  description AS mMessage, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Message.class);
     }
@@ -58,7 +58,7 @@ public class Message {
     String sql = "INSERT INTO messages(description, user_id, task_id) VALUES (:description, :userId, :taskId)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
-        .addParameter("description", this.mDescription)
+        .addParameter("description", this.mMessage)
         .addParameter("userId", this.mUserId)
         .addParameter("taskId", this.mTaskId)
         .executeUpdate()
@@ -67,7 +67,7 @@ public class Message {
   }
 
   public static Message find(int id) {
-    String sql = "SELECT id AS mId, description AS mDescription, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages WHERE id = :id";
+    String sql = "SELECT id AS mId, description AS mMessage, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       Message message = con.createQuery(sql)
       .addParameter("id", id)
@@ -86,7 +86,7 @@ public class Message {
   }
 
   public void update(String newDescription, int newUserId) {
-    mDescription = newDescription;
+    mMessage = newDescription;
     mUserId = newUserId;
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE messages SET description = :description, user_id = :userId";
