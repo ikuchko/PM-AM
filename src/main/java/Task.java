@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import org.sql2o.*;
@@ -6,13 +5,17 @@ import org.sql2o.*;
 public class Task {
   private int mId;
   private String mTitle;
-  private int mCreatorId;
-  private String mDateCreated;
-  private String mStatus;
+  private int mStatus;
   private String mDescription;
-  private int mTypeTaskId;
-  private int mImplementerId;
+  private String mDateCreated;
+  private int mTypeId;
+  private int mImplementorId;
+  private int mCreatorId;
 
+  // private static final int EPIC = 1;
+  // private static final int TASK = 1;
+  // private static final int STORY = 1;
+  // private static final int BUG = 1;
 
   public int getId(){
     return mId;
@@ -22,15 +25,7 @@ public class Task {
     return mTitle;
   }
 
-  public int getCreatorId() {
-    return mCreatorId;
-  }
-
-  public String getDateCreated() {
-    return mDateCreated;
-  }
-
-  public String getStatus() {
+  public int getStatus() {
     return mStatus;
   }
 
@@ -38,112 +33,122 @@ public class Task {
     return mDescription;
   }
 
-  public int getTypeTaskId() {
-    return mTypeTaskId;
+  public String getDateCreated() {
+    return mDateCreated;
   }
 
-  public int getImplementerId() {
-    return mImplementerId;
+  public int getTypeTask() {
+    return mTypeId;
   }
 
-  public Task(String title, int creatorId, String status, String description, int typeTaskId, int implementerId) {
+  public int getImplementorId() {
+    return mImplementorId;
+  }
+
+  public int getCreatorId() {
+    return mCreatorId;
+  }
+
+  public Task(String title, int creatorId, int status, String description, int type, int implementorId) {
      this.mTitle = title;
-     this.mCreatorId = creatorId;
      this.mStatus = status;
      this.mDescription = description;
-     this.mTypeTaskId = typeTaskId;
-     this.mImplementerId = implementerId;
+     this.mTypeId = type;
+     this.mImplementorId = implementorId;
+     this.mCreatorId = creatorId;
   }
 
   @Override
-  public boolean equals(Object otherTask) {
-    if (!(otherTask instanceof Task)) {
+  public boolean equals(Object otherStory) {
+    if (!(otherStory instanceof Task)) {
       return false;
     } else {
-      Task newTask = (Task) otherTask;
-      return this.getTitle().equals(newTask.getTitle()) &&
-            this.getCreatorId() == (newTask.getCreatorId()) &&
-            this.getStatus().equals(newTask.getStatus()) &&
-            this.getDescription().equals(newTask.getDescription()) &&
-            this.getTypeTaskId() == (newTask.getTypeTaskId()) &&
-            this.getImplementerId() == (newTask.getImplementerId());
-    }
-  }
-
-  public static List<Task> all() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks";
-    try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(Task.class);
+      Task newStory = (Task) otherStory;
+      return this.getTitle().equals(newStory.getTitle()) &&
+             this.getStatus() == newStory.getStatus() &&
+             this.getDescription().equals(newStory.getDescription()) &&
+             this.getTypeTask() == (newStory.getTypeTask()) &&
+             this.getImplementorId() == newStory.getImplementorId() &&
+             this.getCreatorId() == newStory.getCreatorId();
     }
   }
 
   public void save() {
-    String sql = "INSERT INTO tasks(title, creator_user_id, status, description, type_task_id, developer_id) VALUES (:title, :creatorId, :status, :description, :typeTaskId, :implementerId)";
+    String sql = "INSERT INTO tasks (title, creator_user_id, status_id, description, type_task_id, developer_id) VALUES (:title, :creatorUser, :status, :description, :typeId, :implementorUser)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
-        .addParameter("creatorId", mCreatorId)
         .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
-        .addParameter("typeTaskId", this.mTypeTaskId)
-        .addParameter("implementerId", mImplementerId)
+        .addParameter("typeId", this.mTypeId)
+        .addParameter("implementorUser", this.mImplementorId)
+        .addParameter("creatorUser", this.mCreatorId)
         .executeUpdate()
         .getKey();
     }
   }
 
   public static Task find(int id) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE id = :id";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
-      Task Task = con.createQuery(sql)
+      Task story = con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetchFirst(Task.class);
-    return Task;
+    return story;
+    }
+  }
+
+  public static List<Task> all(int task_type) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId FROM  tasks WHERE type_task_id = :type_id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+  public void update(String title, String description) {
+    String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("title", mTitle)
+        .addParameter("description", mDescription)
+        .addParameter("id", this.mId)
+        .executeUpdate();
+        this.mTitle = title;
+        this.mDescription = description;
+    }
+  }
+
+  public void updateStatus(int statusId) {
+    String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("statusId", statusId)
+        .addParameter("id", this.mId)
+        .executeUpdate();
+        this.mStatus = statusId;
+    }
+  }
+
+  public void updateImplementor(int implementorId) {
+    String sql = "UPDATE tasks SET developer_id = :implementorId WHERE id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("implementorId", implementorId)
+        .addParameter("id", this.mId)
+        .executeUpdate();
+        this.mImplementorId = implementorId;
     }
   }
 
   public void delete() {
+    String sql = "DELETE FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
-    String deleteTask = "DELETE FROM tasks WHERE id = :id;";
-    con.createQuery(deleteTask)
-      .addParameter("id", mId)
-      .executeUpdate();
-    }
-  }
-
-  public void updateTitleAndDescription(String newTitle, String newDescription) {
-    mTitle = newTitle;
-    mDescription = newDescription;
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
       con.createQuery(sql)
-      .addParameter("id", mId)
-      .addParameter("title", newTitle)
-      .addParameter("description", newDescription)
-      .executeUpdate();
-
+        .addParameter("id", this.mId)
+        .executeUpdate();
     }
   }
 
-  public void updateStatus(String newStatus) {
-    mStatus = newStatus;
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET status = :status WHERE id = :id";
-      con.createQuery(sql)
-      .addParameter("id", mId)
-      .addParameter("status", newStatus)
-      .executeUpdate();
-    }
-  }
-
-  public void updateImplementer(int newImplementerId) {
-    mImplementerId = newImplementerId;
-    try(Connection con = DB.sql2o.open()) {
-      String sql = "UPDATE tasks SET developer_id = :implementer WHERE id = :id";
-      con.createQuery(sql)
-      .addParameter("id", mId)
-      .addParameter("implementer", newImplementerId)
-      .executeUpdate();
-    }
-  }
 }
