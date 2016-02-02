@@ -29,6 +29,7 @@ public class User{
     this.name = name;
     this.email = email;
     this.roleId = Role.getId(role);
+    save();
   }
 
   @Override

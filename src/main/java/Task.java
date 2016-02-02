@@ -57,6 +57,7 @@ public class Task {
      this.mTypeId = type;
      this.mImplementorId = implementorId;
      this.mCreatorId = creatorId;
+     save();
   }
 
   @Override
