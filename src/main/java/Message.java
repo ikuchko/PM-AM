@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 import java.util.List;
 import org.sql2o.*;
@@ -8,6 +7,7 @@ public class Message {
   private String mDescription;
   private int mTaskId;
   private int mUserId;
+  private String mDateCreated;
 
   public int getId(){
     return mId;
@@ -25,6 +25,10 @@ public class Message {
     return mTaskId;
   }
 
+  public String getDateCreated() {
+    return mDateCreated;
+  }
+
   public Message(String description, int userId, int taskId) {
      this.mDescription = description;
      this.mUserId = userId;
@@ -38,12 +42,13 @@ public class Message {
     } else {
       Message newMessage = (Message) otherMessage;
       return this.getDescription().equals(newMessage.getDescription()) &&
-             this.getUserId() == (newMessage.getUserId());
+             this.getUserId() == (newMessage.getUserId()) &&
+             this.getDateCreated().equals(newMessage.getDateCreated());
     }
   }
 
   public static List<Message> all() {
-    String sql = "SELECT id AS mId,  description AS mDescription, user_id AS mUserId, task_id AS mTaskId FROM messages";
+    String sql = "SELECT id AS mId,  description AS mDescription, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Message.class);
     }
@@ -62,7 +67,7 @@ public class Message {
   }
 
   public static Message find(int id) {
-    String sql = "SELECT id AS mId, description AS mDescription, user_id AS mUserId, task_id AS mTaskId FROM messages WHERE id = :id";
+    String sql = "SELECT id AS mId, description AS mDescription, user_id AS mUserId, task_id AS mTaskId, date_created AS mDateCreated FROM messages WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       Message message = con.createQuery(sql)
       .addParameter("id", id)
