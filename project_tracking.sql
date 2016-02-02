@@ -97,6 +97,39 @@ ALTER SEQUENCE role_id_seq OWNED BY roles.id;
 
 
 --
+-- Name: status; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE status (
+    id integer NOT NULL,
+    status character varying
+);
+
+
+ALTER TABLE status OWNER TO "Guest";
+
+--
+-- Name: status_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE status_id_seq OWNER TO "Guest";
+
+--
+-- Name: status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE status_id_seq OWNED BY status.id;
+
+
+--
 -- Name: tasks; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
@@ -104,11 +137,11 @@ CREATE TABLE tasks (
     id integer NOT NULL,
     title character varying,
     creator_user_id integer,
-    status character varying,
     description text,
     type_task_id integer,
     developer_id integer,
-    date_created timestamp without time zone DEFAULT now()
+    date_created timestamp without time zone DEFAULT now(),
+    status_id integer
 );
 
 
@@ -167,6 +200,40 @@ ALTER TABLE tasks_messages_id_seq OWNER TO "Guest";
 --
 
 ALTER SEQUENCE tasks_messages_id_seq OWNED BY tasks_messages.id;
+
+
+--
+-- Name: tasks_relationships; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE tasks_relationships (
+    id integer NOT NULL,
+    main_task_id integer,
+    subtask_id integer
+);
+
+
+ALTER TABLE tasks_relationships OWNER TO "Guest";
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE tasks_relationships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE tasks_relationships_id_seq OWNER TO "Guest";
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE tasks_relationships_id_seq OWNED BY tasks_relationships.id;
 
 
 --
@@ -255,6 +322,13 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regcla
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
+ALTER TABLE ONLY status ALTER COLUMN id SET DEFAULT nextval('status_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+--
+
 ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regclass);
 
 
@@ -263,6 +337,13 @@ ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regcl
 --
 
 ALTER TABLE ONLY tasks_messages ALTER COLUMN id SET DEFAULT nextval('tasks_messages_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+--
+
+ALTER TABLE ONLY tasks_relationships ALTER COLUMN id SET DEFAULT nextval('tasks_relationships_id_seq'::regclass);
 
 
 --
@@ -312,10 +393,25 @@ COPY roles (id, name) FROM stdin;
 
 
 --
+-- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY status (id, status) FROM stdin;
+\.
+
+
+--
+-- Name: status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('status_id_seq', 1, false);
+
+
+--
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY tasks (id, title, creator_user_id, status, description, type_task_id, developer_id, date_created) FROM stdin;
+COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, date_created, status_id) FROM stdin;
 \.
 
 
@@ -342,10 +438,29 @@ SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
 
 
 --
+-- Data for Name: tasks_relationships; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
+\.
+
+
+--
+-- Name: tasks_relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('tasks_relationships_id_seq', 1, false);
+
+
+--
 -- Data for Name: type_task; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
 COPY type_task (id, name) FROM stdin;
+1	Story
+2	Epic
+3	Task
+4	Bug
 \.
 
 
@@ -353,7 +468,7 @@ COPY type_task (id, name) FROM stdin;
 -- Name: type_task_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('type_task_id_seq', 1, false);
+SELECT pg_catalog.setval('type_task_id_seq', 4, true);
 
 
 --
@@ -388,6 +503,14 @@ ALTER TABLE ONLY roles
 
 
 --
+-- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+--
+
+ALTER TABLE ONLY status
+    ADD CONSTRAINT status_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: tasks_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
 --
 
@@ -401,6 +524,14 @@ ALTER TABLE ONLY tasks_messages
 
 ALTER TABLE ONLY tasks
     ADD CONSTRAINT tasks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: tasks_relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+--
+
+ALTER TABLE ONLY tasks_relationships
+    ADD CONSTRAINT tasks_relationships_pkey PRIMARY KEY (id);
 
 
 --
