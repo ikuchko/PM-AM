@@ -12,14 +12,14 @@ public class TaskTest {
   public void task_createsNewTask() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
     newUser.save();
-    Task newTask = new Task("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
+    Task newTask = new Task("Some title", newUser.getId(), Status.getId("In Progress"), "small description", TypeTask.getId("Epic"), newUser.getId());
     newTask.save();
     Task savedTask = Task.find(newTask.getId());
     assertTrue(savedTask.equals(newTask));
     assertEquals(newTask.getTitle(), "Some title");
-    assertEquals(newTask.getStatus(), 1);
+    assertEquals(newTask.getStatus(), 2);
     assertEquals(newTask.getDescription(), "small description");
-    assertEquals(newTask.getTypeTask(), 1);
+    assertEquals(newTask.getTypeTask(), 2);
     assertEquals(newTask.getCreatorId(), newUser.getId());
   }
 
