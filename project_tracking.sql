@@ -97,6 +97,39 @@ ALTER SEQUENCE role_id_seq OWNED BY roles.id;
 
 
 --
+-- Name: status; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+--
+
+CREATE TABLE status (
+    id integer NOT NULL,
+    status character varying
+);
+
+
+ALTER TABLE status OWNER TO "Guest";
+
+--
+-- Name: status_id_seq; Type: SEQUENCE; Schema: public; Owner: Guest
+--
+
+CREATE SEQUENCE status_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE status_id_seq OWNER TO "Guest";
+
+--
+-- Name: status_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: Guest
+--
+
+ALTER SEQUENCE status_id_seq OWNED BY status.id;
+
+
+--
 -- Name: tasks; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
 --
 
@@ -104,11 +137,11 @@ CREATE TABLE tasks (
     id integer NOT NULL,
     title character varying,
     creator_user_id integer,
-    status character varying,
     description text,
     type_task_id integer,
     developer_id integer,
-    date_created timestamp without time zone DEFAULT now()
+    date_created timestamp without time zone DEFAULT now(),
+    status_id integer
 );
 
 
@@ -255,6 +288,13 @@ ALTER TABLE ONLY roles ALTER COLUMN id SET DEFAULT nextval('role_id_seq'::regcla
 -- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
 --
 
+ALTER TABLE ONLY status ALTER COLUMN id SET DEFAULT nextval('status_id_seq'::regclass);
+
+
+--
+-- Name: id; Type: DEFAULT; Schema: public; Owner: Guest
+--
+
 ALTER TABLE ONLY tasks ALTER COLUMN id SET DEFAULT nextval('tasks_id_seq'::regclass);
 
 
@@ -312,10 +352,25 @@ COPY roles (id, name) FROM stdin;
 
 
 --
+-- Data for Name: status; Type: TABLE DATA; Schema: public; Owner: Guest
+--
+
+COPY status (id, status) FROM stdin;
+\.
+
+
+--
+-- Name: status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
+--
+
+SELECT pg_catalog.setval('status_id_seq', 1, false);
+
+
+--
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY tasks (id, title, creator_user_id, status, description, type_task_id, developer_id, date_created) FROM stdin;
+COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, date_created, status_id) FROM stdin;
 \.
 
 
@@ -346,6 +401,10 @@ SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
 --
 
 COPY type_task (id, name) FROM stdin;
+1	Story
+2	Epic
+3	Task
+4	Bug
 \.
 
 
@@ -353,7 +412,7 @@ COPY type_task (id, name) FROM stdin;
 -- Name: type_task_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('type_task_id_seq', 1, false);
+SELECT pg_catalog.setval('type_task_id_seq', 4, true);
 
 
 --
@@ -385,6 +444,14 @@ ALTER TABLE ONLY messages
 
 ALTER TABLE ONLY roles
     ADD CONSTRAINT role_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+--
+
+ALTER TABLE ONLY status
+    ADD CONSTRAINT status_pkey PRIMARY KEY (id);
 
 
 --
