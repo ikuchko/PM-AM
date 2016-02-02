@@ -11,13 +11,13 @@ public class Status {
       .executeScalar(Integer.class);
     }
   }
-
-  public static String getStatusName(Int statusId) {
-    String sql = "SELECT status FROM status WHERE id = :statusId";
-    try (Connection con = DB.sql2o.open()) {
-      return (int) con.createQuery(sql)
-      .addParameter("statusId", statusId)
-      .executeScalar(String.class);
-    }
-  }
+  // 
+  // public static String getStatusName(int statusId) {
+  //   String sql = "SELECT status FROM status WHERE id = :statusId";
+  //   try (Connection con = DB.sql2o.open()) {
+  //     return (String) con.createQuery(sql)
+  //     .addParameter("statusId", statusId)
+  //     .executeAndFetch(String.class);
+  //   }
+  // }
 }

@@ -12,12 +12,10 @@ public class DatabaseRule extends ExternalResource {
       String deleteTasksMessagesQuery = "DELETE FROM tasks_messages *;";
        String deleteMessagesBrandsQuery = "DELETE FROM messages *;";
        String deleteTasksQuery = "DELETE FROM tasks *;";
-       String deleteTypeTaskQuery = "DELETE FROM type_task *;";
        String deleteUsersQuery = "DELETE FROM users *;";
        con.createQuery(deleteTasksMessagesQuery).executeUpdate();
        con.createQuery(deleteMessagesBrandsQuery).executeUpdate();
        con.createQuery(deleteTasksQuery).executeUpdate();
-       con.createQuery(deleteTypeTaskQuery).executeUpdate();
        con.createQuery(deleteUsersQuery).executeUpdate();
     }
   }
