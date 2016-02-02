@@ -44,6 +44,7 @@ public class History {
     this.mChangeType = changeType;
     this.mPreviousCondition = previousCondition;
     this.mCurrentCondition = currentCondition;
+    save();
   }
 
   @Override

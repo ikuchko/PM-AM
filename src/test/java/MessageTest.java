@@ -17,14 +17,12 @@ public class MessageTest {
   @Test
   public void save_savesMessageIntoDatabase() {
     Message message = new Message("description", 1, 1);
-    message.save();
     assertEquals("description", Message.find(message.getId()).getMessage());
   }
 
   @Test
   public void Message_deleteWorksProperly() {
     Message message = new Message("Title", 1, 1);
-    message.save();
     message.delete();
     assertEquals(Message.all().size(), 0);
   }
@@ -32,7 +30,6 @@ public class MessageTest {
   @Test
   public void message_updateWorksProperly() {
     Message message = new Message("Title", 1, 1);
-    message.save();
     message.update("Joe", 7);
     assertEquals(message.getMessage(), "Joe");
     assertEquals(Message.find(message.getId()).getMessage(), "Joe");
@@ -41,20 +38,15 @@ public class MessageTest {
   @Test
   public void equals_returnsTrueIfSameNameAddressAndPhoneNumber() {
     Message firstMessage = new Message("Title", 1, 1);
-    firstMessage.save();
     Message secondMessage = new Message("Title", 1, 1);
-    secondMessage.save();
     assertTrue(firstMessage.equals(secondMessage));
   }
 
   @Test
   public void assign_assignsMessageToTask() {
     Message message = new Message("Title", 1, 1);
-    message.save();
     User newUser = new User("PM", "Illia", "illia@pmam.com");
-    newUser.save();
     Task newTask = new Task("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
-    newTask.save();
     message.assignTask(newTask);
     assertEquals(newTask.getMessages().size(), 1);
   }

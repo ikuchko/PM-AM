@@ -11,7 +11,6 @@ public class UserTest {
   @Test
   public void user_createsNewUser() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    newUser.save();
     User savedUser = User.find(newUser.getId());
     assertTrue(savedUser.equals(newUser));
     assertEquals(newUser.getRole(), "PM");
@@ -22,7 +21,6 @@ public class UserTest {
   @Test
   public void user_UpdatesUser() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    newUser.save();
     newUser.update("Developer", "Nathan", "nathan@pmam.com");
     assertEquals("Developer", newUser.getRole());
   }
@@ -30,7 +28,6 @@ public class UserTest {
   @Test
   public void user_deletesUser() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    newUser.save();
     newUser.delete();
     assertEquals(User.all().size(), 0);
   }

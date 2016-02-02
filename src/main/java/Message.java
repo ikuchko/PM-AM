@@ -33,6 +33,7 @@ public class Message {
      this.mMessage = description;
      this.mUserId = userId;
      this.mTaskId = taskId;
+     save();
   }
 
   @Override
