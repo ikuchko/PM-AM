@@ -12,10 +12,10 @@ public class Status {
     }
   }
 
-  public static String getStatusName(Int statusId) {
+  public static String getStatusName(int statusId) {
     String sql = "SELECT status FROM status WHERE id = :statusId";
     try (Connection con = DB.sql2o.open()) {
-      return (int) con.createQuery(sql)
+      return (String) con.createQuery(sql)
       .addParameter("statusId", statusId)
       .executeScalar(String.class);
     }

@@ -12,10 +12,10 @@ public class TypeTask {
     }
   }
 
-  public static String getTypeTaskName(Int typeTaskId) {
+  public static String getTypeTaskName(int typeTaskId) {
     String sql = "SELECT name FROM type_task WHERE id = :typeTaskId";
     try (Connection con = DB.sql2o.open()) {
-      return (int) con.createQuery(sql)
+      return (String) con.createQuery(sql)
       .addParameter("typeTaskId", typeTaskId)
       .executeScalar(String.class);
     }
