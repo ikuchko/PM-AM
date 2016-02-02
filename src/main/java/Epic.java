@@ -6,12 +6,12 @@ import org.sql2o.*;
 public class Epic {
   private int mId;
   private String mTitle;
-  private User mCreator;
+  private int mCreatorId;
   private String mDateCreated;
   private String mStatus;
   private String mDescription;
   private int mTypeTaskId;
-  private User mImplementer;
+  private int mImplementerId;
 
 
   public int getId(){
@@ -22,8 +22,8 @@ public class Epic {
     return mTitle;
   }
 
-  public User getCreator() {
-    return mCreator;
+  public int getCreatorId() {
+    return mCreatorId;
   }
 
   public String getDateCreated() {
@@ -42,17 +42,17 @@ public class Epic {
     return mTypeTaskId;
   }
 
-  public User getImplementer() {
-    return mImplementer;
+  public int getImplementerId() {
+    return mImplementerId;
   }
 
   public Epic(String title, int creatorId, String status, String description, int typeTaskId, int implementerId) {
      this.mTitle = title;
-     this.mCreator = User.find(creatorId);
+     this.mCreatorId = creatorId;
      this.mStatus = status;
      this.mDescription = description;
      this.mTypeTaskId = typeTaskId;
-     this.mImplementer = User.find(implementerId);
+     this.mImplementerId = implementerId;
   }
 
   @Override
@@ -62,16 +62,16 @@ public class Epic {
     } else {
       Epic newEpic = (Epic) otherEpic;
       return this.getTitle().equals(newEpic.getTitle()) &&
-            this.getCreator() == (newEpic.getCreator()) &&
+            this.getCreatorId() == (newEpic.getCreatorId()) &&
             this.getStatus().equals(newEpic.getStatus()) &&
             this.getDescription().equals(newEpic.getDescription()) &&
             this.getTypeTaskId() == (newEpic.getTypeTaskId()) &&
-            this.getImplementer() == (newEpic.getImplementer());
+            this.getImplementerId() == (newEpic.getImplementerId());
     }
   }
 
   public static List<Epic> all() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreator, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementer FROM tasks";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE type_task_id = 1";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Epic.class);
     }
@@ -82,18 +82,18 @@ public class Epic {
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
-        .addParameter("creatorId", mCreator.getId())
+        .addParameter("creatorId", mCreatorId)
         .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
         .addParameter("typeTaskId", this.mTypeTaskId)
-        .addParameter("implementerId", mImplementer.getId())
+        .addParameter("implementerId", mImplementerId)
         .executeUpdate()
         .getKey();
     }
   }
 
   public static Epic find(int id) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreator, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementer FROM tasks WHERE id = :id";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       Epic epic = con.createQuery(sql)
       .addParameter("id", id)
@@ -137,7 +137,7 @@ public class Epic {
   }
 
   public void updateImplementer(int newImplementerId) {
-    mImplementer = User.find(newImplementerId);
+    mImplementerId = newImplementerId;
     try(Connection con = DB.sql2o.open()) {
       String sql = "UPDATE tasks SET developer_id = :implementer WHERE id = :id";
       con.createQuery(sql)

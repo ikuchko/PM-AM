@@ -75,8 +75,8 @@ public class EpicTest {
     Epic epic = new Epic("Title", user.getId(), "In Progress", "This isn't a real epic", 1, user.getId());
     epic.save();
     epic.updateImplementer(newUser.getId());
-    assertEquals(epic.getImplementer().getId(), newUser.getId());
-    assertEquals(Epic.find(epic.getId()).getImplementer().getId(), newUser.getId());
+    assertEquals(epic.getImplementerId(), newUser.getId());
+    assertEquals(Epic.find(epic.getId()).getImplementerId(), newUser.getId());
   }
 
 }
