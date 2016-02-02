@@ -21,4 +21,3 @@ public class Status {
   //   }
   // }
 }
-Status API Training Shop Blog About Pricing
