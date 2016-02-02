@@ -153,7 +153,7 @@ public class Task {
   }
 
   public List<Message> getMessages() {
-    String sql = "SELECT messages.id AS mId, messages.description AS mDescription FROM tasks " +
+    String sql = "SELECT messages.id AS mId, messages.description AS mMessage FROM tasks " +
                  "INNER JOIN tasks_messages AS t_m ON tasks.id = t_m.task_id " +
                  "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id";
     try(Connection con = DB.sql2o.open()) {
