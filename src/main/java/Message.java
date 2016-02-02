@@ -43,7 +43,7 @@ public class Message {
       Message newMessage = (Message) otherMessage;
       return this.getMessage().equals(newMessage.getMessage()) &&
              this.getUserId() == (newMessage.getUserId()) &&
-             this.getDateCreated().equals(newMessage.getDateCreated());
+             this.getDateCreated() == (newMessage.getDateCreated());
     }
   }
 

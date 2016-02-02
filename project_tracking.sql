@@ -73,7 +73,9 @@ ALTER SEQUENCE histories_id_seq OWNED BY histories.id;
 CREATE TABLE messages (
     id integer NOT NULL,
     description text,
-    user_id integer
+    user_id integer,
+    task_id integer,
+    date_created timestamp without time zone DEFAULT now()
 );
 
 
@@ -423,7 +425,7 @@ SELECT pg_catalog.setval('histories_id_seq', 1, false);
 -- Data for Name: messages; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY messages (id, description, user_id) FROM stdin;
+COPY messages (id, description, user_id, task_id, date_created) FROM stdin;
 \.
 
 
