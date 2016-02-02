@@ -49,6 +49,7 @@ public class Task {
     return mCreatorId;
   }
 
+
   public Task(String title, int creatorId, int status, String description, int type, int implementorId) {
      this.mTitle = title;
      this.mStatus = status;
@@ -148,6 +149,17 @@ public class Task {
       con.createQuery(sql)
         .addParameter("id", this.mId)
         .executeUpdate();
+    }
+  }
+
+  public List<Message> getMessages() {
+    String sql = "SELECT messages.id AS mId, messages.description AS mDescription FROM tasks " +
+                 "INNER JOIN tasks_messages AS t_m ON tasks.id = t_m.task_id " +
+                 "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", this.mId)
+        .executeAndFetch(Message.class);
     }
   }
 

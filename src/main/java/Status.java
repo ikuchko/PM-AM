@@ -11,7 +11,7 @@ public class Status {
       .executeScalar(Integer.class);
     }
   }
-  // 
+  //
   // public static String getStatusName(int statusId) {
   //   String sql = "SELECT status FROM status WHERE id = :statusId";
   //   try (Connection con = DB.sql2o.open()) {
@@ -21,3 +21,4 @@ public class Status {
   //   }
   // }
 }
+Status API Training Shop Blog About Pricing
