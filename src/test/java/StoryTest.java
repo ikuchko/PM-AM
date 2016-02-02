@@ -12,68 +12,58 @@ public class StoryTest {
   public void story_createsNewStory() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
     newUser.save();
-    Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
+    Story newStory = new Story("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
     newStory.save();
     Story savedStory = Story.find(newStory.getId());
     assertTrue(savedStory.equals(newStory));
     assertEquals(newStory.getTitle(), "Some title");
-    assertEquals(newStory.getStatus(), "In Progres");
+    assertEquals(newStory.getStatus(), 1);
     assertEquals(newStory.getDescription(), "small description");
     assertEquals(newStory.getTypeTask(), 1);
-    assertEquals(newStory.getCreator().getName(), "Nathan");
+    assertEquals(newStory.getCreatorId(), newUser.getId());
+  }
+
+
+  @Test
+  public void story_Updated() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    newUser.save();
+    Story newStory = new Story("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
+    newStory.save();
+    newStory.update("Some other title", "Large description");
+    assertEquals(newStory.getTitle(), "Some other title");
+    assertEquals(newStory.getDescription(), "Large description");
   }
 
   @Test
-  public void test() {
+  public void story_UpdatesStatus() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
     newUser.save();
-    Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
+    Story newStory = new Story("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
     newStory.save();
-    Story savedStory = Story.find(newStory.getId());
-    assertEquals(savedStory.getImplementor().getName(), newUser.getName());
-
+    newStory.updateStatus(2);
+    assertEquals(newStory.getStatus(), 2);
   }
 
-  // @Test
-  // public void story_Updated() {
-  //   User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-  //   newUser.save();
-  //   Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
-  //   newStory.save();
-  //   newStory.update("Some other title", "Large description");
-  //   assertEquals(newStory.getTitle(), "Some other title");
-  //   assertEquals(newStory.getDescription(), "Large description");
-  // }
-  //
-  // @Test
-  // public void story_UpdatesStatus() {
-  //   User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-  //   newUser.save();
-  //   Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
-  //   newStory.save();
-  //   newStory.updateStatus("Done");
-  //   assertEquals(newStory.getStatus(), "Done");
-  // }
-  //
-  // @Test
-  // public void story_UpdatesImplementor() {
-  //   User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-  //   newUser.save();
-  //   Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
-  //   newStory.save();
-  //   User secondUser = new User("PM", "Illia", "illia@pmam.com");
-  //   secondUser.save();
-  //   newStory.updateImplementor(secondUser);
-  //   assertEquals(newStory.getImplementor(), secondUser);
-  // }
-  //
-  // @Test
-  // public void story_deletesUser() {
-  //   User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-  //   newUser.save();
-  //   Story newStory = new Story("Some title", newUser.getId(), "In Progres", "small description", 1, newUser.getId());
-  //   newStory.save();
-  //   newStory.delete();
-  //   assertEquals(Story.all().size(), 0);
-  // }
+  @Test
+  public void story_UpdatesImplementor() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    newUser.save();
+    Story newStory = new Story("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
+    newStory.save();
+    User secondUser = new User("PM", "Illia", "illia@pmam.com");
+    secondUser.save();
+    newStory.updateImplementor(secondUser.getId());
+    assertEquals(newStory.getImplementor(), secondUser.getId());
+  }
+
+  @Test
+  public void story_deletesStory() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    newUser.save();
+    Story newStory = new Story("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
+    newStory.save();
+    newStory.delete();
+    assertEquals(Story.all().size(), 0);
+  }
 }
