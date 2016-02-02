@@ -397,6 +397,10 @@ COPY roles (id, name) FROM stdin;
 --
 
 COPY status (id, status) FROM stdin;
+1	To Do
+2	In Progress
+3	Test
+4	Done
 \.
 
 
@@ -404,7 +408,7 @@ COPY status (id, status) FROM stdin;
 -- Name: status_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('status_id_seq', 1, false);
+SELECT pg_catalog.setval('status_id_seq', 4, true);
 
 
 --
