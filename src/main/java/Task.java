@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.sql2o.*;
 
-public class Epic {
+public class Task {
   private int mId;
   private String mTitle;
   private int mCreatorId;
@@ -46,7 +46,7 @@ public class Epic {
     return mImplementerId;
   }
 
-  public Epic(String title, int creatorId, String status, String description, int typeTaskId, int implementerId) {
+  public Task(String title, int creatorId, String status, String description, int typeTaskId, int implementerId) {
      this.mTitle = title;
      this.mCreatorId = creatorId;
      this.mStatus = status;
@@ -56,24 +56,24 @@ public class Epic {
   }
 
   @Override
-  public boolean equals(Object otherEpic) {
-    if (!(otherEpic instanceof Epic)) {
+  public boolean equals(Object otherTask) {
+    if (!(otherTask instanceof Task)) {
       return false;
     } else {
-      Epic newEpic = (Epic) otherEpic;
-      return this.getTitle().equals(newEpic.getTitle()) &&
-            this.getCreatorId() == (newEpic.getCreatorId()) &&
-            this.getStatus().equals(newEpic.getStatus()) &&
-            this.getDescription().equals(newEpic.getDescription()) &&
-            this.getTypeTaskId() == (newEpic.getTypeTaskId()) &&
-            this.getImplementerId() == (newEpic.getImplementerId());
+      Task newTask = (Task) otherTask;
+      return this.getTitle().equals(newTask.getTitle()) &&
+            this.getCreatorId() == (newTask.getCreatorId()) &&
+            this.getStatus().equals(newTask.getStatus()) &&
+            this.getDescription().equals(newTask.getDescription()) &&
+            this.getTypeTaskId() == (newTask.getTypeTaskId()) &&
+            this.getImplementerId() == (newTask.getImplementerId());
     }
   }
 
-  public static List<Epic> all() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE type_task_id = 1";
+  public static List<Task> all() {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks";
     try(Connection con = DB.sql2o.open()) {
-      return con.createQuery(sql).executeAndFetch(Epic.class);
+      return con.createQuery(sql).executeAndFetch(Task.class);
     }
   }
 
@@ -92,20 +92,20 @@ public class Epic {
     }
   }
 
-  public static Epic find(int id) {
+  public static Task find(int id) {
     String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, date_created AS mDateCreated, status AS mStatus, description AS mDescription, type_task_id AS mTypeTaskId, developer_id AS mImplementerId FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
-      Epic epic = con.createQuery(sql)
+      Task Task = con.createQuery(sql)
       .addParameter("id", id)
-      .executeAndFetchFirst(Epic.class);
-    return epic;
+      .executeAndFetchFirst(Task.class);
+    return Task;
     }
   }
 
   public void delete() {
     try(Connection con = DB.sql2o.open()) {
-    String deleteEpic = "DELETE FROM tasks WHERE id = :id;";
-    con.createQuery(deleteEpic)
+    String deleteTask = "DELETE FROM tasks WHERE id = :id;";
+    con.createQuery(deleteTask)
       .addParameter("id", mId)
       .executeUpdate();
     }

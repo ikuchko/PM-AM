@@ -16,34 +16,67 @@ public class EpicTest {
 
   @Test
   public void save_savesEpicIntoDatabase() {
-    Epic epic = new Epic("Title", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    Epic epic = new Epic("Title", user.getId(), "In Progress", "This isn't a real epic", 1, 2);
     epic.save();
     assertEquals("Title", Epic.find(epic.getId()).getTitle());
   }
 
   @Test
   public void Epic_deleteWorksProperly() {
-    Epic epic = new Epic("Title", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    Epic epic = new Epic("Title", user.getId(), "In Progress", "This isn't a real epic", 1, user.getId());
     epic.save();
     epic.delete();
     assertEquals(Epic.all().size(), 0);
   }
 
   @Test
-  public void epic_updateWorksProperly() {
-    Epic epic = new Epic("Title", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
-    epic.save();
-    epic.update("Name", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
-    assertEquals(epic.getTitle(), "Name");
-    assertEquals(Epic.find(epic.getId()).getTitle(), "Name");
-  }
-
-  @Test
-  public void equals_returnsTrueIfSameNameAddressAndPhoneNumber() {
-    Epic firstEpic = new Epic("Title", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
+  public void equals_returnsTrueIfSame() {
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    Epic firstEpic = new Epic("Title", 1, "In Progress", "This isn't a real epic", 1, 2);
     firstEpic.save();
-    Epic secondEpic = new Epic("Title", 1, "2016-02-01", "In Progress", "This isn't a real epic", 1, 2);
+    Epic secondEpic = new Epic("Title", 1, "In Progress", "This isn't a real epic", 1, 2);
     secondEpic.save();
     assertTrue(firstEpic.equals(secondEpic));
   }
+
+  @Test
+  public void Epic_updateTitleAndDescriptionWorksProperly() {
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    Epic epic = new Epic("Title", 1, "In Progress", "This isn't a real epic", 1, 2);
+    epic.save();
+    epic.updateTitleAndDescription("New title", "haaaaaands");
+    assertEquals(epic.getTitle(), "New title");
+    assertEquals(Epic.find(epic.getId()).getTitle(), "New title");
+  }
+
+  @Test
+  public void Epic_updateStatus() {
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    Epic epic = new Epic("Title", 1, "In Progress", "This isn't a real epic", 1, 2);
+    epic.save();
+    epic.updateStatus("Completed");
+    assertEquals(epic.getStatus(), "Completed");
+    assertEquals(Epic.find(epic.getId()).getStatus(), "Completed");
+  }
+
+  @Test
+  public void Epic_updateImplementer() {
+    User user = new User("PM", "Nathan", "nathan@pmam.com");
+    user.save();
+    User newUser = new User("PM", "Andrey", "nathan@pmam.com");
+    newUser.save();
+    Epic epic = new Epic("Title", user.getId(), "In Progress", "This isn't a real epic", 1, user.getId());
+    epic.save();
+    epic.updateImplementer(newUser.getId());
+    assertEquals(epic.getImplementerId(), newUser.getId());
+    assertEquals(Epic.find(epic.getId()).getImplementerId(), newUser.getId());
+  }
+
 }
