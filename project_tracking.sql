@@ -38,7 +38,8 @@ CREATE TABLE histories (
     task_id integer,
     change_type character varying,
     previous_condition character varying(30),
-    current_condition character varying(30)
+    current_condition character varying(30),
+    created_date timestamp without time zone DEFAULT now()
 );
 
 
@@ -407,7 +408,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Data for Name: histories; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY histories (id, task_id, change_type, previous_condition, current_condition) FROM stdin;
+COPY histories (id, task_id, change_type, previous_condition, current_condition, created_date) FROM stdin;
 \.
 
 
