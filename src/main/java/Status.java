@@ -22,4 +22,16 @@ public class Status {
       .executeScalar(String.class);
     }
   }
+
+  public static int getNextStatus(Task task){
+    int statusId = 0;
+    if (Status.getStatusName(task.getStatus()).equals("To Do")) {
+      statusId = Status.getId("In Progress");
+    } else if (Status.getStatusName(task.getStatus()).equals("In Progress")) {
+      statusId = Status.getId("Test");
+    } else {
+      statusId = Status.getId("Done");
+    }
+    return statusId;
+  }
 }
