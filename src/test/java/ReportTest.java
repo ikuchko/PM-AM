@@ -12,7 +12,7 @@ public class ReportTest {
   @Test
   public void task_deleteTaskWithAnyTypes() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    Task newTask = new Task("Some title", newUser.getId(), Status.getId("In Progress"), "small description", TypeTask.getId("Epic"), newUser.getId());
+    Task newTask = new Task("Some title", newUser.getId(),"small description", TypeTask.getId("Epic"), newUser.getId());
     History history = new History(newTask.getId(), "Change Status", "In Progress", "Done");
     Report report = new Report(newTask.getId());
     assertFalse(report.getStartDate().equals(""));
