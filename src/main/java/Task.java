@@ -50,10 +50,10 @@ public class Task {
   }
 
 
-  public Task(String title, int creatorId, int status, String description, int type, int implementorId) {
+  public Task(String title, int creatorId, String description, int type, int implementorId) {
      this.mTitle = title;
-     this.mStatus = status;
      this.mDescription = description;
+     this.mStatus = 1;
      this.mTypeId = type;
      this.mImplementorId = implementorId;
      this.mCreatorId = creatorId;
@@ -74,20 +74,21 @@ public class Task {
              this.getCreatorId() == newStory.getCreatorId();
     }
   }
-
+//Changed save method to set new tasks' status automatically to 1 i.e. "To Do"
   public void save() {
-    String sql = "INSERT INTO tasks (title, creator_user_id, status_id, description, type_task_id, developer_id) VALUES (:title, :creatorUser, :status, :description, :typeId, :implementorUser)";
+    String sql = "INSERT INTO tasks (title, creator_user_id, status_id, description, type_task_id, developer_id) VALUES (:title, :creatorUser, :statusId, :description, :typeId, :implementorUser)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("title", this.mTitle)
-        .addParameter("status", this.mStatus)
         .addParameter("description", this.mDescription)
+        .addParameter("statusId", 1)
         .addParameter("typeId", this.mTypeId)
         .addParameter("implementorUser", this.mImplementorId)
         .addParameter("creatorUser", this.mCreatorId)
         .executeUpdate()
         .getKey();
     }
+    // History new History(this.getId(), "Create new task", Status.get)
   }
 
   public static Task find(int id) {
@@ -123,6 +124,7 @@ public class Task {
   }
 
   public void updateStatus(int statusId) {
+    this.mStatus = statusId;
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)

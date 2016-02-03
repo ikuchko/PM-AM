@@ -46,7 +46,7 @@ public class MessageTest {
   public void assign_assignsMessageToTask() {
     Message message = new Message("Title", 1, 1);
     User newUser = new User("PM", "Illia", "illia@pmam.com");
-    Task newTask = new Task("Some title", newUser.getId(), 1, "small description", 1, newUser.getId());
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
     message.assignTask(newTask);
     assertEquals(newTask.getMessages().size(), 1);
   }
