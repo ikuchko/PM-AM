@@ -96,6 +96,7 @@ public class Message {
       .addParameter("userId", newUserId)
       .executeUpdate();
     }
+    History newHistory = new History(this.getTaskId(), "Update Message", Status.getStatusName(Task.find(this.mTaskId).getStatus()), Status.getStatusName(Task.find(this.mTaskId).getStatus()));
   }
 
   public void assignTask(Task task) {

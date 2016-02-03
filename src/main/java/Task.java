@@ -74,7 +74,7 @@ public class Task {
              this.getCreatorId() == newStory.getCreatorId();
     }
   }
-//Changed save method to set new tasks' status automatically to 1 i.e. "To Do"
+
   public void save() {
     String sql = "INSERT INTO tasks (title, creator_user_id, status_id, description, type_task_id, developer_id) VALUES (:title, :creatorUser, :statusId, :description, :typeId, :implementorUser)";
     try(Connection con = DB.sql2o.open()) {
@@ -88,7 +88,6 @@ public class Task {
         .executeUpdate()
         .getKey();
     }
-    // History new History(this.getId(), "Create new task", Status.get)
   }
 
   public static Task find(int id) {
@@ -110,6 +109,36 @@ public class Task {
     }
   }
 
+  public static List<Task> allByCreator(int task_type, int creatorId) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM  tasks WHERE type_task_id = :type_id AND creator_user_id = :creatorId";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .addParameter("creatorId", creatorId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+  public static List<Task> allByImplementor(int task_type, int implementorId) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM  tasks WHERE type_task_id = :type_id AND developer_id = :implementorId";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .addParameter("implementorId", implementorId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+  public static List<Task> allByStatus(int task_type, int statusId) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM  tasks WHERE type_task_id = :type_id AND status_id = :statusId";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .addParameter("statusId", statusId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
   public void update(String title, String description) {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -121,16 +150,17 @@ public class Task {
         this.mTitle = title;
         this.mDescription = description;
     }
+    History newHistory = new History(this.getId(), "Update Title and Description", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
   }
 
   public void updateStatus(int statusId) {
-    this.mStatus = statusId;
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("statusId", statusId)
         .addParameter("id", this.mId)
         .executeUpdate();
+        History newHistory = new History(this.getId(), "Update Status", Status.getStatusName(mStatus), Status.getStatusName(statusId));
         this.mStatus = statusId;
     }
   }
@@ -144,6 +174,7 @@ public class Task {
         .executeUpdate();
         this.mImplementorId = implementorId;
     }
+    History newHistory = new History(this.getId(), "Update Implementor", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
   }
 
   public void delete() {
