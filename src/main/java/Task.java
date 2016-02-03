@@ -108,7 +108,7 @@ public class Task {
         .executeAndFetch(Task.class);
     }
   }
-
+  
   public void update(String title, String description) {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -120,8 +120,9 @@ public class Task {
         this.mTitle = title;
         this.mDescription = description;
     }
+    History newHistory = new History(this.getId(), "Update Title and Description", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
   }
-// public History(int taskId, String changeType, String previousCondition, String currentCondition)
+
   public void updateStatus(int statusId) {
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -143,7 +144,7 @@ public class Task {
         .executeUpdate();
         this.mImplementorId = implementorId;
     }
-    // History(this.getId(), "Change implementor", this.getStatus., String currentCondition)
+    History newHistory = new History(this.getId(), "Update Implementor", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
   }
 
   public void delete() {
