@@ -11,7 +11,7 @@ public class HistoryTest {
   @Test
   public void history_createsNewHistory() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    Task newTask = new Task("Some title", newUser.getId(), Status.getId("In Progress"), "small description", TypeTask.getId("Epic"), newUser.getId());
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Epic"), newUser.getId());
     Message message = new Message("Title", 1, 1);
     History history = new History(newTask.getId(), "Add message", "", message.getMessage());
     History savedHistory = History.find(history.getId());
@@ -27,7 +27,7 @@ public class HistoryTest {
   @Test
   public void delete_deletesHistory() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    Task newTask = new Task("Some title", newUser.getId(), Status.getId("In Progress"), "small description", TypeTask.getId("Epic"), newUser.getId());
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Epic"), newUser.getId());
     Message message = new Message("Title", 1, 1);
     History history = new History(newTask.getId(), "Add message", "", message.getMessage());
     history.delete();
