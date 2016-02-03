@@ -10,14 +10,13 @@ public class Report {
   private String mStartDate;
   private String mFinishDate;
   private String mDuration;
-  private String mFormattedDuration;
 
 
   public Report(int taskId) {
     Task task = Task.find(taskId);
     this.mStartDate = task.getDateCreated();
     this.mFinishDate = findFinishDate(taskId);
-    this.mDuration = findDuration(taskId);
+    this.mDuration = formattedDuration(findDuration(taskId));
   }
 
   public String getStartDate() {
@@ -40,7 +39,7 @@ public class Report {
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
       .addParameter("doneStatus", "Done")
-      .addParameter("status", "Change Status")
+      .addParameter("status", "Update Status")
       .addParameter("taskId", taskId)
       .executeScalar(String.class);
     }
@@ -51,21 +50,25 @@ public class Report {
     try(Connection con = DB.sql2o.open()) {
       return (String) con.createQuery(sql)
       .addParameter("doneStatus", "Done")
-      .addParameter("status", "Change Status")
+      .addParameter("status", "Update Status")
       .addParameter("taskId", taskId)
       .executeScalar(String.class);
     }
+
   }
 
   public static String formattedDuration(String duration) {
-    String ymdh = "0 years 0 mons 0 days 0 hours";
-    String ymd = "0 years 0 mons 0 days";
-    String ym = "0 years 0 mons";
-    String y="0 years";
-    if (duration.contains(ymdh)) {
-      return duration.replace("0 years 0 mons 0 days 0 hours", "");
-    }
-    return duration;
+    if (duration.contains("0 years 0 mons 0 days 0 hours")) {
+      return duration.replace("0 years 0 mons 0 days 0 hours ", "");
+    } else if (duration.contains("0 years 0 mons 0 days")) {
+      return duration.replace("0 years 0 mons 0 days ", "");
+    } else if (duration.contains("0 years 0 mons")) {
+      return duration.replace("0 years 0 mons ", "");
+    } else if (duration.contains("0 years")) {
+     return duration.replace("0 years ", "");
+   } else{
+     return duration;
+   }
   }
 
 }
