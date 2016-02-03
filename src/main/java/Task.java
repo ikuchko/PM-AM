@@ -109,6 +109,26 @@ public class Task {
     }
   }
 
+  public static List<Task> allAssigned() {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r WHERE tasks.type_task_id = :type_id AND t_r.main_task_id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .addParameter("id", this.mId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+  public static List<Task> allAssigned(int task_type) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r WHERE type_task_id = :type_id AND t_r.main_task_id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("type_id", task_type)
+        .addParameter("id", this.mId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
   public void update(String title, String description) {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
@@ -122,7 +142,8 @@ public class Task {
     }
   }
 // public History(int taskId, String changeType, String previousCondition, String currentCondition)
-  public void updateStatus(int statusId) {
+// Use changeStatus() for changing task status
+  private void updateStatus(int statusId) {
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
@@ -166,8 +187,19 @@ public class Task {
     }
   }
 
+
+
   public boolean changeStatus() {
     boolean isChanged = false;
+    if (Status.getStatusName(this.getStatus()).equals("To Do")) {
+      updateStatus(Status.getNextStatus(this));
+      isChanged = true;
+    }
+    if (TypeTask.getTypeTaskName(this.getTypeTask()).equals("Task") && Task.) {
+
+    }
+
+    return isChanged;
   }
 
 }

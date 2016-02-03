@@ -62,16 +62,57 @@ public class TaskTest {
     Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
     assertEquals(Status.getStatusName(newTask.getStatus()), "To Do");
     newTask.updateStatus(2);
-    System.out.println(History.all(newTask.getId()));
     assertEquals(Status.getStatusName(newTask.getStatus()), "In Progress");
+  }
+
+  @Test
+  public void getNextStatus_returnNextStatus_InProgress() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    assertEquals(Status.getId("In Progress"), Status.getNextStatus(newTask));
+  }
+
+  @Test
+  public void getNextStatus_returnNextStatus_Test() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    newTask.updateStatus(Status.getId("In Progress"));
+    assertEquals(Status.getId("Test"), Status.getNextStatus(newTask));
+  }
+
+  @Test
+  public void getNextStatus_returnNextStatus_Done() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    newTask.updateStatus(Status.getId("Test"));
+    assertEquals(Status.getId("Done"), Status.getNextStatus(newTask));
   }
 
   @Test
   public void status_changedByWorkflow_true() {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
-    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
-    assertTrue(true, newTask.changeStatus());
-    assertEquals(0, Task.all(1).size());
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    System.out.println(Status.getStatusName(newTask.getStatus()));
+    assertTrue(newTask.changeStatus());
+    assertEquals(Status.getId("In Progress"), newTask.getStatus());
+  }
+
+  @Test
+  public void status_TaskCannotBeDoneWithUnresolvedBugs() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    assertTrue(newTask.changeStatus());
+    assertEquals(Status.getId("In Progress"), newTask.getStatus());
+  }
+
+  @Test
+  public void task_GetAllAssignTask() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task epicTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Epic"), newUser.getId());
+    Task taskTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Task"), newUser.getId());
+    Task taskTask = new Task("Some title", newUser.getId(), "small description", TypeTask.getId("Story"), newUser.getId());
+    assertEquals(2, epicTask.allAssigned().size());
+    assertEquals(taskTask, epicTask.allAssigned(TypeTask.getId("Task")));
   }
 
 }
