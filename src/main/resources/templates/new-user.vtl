@@ -1,0 +1,18 @@
+<h1>Create a PM-AM Account</h1>
+<br>
+<form class="newUserLabel" action="/new-user" method="post">
+  <div class="form-group">
+    <p class="newUserLabel">Project Role</p>
+    <select name="role-selection" id="role-selection">
+      <option value="PM">Project Manager</option>
+      <option value="Developer">Developer</option>
+    </select>
+    <p class="newUserLabel">Name</p>
+    <input type="text" class="form-control" name="user-name" id="user-name" placeholder="e.g., Lando Calrissian" required>
+    <p class="newUserLabel">Email</p>
+    <input type="email" class="form-control" name="user-email" id="user-email" placeholder="e.g., calrissian@cloud.ci" required>
+    <br>
+    <button type="submit" class="btn btn-success" name="add-user">Create New Account</button>
+    </span>
+  </div>
+</form>
