@@ -29,7 +29,9 @@ public class MessageTest {
 
   @Test
   public void message_updateWorksProperly() {
-    Message message = new Message("Title", 1, 1);
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
+    Message message = new Message("Title", newUser.getId(), newTask.getId());
     message.update("Joe", 7);
     assertEquals(message.getMessage(), "Joe");
     assertEquals(Message.find(message.getId()).getMessage(), "Joe");
@@ -49,5 +51,16 @@ public class MessageTest {
     Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
     message.assignTask(newTask);
     assertEquals(newTask.getMessages().size(), 1);
+  }
+
+  @Test
+  public void message_updateMakesNewHistory() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
+    Message message = new Message("Title", newUser.getId(), newTask.getId());
+    message.update("Joe", 7);
+    assertEquals(message.getMessage(), "Joe");
+    assertEquals(Message.find(message.getId()).getMessage(), "Joe");
+    assertEquals(History.all(message.getTaskId()).get(0).getChangeType(), "Update Message");
   }
 }
