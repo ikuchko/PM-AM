@@ -1,1 +1,12 @@
-<h1 class="center">Epics:</h1>
+<h1 class="center">Epics</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      #foreach ($epic in $epics)
+        <li>$epic.getTitle() - $epic.getStatus()</li>
+        <p>$epic.getDateCreated()</p>
+        <p>$epic.getDescription()</p>
+      #end
+    </div>
+  </div>
+</div>

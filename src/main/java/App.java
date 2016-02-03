@@ -30,13 +30,16 @@ public class App {
       return null;
     });
 
-    get("/pm/:id", (request, response) -> {
+    get("/pm/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      User user = User.find(Integer.parseInt(request.queryParams("user-selection")));
+      User user = User.find(Integer.parseInt(request.queryParams("user")));
+      List epics = Task.allByCreator(2, user.getId());
+      model.put("epics", epics);
       model.put("user", user);
       model.put("template", "templates/pm-main.vtl");
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
+
 
   }
 }
