@@ -88,7 +88,6 @@ public class Task {
         .executeUpdate()
         .getKey();
     }
-    // History new History(this.getId(), "Create new task", Status.get)
   }
 
   public static Task find(int id) {
@@ -122,15 +121,15 @@ public class Task {
         this.mDescription = description;
     }
   }
-
+// public History(int taskId, String changeType, String previousCondition, String currentCondition)
   public void updateStatus(int statusId) {
-    this.mStatus = statusId;
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("statusId", statusId)
         .addParameter("id", this.mId)
         .executeUpdate();
+        History newHistory = new History(this.getId(), "Update Status", Status.getStatusName(mStatus), Status.getStatusName(statusId));
         this.mStatus = statusId;
     }
   }
@@ -144,6 +143,7 @@ public class Task {
         .executeUpdate();
         this.mImplementorId = implementorId;
     }
+    // History(this.getId(), "Change implementor", this.getStatus., String currentCondition)
   }
 
   public void delete() {

@@ -56,4 +56,14 @@ public class TaskTest {
     assertEquals(0, Task.all(1).size());
   }
 
+  @Test
+  public void task_statusGetNameReturnsStatusName() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
+    assertEquals(Status.getStatusName(newTask.getStatus()), "To Do");
+    newTask.updateStatus(2);
+    System.out.println(History.all(newTask.getId()));
+    assertEquals(Status.getStatusName(newTask.getStatus()), "In Progress");
+  }
+
 }
