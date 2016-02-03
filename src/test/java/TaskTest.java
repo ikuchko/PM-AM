@@ -56,4 +56,12 @@ public class TaskTest {
     assertEquals(0, Task.all(1).size());
   }
 
+  @Test
+  public void status_changedByWorkflow_true() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
+    assertTrue(true, newTask.changeStatus());
+    assertEquals(0, Task.all(1).size());
+  }
+
 }

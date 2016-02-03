@@ -166,4 +166,8 @@ public class Task {
     }
   }
 
+  public boolean changeStatus() {
+    boolean isChanged = false;
+  }
+
 }
