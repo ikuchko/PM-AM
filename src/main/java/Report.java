@@ -10,6 +10,7 @@ public class Report {
   private String mStartDate;
   private String mFinishDate;
   private String mDuration;
+  private String mFormattedDuration;
 
 
   public Report(int taskId) {
@@ -56,4 +57,15 @@ public class Report {
     }
   }
 
+  public static String formattedDuration(String duration) {
+    String ymdh = "0 years 0 mons 0 days 0 hours";
+    String ymd = "0 years 0 mons 0 days";
+    String ym = "0 years 0 mons";
+    String y="0 years";
+    if (duration.contains(ymdh)) {
+      return duration.replace("0 years 0 mons 0 days 0 hours", "");
+    }
+    return duration;
   }
+
+}
