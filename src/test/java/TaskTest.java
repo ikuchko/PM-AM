@@ -61,7 +61,9 @@ public class TaskTest {
     User newUser = new User("PM", "Nathan", "nathan@pmam.com");
     Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
     assertEquals(Status.getStatusName(newTask.getStatus()), "To Do");
+
     newTask.changeStatus();
+    assertEquals(History.all(newTask.getId()).get(0).getPreviousCondition(), "To Do");
     assertEquals(Status.getStatusName(newTask.getStatus()), "In Progress");
   }
 
@@ -116,4 +118,55 @@ public class TaskTest {
     assertEquals(1, epicTask.allAssigned(TypeTask.getId("Task")).size());
   }
 
+  @Test
+  public void task_updateTitleMakesNewHistory() {
+    User newUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task newTask = new Task("Some title", newUser.getId(), "small description", 1, newUser.getId());
+    assertEquals(Status.getStatusName(newTask.getStatus()), "To Do");
+    newTask.update("Different title", "bigger description");
+    assertEquals(History.all(newTask.getId()).get(0).getChangeType(), "Update Title and Description");
+  }
+
+  @Test
+  public void task_updateImplementorMakesNewHistory() {
+    User firstUser = new User("PM", "Nathan", "nathan@pmam.com");
+    User secondUser = new User("Developer", "Chris", "nathan@pmam.com");
+    Task newTask = new Task("Some title", firstUser.getId(), "small description", 1, secondUser.getId());
+    assertEquals(Status.getStatusName(newTask.getStatus()), "To Do");
+    newTask.updateImplementor(secondUser.getId());
+    assertEquals(History.all(newTask.getId()).get(0).getChangeType(), "Update Implementor");
+  }
+
+  @Test
+  public void task_FindAllEpicsByCreator() {
+    User firstUser = new User("PM", "Nathan", "nathan@pmam.com");
+    User secondUser = new User("PM", "Chris", "nathan@pmam.com");
+    Task firstTask = new Task("Some title", firstUser.getId(), "small description", 1, secondUser.getId());
+    Task secondTask = new Task("Some title", firstUser.getId(), "small description", 1, secondUser.getId());
+    Task thirdTask = new Task("Some title", secondUser.getId(), "small description", 1, secondUser.getId());
+    assertEquals(Task.allByCreator(1, firstUser.getId()).size(), 2);
+  }
+
+  @Test
+  public void task_FindAllEpicsByImplementor() {
+    User firstUser = new User("PM", "Nathan", "nathan@pmam.com");
+    User secondUser = new User("PM", "Chris", "nathan@pmam.com");
+    Task firstTask = new Task("Some title", firstUser.getId(), "small description", 1, secondUser.getId());
+    Task secondTask = new Task("Some title", firstUser.getId(), "small description", 1, secondUser.getId());
+    Task thirdTask = new Task("Some title", secondUser.getId(), "small description", 1, firstUser.getId());
+    assertEquals(Task.allByCreator(1, firstUser.getId()).size(), 2);
+  }
+
+  @Test
+  public void task_FindAllEpicsByStatus() {
+    User firstUser = new User("PM", "Nathan", "nathan@pmam.com");
+    Task firstTask = new Task("Some title", firstUser.getId(), "small description", 1, firstUser.getId());
+    Task secondTask = new Task("Some title", firstUser.getId(), "small description", 1, firstUser.getId());
+    Task thirdTask = new Task("Some title", firstUser.getId(), "small description", 1, firstUser.getId());
+    Task fourthTask = new Task("Some title", firstUser.getId(), "small description", 1, firstUser.getId());
+    firstTask.changeStatus();
+    secondTask.changeStatus();
+    thirdTask.changeStatus();
+    assertEquals(Task.allByStatus(1, 2).size(), 3);
+  }
 }

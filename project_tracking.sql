@@ -480,6 +480,7 @@ SELECT pg_catalog.setval('status_id_seq', 4, true);
 
 COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, status_id, date_created) FROM stdin;
 2	ads	1	ttttt	1	1	1	2016-02-03 08:23:06
+3	sadasdadsad	\N	\N	\N	\N	\N	2016-02-03 11:15:16
 \.
 
 
@@ -487,7 +488,7 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 2, true);
+SELECT pg_catalog.setval('tasks_id_seq', 3, true);
 
 
 --
