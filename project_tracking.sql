@@ -39,7 +39,7 @@ CREATE TABLE histories (
     change_type character varying,
     previous_condition character varying(30),
     current_condition character varying(30),
-    created_date timestamp without time zone DEFAULT now()
+    created_date timestamp(0) without time zone DEFAULT now()
 );
 
 
@@ -179,8 +179,8 @@ CREATE TABLE tasks (
     description text,
     type_task_id integer,
     developer_id integer,
-    date_created timestamp without time zone DEFAULT now(),
-    status_id integer
+    status_id integer,
+    date_created timestamp(0) without time zone DEFAULT now()
 );
 
 
@@ -411,6 +411,8 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY histories (id, task_id, change_type, previous_condition, current_condition, created_date) FROM stdin;
+1	2	change status	To Do	Done	2016-02-03 08:08:14
+2	1	\N	\N	\N	2016-02-03 08:08:37
 \.
 
 
@@ -418,7 +420,7 @@ COPY histories (id, task_id, change_type, previous_condition, current_condition,
 -- Name: histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('histories_id_seq', 1, false);
+SELECT pg_catalog.setval('histories_id_seq', 2, true);
 
 
 --
@@ -476,7 +478,8 @@ SELECT pg_catalog.setval('status_id_seq', 4, true);
 -- Data for Name: tasks; Type: TABLE DATA; Schema: public; Owner: Guest
 --
 
-COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, date_created, status_id) FROM stdin;
+COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, status_id, date_created) FROM stdin;
+2	ads	1	ttttt	1	1	1	2016-02-03 08:23:06
 \.
 
 
@@ -484,7 +487,7 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 1, true);
+SELECT pg_catalog.setval('tasks_id_seq', 2, true);
 
 
 --
