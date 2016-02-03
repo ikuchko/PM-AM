@@ -91,17 +91,17 @@ public class Task {
   }
 
   public static Task find(int id) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId FROM tasks WHERE id = :id";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
-      Task story = con.createQuery(sql)
+      Task task = con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetchFirst(Task.class);
-    return story;
+    return task;
     }
   }
 
   public static List<Task> all(int task_type) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId FROM  tasks WHERE type_task_id = :type_id";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM  tasks WHERE type_task_id = :type_id";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("type_id", task_type)
