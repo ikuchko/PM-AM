@@ -109,22 +109,32 @@ public class Task {
     }
   }
 
-  public static List<Task> allAssigned() {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r WHERE tasks.type_task_id = :type_id AND t_r.main_task_id = :id";
+  public List<Task> allAssigned() {
+    String sql = "SELECT ta.id AS mId, ta.title AS mTitle, ta.creator_user_id AS mCreatorId, ta.status_id AS mStatus, ta.description AS mDescription, ta.type_task_id AS mTypeId, ta.developer_id AS mImplementorId, ta.date_created AS mDateCreated FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
-        .addParameter("type_id", task_type)
         .addParameter("id", this.mId)
         .executeAndFetch(Task.class);
     }
   }
 
-  public static List<Task> allAssigned(int task_type) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r WHERE type_task_id = :type_id AND t_r.main_task_id = :id";
+  public List<Task> allAssigned(int task_type) {
+    String sql = "SELECT ta.id AS mId, ta.title AS mTitle, ta.creator_user_id AS mCreatorId, ta.status_id AS mStatus, ta.description AS mDescription, ta.type_task_id AS mTypeId, ta.developer_id AS mImplementorId, ta.date_created AS mDateCreated FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id AND ta.type_task_id = :task_type";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
-        .addParameter("type_id", task_type)
+        .addParameter("task_type", task_type)
         .addParameter("id", this.mId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+  public List<Task> allAssigned(int task_type, int status) {
+    String sql = "SELECT ta.id AS mId, ta.title AS mTitle, ta.creator_user_id AS mCreatorId, ta.status_id AS mStatus, ta.description AS mDescription, ta.type_task_id AS mTypeId, ta.developer_id AS mImplementorId, ta.date_created AS mDateCreated FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id AND ta.type_task_id = :task_type AND ta.status_id = :status";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("task_type", task_type)
+        .addParameter("id", this.mId)
+        .addParameter("status", status)
         .executeAndFetch(Task.class);
     }
   }
@@ -176,6 +186,16 @@ public class Task {
     }
   }
 
+  public void assign(Task task) {
+    String sql = "INSERT INTO tasks_relationships (main_task_id, subtask_id) VALUES (:mainId, :subTaskId)";
+    try(Connection con = DB.sql2o.open()) {
+      con.createQuery(sql)
+        .addParameter("mainId", this.mId)
+        .addParameter("subTaskId", task.getId())
+        .executeUpdate();
+    }
+  }
+
   public List<Message> getMessages() {
     String sql = "SELECT messages.id AS mId, messages.description AS mMessage FROM tasks " +
                  "INNER JOIN tasks_messages AS t_m ON tasks.id = t_m.task_id " +
@@ -187,18 +207,16 @@ public class Task {
     }
   }
 
-
-
   public boolean changeStatus() {
     boolean isChanged = false;
-    if (Status.getStatusName(this.getStatus()).equals("To Do")) {
+    if (((TypeTask.getTypeTaskName(getTypeTask()).equals("Task")) &&
+       (allAssigned(TypeTask.getId("Bug"), Status.getId("To Do")).size() == 0) &&
+       (allAssigned(TypeTask.getId("Bug"), Status.getId("In Progress")).size() == 0) &&
+       (allAssigned(TypeTask.getId("Bug"), Status.getId("Test")).size() == 0)) ||
+       (!(TypeTask.getTypeTaskName(getTypeTask()).equals("Task")))) {
       updateStatus(Status.getNextStatus(this));
       isChanged = true;
     }
-    if (TypeTask.getTypeTaskName(this.getTypeTask()).equals("Task") && Task.) {
-
-    }
-
     return isChanged;
   }
 
