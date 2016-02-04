@@ -51,7 +51,7 @@ public class App {
     get("/task/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/task.vtl");
-      Task task = Task.find(4);
+      Task task = Task.find(Integer.parseInt(request.params("id")));
       model.put("task", task);
       model.put("status", Status.class);
       model.put("taskType", TypeTask.class);
@@ -68,7 +68,7 @@ public class App {
     get("/task/history/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/task.vtl");
-      Task task = Task.find(4);
+      Task task = Task.find(Integer.parseInt(request.params("id")));
       model.put("task", task);
       model.put("status", Status.class);
       model.put("taskType", TypeTask.class);
