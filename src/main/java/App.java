@@ -93,9 +93,18 @@ public class App {
       Task epic = Task.find(Integer.parseInt(request.params("id")));
       User user = request.session().attribute("user");
       epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
-
       epic.updateImplementor(epic.getId());
+      model.put("user", user);
+      response.redirect("/pm/?user=" + user.getId());
+      return null;
+    });
 
+    post("/pm/update-epic/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Task epic = Task.find(Integer.parseInt(request.params("id")));
+      User user = request.session().attribute("user");
+      epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
+      epic.updateImplementor(epic.getId());
       model.put("user", user);
       response.redirect("/pm/?user=" + user.getId());
       return null;
@@ -121,5 +130,7 @@ public class App {
       response.redirect("/dev/main?user=" + "user.getId()");
       return null;
     });
+
+    
   }
 }
