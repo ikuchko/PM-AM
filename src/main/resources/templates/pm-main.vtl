@@ -1,34 +1,21 @@
-<h1 class="center">Epics</h1>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8">
-      #if ($epics.size() > 0)
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th>Status</th>
-              <th>Duration</th>
-            </tr>
-          </thead>
-          <tbody>
-            #foreach ($epic in $epics)
-              <tr>
-                <td><a href="/pm/create-epic/$epic.getId()">$epic.getTitle()</a></td>
-                <td>$epic.getDescription()</td>
-                <td>$report.findDuration($epic.getId())</td>
-              </tr>
-            #end
-          </tbody>
-        </table>
+<div class="col-md-8">
+  <h1 class="center">Epics</h1>
+  <br>
+  #if ($epics.size() > 0)
+    <div class="list-group">
+      #foreach ($epic in $epics)
+        <a href="/pm/update-epic/$epic.getId()" class="list-group-item">
+          <h4 class="list-group-item-heading">$epic.getTitle()</h4>
+          <p class="list-group-item-text">$epic.getDescription()</p>
+        </a>
       #end
     </div>
-  </div>
+  #end
 </div>
+
 <div class="col-md-4">
   <div class="jumbotron mini-jumbotron">
-    #if ($createEpic)
+
       <form class="form-horizontal" action="/pm/create-epic" method="post">
         <div class="bs-callout bs-callout-info">
           <h4>Add New Project</h4>
@@ -36,9 +23,8 @@
           <input type="text" name="add-title" class="form-control" placeholder="Re-Do Google">
           <p>Description</p>
           <input type="text" name="add-description" class="form-control" placeholder="Make a google.">
+          <button type="submit" class="btn btn-success">Add!</button>
       </form>
-    #end
+
   </div>
-
-
 </div>
