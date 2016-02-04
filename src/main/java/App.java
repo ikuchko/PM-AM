@@ -45,8 +45,9 @@ public class App {
     get("/pm/create-epic/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("user", request.session().attribute("user"));
-      model.put("createEpic", Task.class);
-      response.redirect("/pm/");
+
+      model.put("createEpic", true);
+      response.redirect("/pm/" + request.session().attribute("user").getId());
       return null;
     });
   }
