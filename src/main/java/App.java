@@ -47,5 +47,17 @@ public class App {
       response.redirect("/");
       return null;
     });
+
+    get("/task/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/task.vtl");
+      Task task = Task.find();
+      model.put("task", task);
+      model.put("status", Status.class);
+      model.put("taskType", TypeTask.class);
+      model.put("user", User.find(task.getCreatorId()));
+      model.put("currentUser", request.session().attribute("user"));
+      return new ModelAndView(model, layout);
+      }, new VelocityTemplateEngine());
   }
 }
