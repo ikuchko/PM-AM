@@ -35,15 +35,16 @@ public class App {
       User user = User.find(Integer.parseInt(request.queryParams("user")));
       request.session().attribute("user", user);
       List epics = Task.allByCreator(2, user.getId());
+      model.put("report", Report.class);
       model.put("epics", epics);
       model.put("user", user);
       model.put("template", "templates/pm-main.vtl");
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
 
-    get("/pm/create-epic", (request, response) -> {
+    get("/pm/create-epic/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-
+      model.put("user", request.session().attribute("user"));
       model.put("createEpic", Task.class);
       response.redirect("/pm/");
       return null;

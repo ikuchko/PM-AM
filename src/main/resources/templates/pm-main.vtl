@@ -2,10 +2,26 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-md-8">
-      #foreach ($epic in $epics)
-        <a href="/pm/create-epic">$epic.getTitle() - $epic.getStatus()</a>
-        <p>$epic.getDateCreated()</p>
-        <p>$epic.getDescription()</p>
+      #if ($epics.size() > 0)
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Description</th>
+              <th>Status</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody>
+            #foreach ($epic in $epics)
+              <tr>
+                <td><a href="/pm/create-epic/$epic.getId()">$epic.getTitle()</a></td>
+                <td>$epic.getDescription()</td>
+                <td>$report.findDuration($epic.getId())</td>
+              </tr>
+            #end
+          </tbody>
+        </table>
       #end
     </div>
   </div>
