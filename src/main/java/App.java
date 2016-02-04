@@ -44,8 +44,9 @@ public class App {
 
 
 
-      
-      model.put("tasks", Task.allStoriesForEpic(3, user.getId()))
+
+      model.put("user", user);
+      model.put("tasks", Task.allRelatedTasksByUser(3, user.getId()));
       model.put("template", "templates/dev-home.vtl");
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
