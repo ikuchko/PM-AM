@@ -53,7 +53,7 @@ public class App {
       User user = User.find(Integer.parseInt(request.queryParams("user")));
       request.session().attribute("user", user);
       if (user.getRoleId() == Role.getId("PM")) {
-        response.redirect("/");
+        response.redirect("/pm/");
       } else {
         response.redirect("/dev/main");
       }
@@ -69,15 +69,11 @@ public class App {
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
 
-    post("/assign-inprogress", (request, response) -> {
+    post("/assign-inprogress/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      User user = User.find(Integer.parseInt(request.queryParams("user")));
-      request.session().attribute("user", user);
-      if (user.getRoleId() == Role.getId("PM")) {
-        response.redirect("/");
-      } else {
-        response.redirect("/dev/main");
-      }
+      Task task = Task.find(Integer.parseInt(request.queryParams(":id")));
+      task.changeStatus();
+      response.redirect("/dev/main");
       return null;
     });
   }

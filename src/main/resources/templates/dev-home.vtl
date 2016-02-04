@@ -8,9 +8,7 @@
   <div class="col-md-4">
      <h2>$story.getTitle()</h2>
     #foreach ($task in $story.getAllSubTasks(1))
-    <form action="/assign-inprogress" method="post" class="form-inline" role="form">
-      <div class="form-group">
-      <h4>$task.getTitle()</h4></div><button type="submit" class="btn btn-success btn-block small">+</button></form>
+      <div id="task"><h4>$task.getTitle()</h4><a href="/assign-inprogress/$task.getId()" class="btn btn-success small"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a></div>
 
     #end
   </div>
