@@ -48,16 +48,37 @@ public class App {
       return null;
     });
 
+    get("/transfer", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = User.find(Integer.parseInt(request.queryParams("user")));
+      request.session().attribute("user", user);
+      if (user.getRoleId() == Role.getId("PM")) {
+        response.redirect("/");
+      } else {
+        response.redirect("/dev/main");
+      }
+      return null;
+    });
 
     get("/dev/main", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      User user = User.find(Integer.parseInt(request.params("id")));
-
-
-      model.put("currentUser", request.session().attribute("user"));
-      model.put("tasks", Task.allRelatedTasksByUser(3, user.getId()));
+      model.put("epics", Task.all(2));
+      model.put("tasks", Task.class);
+      model.put("user", request.session().attribute("user"));
       model.put("template", "templates/dev-home.vtl");
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
+
+    post("/assign-inprogress", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = User.find(Integer.parseInt(request.queryParams("user")));
+      request.session().attribute("user", user);
+      if (user.getRoleId() == Role.getId("PM")) {
+        response.redirect("/");
+      } else {
+        response.redirect("/dev/main");
+      }
+      return null;
+    });
   }
 }

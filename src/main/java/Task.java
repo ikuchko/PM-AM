@@ -120,7 +120,7 @@ public class Task {
   }
 
   public static List<Task> allByCreator(int task_type, int creatorId) {
-    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM  tasks WHERE type_task_id = :type_id AND creator_user_id = :creatorId";
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks WHERE type_task_id = :type_id AND creator_user_id = :creatorId";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("type_id", task_type)
@@ -262,23 +262,23 @@ public class Task {
     return isChanged;
   }
 
-  public String getMainListName(int subId, int type) {
-    String sql = "SELECT title as mTitle FROM tasks WHERE type_task_id = :type INNER JOIN tasks_relationships AS t_r WHERE subtask_id = :subId";
+  public List<Task> getAllSubTasks() {
+    String sql = "SELECT tasks.id AS mId, tasks.title AS mTitle, tasks.creator_user_id AS mCreatorId, tasks.status_id AS mStatus, tasks.description AS mDescription, tasks.type_task_id AS mTypeId, tasks.developer_id AS mImplementorId, tasks.date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r ON main_task_id = :mainId WHERE tasks.id = t_r.subtask_id";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
-        .addParameter("subId", subId)
-        .addParameter("type", type)
-        .executeScalar(String.class);
+        .addParameter("mainId", this.mId)
+        .executeAndFetch(Task.class);
     }
   }
 
-  // public Integer getMainListId(int subId) {
-  //   String sql = "SELECT id as mMainListId FROM tasks INNER JOIN tasks_relationships AS t_r WHERE t_r.subtask_id = :subId";
-  //   try(Connection con = DB.sql2o.open()) {
-  //     return con.createQuery(sql)
-  //       .addParameter("subId", subId)
-  //       .executeScalar(Integer.class);
-  //   }
-  // }
+  public List<Task> getAllSubTasks(int status) {
+    String sql = "SELECT tasks.id AS mId, tasks.title AS mTitle, tasks.creator_user_id AS mCreatorId, tasks.status_id AS mStatus, tasks.description AS mDescription, tasks.type_task_id AS mTypeId, tasks.developer_id AS mImplementorId, tasks.date_created AS mDateCreated FROM tasks INNER JOIN tasks_relationships AS t_r ON main_task_id = :mainId WHERE tasks.id = t_r.subtask_id AND tasks.status_id = :status";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("mainId", this.mId)
+        .addParameter("status", status)
+        .executeAndFetch(Task.class);
+    }
+  }
 
 }
