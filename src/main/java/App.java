@@ -38,5 +38,16 @@ public class App {
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
 
+    get("dev/main/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = User.find(Integer.parseInt(request.params("id")));
+
+
+
+      
+      model.put("tasks", Task.allStoriesForEpic(3, user.getId()))
+      model.put("template", "templates/dev-home.vtl");
+      return new ModelAndView(model, layout);
+      }, new VelocityTemplateEngine());
   }
 }

@@ -139,6 +139,17 @@ public class Task {
     }
   }
 
+  public static List<Task> allRelatedTasksByUser(int mainId, int userId) {
+    String sql = "SELECT id AS mId, title AS mTitle, creator_user_id AS mCreatorId, status_id AS mStatus, description AS mDescription, type_task_id AS mTypeId, developer_id AS mImplementorId, date_created AS mDateCreated FROM tasks  WHERE developer_id = :userId INNER JOIN tasks_relationships WHERE tasks_relationships.main_task_id = :mainId";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("mainId", mainId)
+        .addParameter("userId", userId)
+        .executeAndFetch(Task.class);
+    }
+  }
+
+
   public void update(String title, String description) {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
