@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-md-8">
       #foreach ($epic in $epics)
-        <li>$epic.getTitle() - $epic.getStatus()</li>
+        <a href="/pm/create-epic">$epic.getTitle() - $epic.getStatus()</a>
         <p>$epic.getDateCreated()</p>
         <p>$epic.getDescription()</p>
       #end
@@ -15,16 +15,14 @@
     #if ($createEpic)
       <form class="form-horizontal" action="/pm/create-epic" method="post">
         <div class="bs-callout bs-callout-info">
-
           <h4>Add New Project</h4>
           <p>Title</p>
           <input type="text" name="add-title" class="form-control" placeholder="Re-Do Google">
-
           <p>Description</p>
           <input type="text" name="add-description" class="form-control" placeholder="Make a google.">
       </form>
     #end
   </div>
-  
+
 
 </div>
