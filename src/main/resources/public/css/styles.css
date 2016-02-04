@@ -74,7 +74,17 @@ h3, h4, p {
   font-weight: 300;
 }
 
-#task {
-  display:inline-block;
+.panel-heading {
+  padding: 10px 0px 0px 0px !important;
+}
+
+.message {
+  font-size: 15px !important;
+}
+.message-box {
+  padding: 10px 20px;
+}
+
+.task .btn {
   display:inline;
 }

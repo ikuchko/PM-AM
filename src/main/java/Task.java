@@ -239,9 +239,9 @@ public class Task {
   }
 
   public List<Message> getMessages() {
-    String sql = "SELECT messages.id AS mId, messages.description AS mMessage FROM tasks " +
+    String sql = "SELECT messages.id AS mId, messages.description AS mMessage, messages.user_id AS mUserId, messages.task_id AS mTaskId, messages.date_created AS mDateCreated FROM tasks " +
                  "INNER JOIN tasks_messages AS t_m ON tasks.id = t_m.task_id " +
-                 "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id";
+                 "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id ORDER BY messages.date_created DESC";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("id", this.mId)
@@ -282,7 +282,7 @@ public class Task {
   }
 
   public void assignTask(int userId){
-    String sql = "UPDATE tasks SET developer_id=:userId WHERE id=:id";
+    String sql = "UPDATE tasks SET developer_id = :userId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("id", this.mId)
