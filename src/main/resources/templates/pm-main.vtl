@@ -1,30 +1,50 @@
 <h1 class="center">Epics</h1>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-md-8">
-      #foreach ($epic in $epics)
-        <li>$epic.getTitle() - $epic.getStatus()</li>
-        <p>$epic.getDateCreated()</p>
-        <p>$epic.getDescription()</p>
+<div class="col-md-8">
+  <div class="jumbotron">
+    <br>
+    <br>
+    #if ($epics.size() > 0)
+      #if ($updateEpicActive)
+        <form class="form-horizontal" action="/pm/update-epic/$epic.getId()" method="post">
+          <div class="form-group">
+            <input type="text" class="form-control small" name="updateTitle" id="updateTitle" value="$epic.getTitle()">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control small" name="updateDescription" id="updateDescription" value="$epic.getDescription()">
+          </div>
+          <div class="form-group">
+            <button type="submit" class="btn btn-default btn-block btn-update small" name="button">Update</button>
+          </div>
+        </form>
+      #else
+        <div class="list-group">
+          #foreach ($epic in $epics)
+            <a href="/pm/update-epic/$epic.getId()" class="list-group-item">
+              <h4 class="list-group-item-heading">$epic.getTitle()</h4>
+              <p class="list-group-item-text">$epic.getDescription()</p>
+            </a>
+          #end
+        </div>
       #end
-    </div>
+    #end
+    <br>
+    <a href="/pm/create-epic/" type="button" class="btn btn-info center">Create Epic</a>
   </div>
 </div>
-<a href="/pm/create-epic" type="button" class="btn btn-info center">Create New Epic</a>
 <div class="col-md-4">
   <div class="jumbotron mini-jumbotron">
-    #if ($createEpic)
-      <form class="form-horizontal" action="/pm/create-epic" method="post">
+    #if ($createEpicActive)
+      <form class="form-horizontal" action="/pm/create-epic/:id" method="post">
         <div class="bs-callout bs-callout-info">
-
-          <h4>Add New Project</h4>
+          <h2>New Project</h4>
           <p>Title</p>
           <input type="text" name="add-title" class="form-control" placeholder="Re-Do Google">
-
           <p>Description</p>
           <input type="text" name="add-description" class="form-control" placeholder="Make a google.">
+          <br>
+          <button type="submit" class="btn btn-success">Add!</button>
+        </div>
       </form>
     #end
   </div>
-
 </div>

@@ -75,7 +75,7 @@ CREATE TABLE messages (
     description text,
     user_id integer,
     task_id integer,
-    date_created timestamp without time zone DEFAULT now()
+    date_created timestamp(0) without time zone DEFAULT now()
 );
 
 
@@ -411,8 +411,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY histories (id, task_id, change_type, previous_condition, current_condition, created_date) FROM stdin;
-1	2	change status	To Do	Done	2016-02-03 08:08:14
-2	1	\N	\N	\N	2016-02-03 08:08:37
 \.
 
 
@@ -428,6 +426,8 @@ SELECT pg_catalog.setval('histories_id_seq', 2, true);
 --
 
 COPY messages (id, description, user_id, task_id, date_created) FROM stdin;
+1	New message	1	2	2016-02-04 11:59:02
+2	One more message	1	2	2016-02-04 11:59:02
 \.
 
 
@@ -435,7 +435,7 @@ COPY messages (id, description, user_id, task_id, date_created) FROM stdin;
 -- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('messages_id_seq', 1, false);
+SELECT pg_catalog.setval('messages_id_seq', 2, true);
 
 
 --
@@ -479,8 +479,10 @@ SELECT pg_catalog.setval('status_id_seq', 4, true);
 --
 
 COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, status_id, date_created) FROM stdin;
-2	ads	1	ttttt	1	1	1	2016-02-03 08:23:06
-3	sadasdadsad	\N	\N	\N	\N	\N	2016-02-03 11:15:16
+3	Story 1	1	some description	1	1	1	2016-02-03 11:15:16
+2	Epic 1	1	People come to Epicodus with a wide range of experience in and natural aptitude for programming. But the effect of those differences on your pace of learning will pale in comparison to the effect of developing a "growth mindset". Read about the growth mindset and how to develop it. Our teachers at Epicodus will help you develop a growth mindset, and we want you to help your peers develop a growth mindset as well.	2	1	1	2016-02-03 08:23:06
+5	Story 2	1	Some brief description	1	1	1	2016-02-04 11:02:44
+6	Task 1	1	This is task	3	1	1	2016-02-04 11:03:03
 \.
 
 
@@ -488,7 +490,7 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 3, true);
+SELECT pg_catalog.setval('tasks_id_seq', 6, true);
 
 
 --
@@ -496,6 +498,8 @@ SELECT pg_catalog.setval('tasks_id_seq', 3, true);
 --
 
 COPY tasks_messages (id, task_id, message_id) FROM stdin;
+1	2	1
+2	2	2
 \.
 
 
@@ -503,7 +507,7 @@ COPY tasks_messages (id, task_id, message_id) FROM stdin;
 -- Name: tasks_messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
+SELECT pg_catalog.setval('tasks_messages_id_seq', 3, true);
 
 
 --
@@ -511,6 +515,10 @@ SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
 --
 
 COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
+1	2	3
+2	2	4
+3	2	5
+4	3	6
 \.
 
 
@@ -518,7 +526,7 @@ COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
 -- Name: tasks_relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_relationships_id_seq', 1, false);
+SELECT pg_catalog.setval('tasks_relationships_id_seq', 4, true);
 
 
 --
@@ -545,6 +553,7 @@ SELECT pg_catalog.setval('type_task_id_seq', 4, true);
 --
 
 COPY users (id, name, email, role_id) FROM stdin;
+1	John Snow	night@watch.com	1
 \.
 
 
@@ -552,7 +561,7 @@ COPY users (id, name, email, role_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('users_id_seq', 1, false);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 
 --
