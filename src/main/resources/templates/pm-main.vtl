@@ -1,1 +1,30 @@
-<h1 class="center">Epics:</h1>
+<h1 class="center">Epics</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-8">
+      #foreach ($epic in $epics)
+        <li>$epic.getTitle() - $epic.getStatus()</li>
+        <p>$epic.getDateCreated()</p>
+        <p>$epic.getDescription()</p>
+      #end
+    </div>
+  </div>
+</div>
+<a href="/pm/create-epic" type="button" class="btn btn-info center">Create New Epic</a>
+<div class="col-md-4">
+  <div class="jumbotron mini-jumbotron">
+    #if ($createEpic)
+      <form class="form-horizontal" action="/pm/create-epic" method="post">
+        <div class="bs-callout bs-callout-info">
+
+          <h4>Add New Project</h4>
+          <p>Title</p>
+          <input type="text" name="add-title" class="form-control" placeholder="Re-Do Google">
+
+          <p>Description</p>
+          <input type="text" name="add-description" class="form-control" placeholder="Make a google.">
+      </form>
+    #end
+  </div>
+
+</div>

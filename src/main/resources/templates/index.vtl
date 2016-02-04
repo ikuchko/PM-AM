@@ -3,9 +3,9 @@
 <br>
 <p>Log in to PM-AM</p>
 <br>
-<form class="form-inline" action="/pm/:id" method="get">
+<form class="form-inline" action="/pm/" method="get">
   <div class="form-group">
-    <select class="form-control" name="user-selection" id="user-selection">
+    <select class="form-control" name="user" id="user">
       <option selected="true" disabled="true">Select User</option>
       #foreach ($user in $users)
         <option value="$user.getId()">$user.getName()</option>

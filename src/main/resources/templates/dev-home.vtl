@@ -1,5 +1,7 @@
 <h1>$user.getName()</h1>
 
+
 #foreach ($task in $tasks)
- <li>$task.getDescription()</li>
+  <h2>$task.getMainListName($task.getId(), 1)</h2>  
+    <li>$task.getDescription()</li>
 #end

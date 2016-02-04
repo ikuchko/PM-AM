@@ -261,4 +261,15 @@ public class Task {
     return isChanged;
   }
 
+  public String getMainListName(int subId, int type) {
+    String sql = "SELECT title as mTitle FROM tasks WHERE type_task_id = :type INNER JOIN tasks_relationships AS t_r WHERE subtask_id = :subId AND main_task_id = mainId"
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("subId", subId)
+        .addParameter("mainId", mainId)
+        .addParameter("type", type)
+        .executeAndFetch(Message.class);
+    }
+  }
+
 }
