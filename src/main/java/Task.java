@@ -282,11 +282,11 @@ public class Task {
   }
 
   public void assignTask(int userId){
-    String sql = "UPDATE tasks SET developer_id=:userId WHERE id=:id";
+    String sql = "UPDATE tasks SET developer_id = :userId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
         .addParameter("id", this.mId)
-        .addParameter("userId", userId())
+        .addParameter("userId", userId)
         .executeUpdate();
     }
   }

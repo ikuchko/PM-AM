@@ -107,7 +107,7 @@ public class App {
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
 
-    post("/assign-inprogress/:id", (request, response) -> {
+    get("/assign-inprogress/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = (request.session().attribute("user"));
       Task task = Task.find(Integer.parseInt(request.params(":id")));
