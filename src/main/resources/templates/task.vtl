@@ -75,9 +75,9 @@
       </div>
       <button type="submit" class="btn btn-success">Create</button>
     </div>
-</div>
+  </div>
 </form>
-
+<hr>
 <br>
 
 #if ($isHistoryTabActive)
@@ -85,24 +85,29 @@
     <li role="presentation" class="active"><a href="#">Messages <span class="badge">$task.getMessages().size()</span></a></li>
     <li role="presentation"><a href="/task/history/$task.getId()">History <span class="badge">$history.all().size()</span></a></li>
   </ul>
+  <br>
   <div class="row">
     <div class="col-md-7">
       #foreach ($message in $task.getMessages())
-        <div class="panel panel-default">
+        <div class="panel panel-warning">
           <div class="panel-heading">
             <dl class="dl-horizontal">
               <dt>User: $user.find($message.getUserId()).getName()</dt>
               <dd>Date: $message.getDateCreated()</dd>
             </dl>
           </div>
-          <blockquote>
-            <p>$message.getMessage()</p>
-          </blockquote>
+          <div class="message-box">
+            <p class="message">$message.getMessage()</p>
+          </div>
         </div>
       #end
     </div>
-    <div class="col-md-7">
-
+    <div class="col-md-5">
+      <form action="/task/newmessage/$task.getId()" method="post" id="newMessageForm">
+        <label for="message">Description</label>
+        <textarea rows="5" cols="50" name="message" id="message" form="newMessageForm" placeholder="Add message..."></textarea>
+        <button type="submit" class="btn btn-success">Add</button>
+      </form>
     </div>
   </div>
 
@@ -111,4 +116,43 @@
     <li role="presentation"><a href="/task/$task.getId()">Messages <span class="badge">$task.getMessages().size()</span></a></li>
     <li role="presentation" class="active"><a href="#">History <span class="badge">$history.all().size()</span></a></li>
   </ul>
+  #foreach ($oneHistory in $history.all($task.getId()))
+    <div class="panel panel-warning">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-2">
+            <h3>$oneHistory.getChangeType()</h3>
+          </div>
+          <div class="col-md-10">
+            <dl class="dl-horizontal">
+              <dt>User: $user.find($message.getUserId()).getName()</dt>
+              <dd>Date: $message.getDateCreated()</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7">
+            <div class="panel panel-warning">
+              <div class="panel-heading">
+                <dl class="dl-horizontal">
+                  <dt>User: $user.find($message.getUserId()).getName()</dt>
+                  <dd>Date: $message.getDateCreated()</dd>
+                </dl>
+              </div>
+              <div class="message-box">
+                <p class="message">$message.getMessage()</p>
+              </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+          <form action="/task/newmessage/$task.getId()" method="post" id="newMessageForm">
+            <label for="message">Description</label>
+            <textarea rows="5" cols="50" name="message" id="message" form="newMessageForm" placeholder="Add message..."></textarea>
+            <button type="submit" class="btn btn-success">Add</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  #end
 #end

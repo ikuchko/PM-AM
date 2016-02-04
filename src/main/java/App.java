@@ -123,7 +123,7 @@ public class App {
 
     post("/task/newsubtask/:id", (request, response) -> {
       Task mainTask = Task.find(Integer.parseInt(request.params("id")));
-      User creator= request.session().attribute("user");
+      User creator = request.session().attribute("user");
       String title = request.queryParams("title");
       String description = request.queryParams("description");
       int implementorId = Integer.parseInt(request.queryParams("user"));
@@ -137,6 +137,15 @@ public class App {
       }
       Task task = new Task(title, creator.getId(), description, typeTask, implementorId);
       mainTask.assign(task);
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
+    post("/task/newmessage/:id", (request, response) -> {
+      User user = request.session().attribute("user");
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      Message newMessage = new Message(request.queryParams("message"), user.getId(), task.getId());
+      newMessage.assignTask(task);
       response.redirect("/task/" + request.params("id"));
       return null;
     });
