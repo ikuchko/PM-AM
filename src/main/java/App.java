@@ -81,5 +81,25 @@ public class App {
       model.put("isHistoryTabActive", false);
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/task/newsubtask/:id", (request, response) -> {
+      Task mainTask = Task.find(Integer.parseInt(request.params("id")));
+      User creator= request.session().attribute("user");
+      String title = request.queryParams("title");
+      String description = request.queryParams("description");
+      int implementorId = Integer.parseInt(request.queryParams("user"));
+      int typeTask;
+      if (TypeTask.getTypeTaskName(mainTask.getTypeTask()).equals("Epic")) {
+        typeTask = TypeTask.getId("Story");
+      } else if (TypeTask.getTypeTaskName(mainTask.getTypeTask()).equals("Story")) {
+        typeTask = TypeTask.getId("Task");
+      } else {
+        typeTask = TypeTask.getId("Bug");
+      }
+      Task task = new Task(title, creator.getId(), description, typeTask, implementorId);
+      mainTask.assign(task);
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
   }
 }

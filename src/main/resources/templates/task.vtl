@@ -1,14 +1,40 @@
 <h2>$task.getTitle()</h2>
-<h4>$task.getDescription()</h4>
 
-<p>Create date: <strong>$task.getDateCreated()</strong></p>
-<p>Author name: <strong>$userCreator.getName()</strong></p>
-<p>Author email: <strong>$userCreator.getEmail()</strong></p>
-<p>Task status: <strong>$status.getStatusName($task.getStatus())</strong></p>
-<p>Implementor: <strong>$userImplementor.getName()</strong></p>
+<div class="row">
+  <div class="col-md-7">
+    <dl class="dl-horizontal">
+      <dt>Description</dt>
+      <dd>$task.getDescription()</dd>
+    </dl>
+  </div>
+  <div class="col-md-5">
+    <dl class="dl-horizontal">
+      <dt>Create date</dt>
+      <dd>
+        $task.getDateCreated()
+      </dd>
+      <dt>Author name:</dt>
+      <dd>
+        $userCreator.getName()
+      </dd>
+      <dt>Author email:</dt>
+      <dd>
+        $userCreator.getEmail()
+      </dd>
+      <dt>Task status:</dt>
+      <dd>
+        $status.getStatusName($task.getStatus())
+      </dd>
+      <dt>Implementor:</dt>
+      <dd>
+        $userImplementor.getName()
+      </dd>
+    </dl>
+  </div>
+</div>
 
 <hr>
-
+<p class="newUserLabel">Subtasks:</p>
 <ul>
   #if ($taskType.getTypeTaskName($task.getTypeTask()) == "Epic")
     #foreach($story in $task.allAssigned())
@@ -26,14 +52,30 @@
     #end
   #end
 </ul>
+<hr>
 
 <br>
-<p class="newUserLabel">Create new story</p>
-<form action="/task/newsubtask/$task.getId()" method="post">
-  <div class="col-md-5">
-    <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
-    
-  </div>
+<p class="newUserLabel">Create new subtask</p>
+<form action="/task/newsubtask/$task.getId()" method="post" id="newTaskForm">
+  <div class="row">
+    <div class="col-md-5">
+      <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
+      <label for="description">Description</label>
+      <textarea rows="5" cols="50" name="description" id="description" form="newTaskForm" placeholder="Add description..."></textarea>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="user">Implementor</label>
+        <select class="form-control" name="user" id="user">
+          <option selected="true" disabled="true">Select User</option>
+          #foreach ($users in $user.all())
+            <option value="$users.getId()">$users.getName()</option>
+          #end
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Create</button>
+    </div>
+</div>
 </form>
 
 <br>
