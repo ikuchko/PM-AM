@@ -80,8 +80,9 @@ public class App {
     post("/pm/update-epic/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("id")));
-      User user = (request.session().attribute("user"));
+      User user = request.session().attribute("user");
       epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
+
       model.put("user", user);
       response.redirect("/pm/?user=" + user.getId());
       return null;
