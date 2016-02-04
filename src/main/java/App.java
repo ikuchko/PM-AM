@@ -39,7 +39,7 @@ public class App {
       model.put("user", user);
       model.put("template", "templates/pm-main.vtl");
       return new ModelAndView(model, layout);
-      }, new VelocityTemplateEngine());
+    }, new VelocityTemplateEngine());
 
     get("/pm/create-epic", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -51,13 +51,35 @@ public class App {
     get("/task/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/task.vtl");
-      Task task = Task.find();
+      Task task = Task.find(4);
       model.put("task", task);
       model.put("status", Status.class);
       model.put("taskType", TypeTask.class);
-      model.put("user", User.find(task.getCreatorId()));
+      model.put("user", User.class);
+      model.put("userCreator", User.find(task.getCreatorId()));
+      model.put("userImplementor", User.find(task.getImplementorId()));
       model.put("currentUser", request.session().attribute("user"));
+      model.put("message", Message.class);
+      model.put("history", History.class);
+      model.put("isHistoryTabActive", true);
       return new ModelAndView(model, layout);
-      }, new VelocityTemplateEngine());
+    }, new VelocityTemplateEngine());
+
+    get("/task/history/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/task.vtl");
+      Task task = Task.find(4);
+      model.put("task", task);
+      model.put("status", Status.class);
+      model.put("taskType", TypeTask.class);
+      model.put("user", User.class);
+      model.put("userCreator", User.find(task.getCreatorId()));
+      model.put("userImplementor", User.find(task.getImplementorId()));
+      model.put("currentUser", request.session().attribute("user"));
+      model.put("message", Message.class);
+      model.put("history", History.class);
+      model.put("isHistoryTabActive", false);
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
   }
 }

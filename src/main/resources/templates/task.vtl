@@ -1,8 +1,39 @@
+<div>
 <h2>$task.getTitle()</h2>
 <h4>$task.getDescription()</h4>
 
 <p>Create date: <strong>$task.getDateCreated()</strong></p>
-<p>Author name: <strong>$user.getName()</strong></p>
-<p>Author email: <strong>$user.getEmail()</strong></p>
-<p>Task status: <strong>$task.getStatus()</strong></p>
-<p>Implementor: <strong>$task.getStatus()</strong></p>
+<p>Author name: <strong>$userCreator.getName()</strong></p>
+<p>Author email: <strong>$userCreator.getEmail()</strong></p>
+<p>Task status: <strong>$status.getStatusName($task.getStatus())</strong></p>
+<p>Implementor: <strong>$userImplementor.getName()</strong></p>
+</div>
+<ul>
+  #if ($taskType.getTypeTaskName($task.getTypeTask()) == "Epic")
+    #foreach($story in $task.allAssigned())
+      <li>$story.getTitle()
+        <ul>
+          #foreach($subTask in $story.allAssigned())
+            <li>$subTask.getTitle()</li>
+          #end
+        </ul>
+      </li>
+    #end
+  #else
+    #foreach($someTask in $task.allAssigned())
+      <li>$someTask.getTitle()</li>
+    #end
+  #end
+</ul>
+
+#if ($isHistoryTabActive)
+  <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Messages <span class="badge">$message.all().size()</span></a></li>
+    <li role="presentation"><a href="/task/history/$task.getId()">Profile <span class="badge">$history.all().size()</span></a></li>
+  </ul>
+#else
+  <ul class="nav nav-tabs">
+    <li role="presentation"><a href="/task/$task.getId()">Messages <span class="badge">$message.all().size()</span></a></li>
+    <li role="presentation" class="active"><a href="#">Profile <span class="badge">$history.all().size()</span></a></li>
+  </ul>
+#end
