@@ -11,6 +11,7 @@ public class Task {
   private int mTypeId;
   private int mImplementorId;
   private int mCreatorId;
+  private int mMainListId;
 
   // private static final int EPIC = 1;
   // private static final int TASK = 1;
@@ -262,14 +263,22 @@ public class Task {
   }
 
   public String getMainListName(int subId, int type) {
-    String sql = "SELECT title as mTitle FROM tasks WHERE type_task_id = :type INNER JOIN tasks_relationships AS t_r WHERE subtask_id = :subId AND main_task_id = mainId"
+    String sql = "SELECT title as mTitle FROM tasks WHERE type_task_id = :type INNER JOIN tasks_relationships AS t_r WHERE subtask_id = :subId";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("subId", subId)
-        .addParameter("mainId", mainId)
         .addParameter("type", type)
-        .executeAndFetch(Message.class);
+        .executeScalar(String.class);
     }
   }
+
+  // public Integer getMainListId(int subId) {
+  //   String sql = "SELECT id as mMainListId FROM tasks INNER JOIN tasks_relationships AS t_r WHERE t_r.subtask_id = :subId";
+  //   try(Connection con = DB.sql2o.open()) {
+  //     return con.createQuery(sql)
+  //       .addParameter("subId", subId)
+  //       .executeScalar(Integer.class);
+  //   }
+  // }
 
 }

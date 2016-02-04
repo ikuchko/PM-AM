@@ -49,14 +49,12 @@ public class App {
     });
 
 
-    get("dev/main/:id", (request, response) -> {
+    get("/dev/main", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = User.find(Integer.parseInt(request.params("id")));
 
 
-
-
-      model.put("user", user);
+      model.put("currentUser", request.session().attribute("user"));
       model.put("tasks", Task.allRelatedTasksByUser(3, user.getId()));
       model.put("template", "templates/dev-home.vtl");
       return new ModelAndView(model, layout);
