@@ -101,6 +101,69 @@ public class App {
       return null;
     });
 
+    get("/task/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/task.vtl");
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      model.put("task", task);
+      model.put("status", Status.class);
+      model.put("taskType", TypeTask.class);
+      model.put("user", User.class);
+      model.put("userCreator", User.find(task.getCreatorId()));
+      model.put("userImplementor", User.find(task.getImplementorId()));
+      model.put("currentUser", request.session().attribute("user"));
+      model.put("message", Message.class);
+      model.put("history", History.class);
+      model.put("isHistoryTabActive", true);
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/task/history/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/task.vtl");
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      model.put("task", task);
+      model.put("status", Status.class);
+      model.put("taskType", TypeTask.class);
+      model.put("user", User.class);
+      model.put("userCreator", User.find(task.getCreatorId()));
+      model.put("userImplementor", User.find(task.getImplementorId()));
+      model.put("currentUser", request.session().attribute("user"));
+      model.put("message", Message.class);
+      model.put("history", History.class);
+      model.put("isHistoryTabActive", false);
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/task/newsubtask/:id", (request, response) -> {
+      Task mainTask = Task.find(Integer.parseInt(request.params("id")));
+      User creator = request.session().attribute("user");
+      String title = request.queryParams("title");
+      String description = request.queryParams("description");
+      int implementorId = Integer.parseInt(request.queryParams("user"));
+      int typeTask;
+      if (TypeTask.getTypeTaskName(mainTask.getTypeTask()).equals("Epic")) {
+        typeTask = TypeTask.getId("Story");
+      } else if (TypeTask.getTypeTaskName(mainTask.getTypeTask()).equals("Story")) {
+        typeTask = TypeTask.getId("Task");
+      } else {
+        typeTask = TypeTask.getId("Bug");
+      }
+      Task task = new Task(title, creator.getId(), description, typeTask, implementorId);
+      mainTask.assign(task);
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
+    post("/task/newmessage/:id", (request, response) -> {
+      User user = request.session().attribute("user");
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      Message newMessage = new Message(request.queryParams("message"), user.getId(), task.getId());
+      newMessage.assignTask(task);
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
     get("/dev/main", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("epics", Task.all(2));
