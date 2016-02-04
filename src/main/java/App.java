@@ -35,16 +35,55 @@ public class App {
       User user = User.find(Integer.parseInt(request.queryParams("user")));
       request.session().attribute("user", user);
       List epics = Task.allByCreator(2, user.getId());
+      model.put("report", Report.class);
       model.put("epics", epics);
       model.put("user", user);
       model.put("template", "templates/pm-main.vtl");
       return new ModelAndView(model, layout);
-      }, new VelocityTemplateEngine());
+    }, new VelocityTemplateEngine());
 
-    get("/pm/create-epic", (request, response) -> {
+    get("/pm/create-epic/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("createEpic", Task.find(Integer.parseInt(request.params("id"))));
-      response.redirect("/");
+      User user = request.session().attribute("user");
+      List epics = Task.allByCreator(2, user.getId());
+      model.put("report", Report.class);
+      model.put("epics", epics);
+      model.put("user", user);
+      model.put("createEpicActive", true);
+      model.put("template", "templates/pm-main.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/pm/create-epic/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = (request.session().attribute("user"));
+      Task task = new Task(request.queryParams("add-title"), user.getId(), request.queryParams("add-description"), 2, user.getId());
+      model.put("user", user);
+      response.redirect("/pm/?user=" + user.getId());
+      return null;
+    });
+
+    get("/pm/update-epic/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      List epics = Task.allByCreator(2, user.getId());
+      Task epic = Task.find(Integer.parseInt(request.params("id")));
+      model.put("report", Report.class);
+      model.put("epics", epics);
+      model.put("epic", epic);
+      model.put("user", user);
+      model.put("updateEpicActive", true);
+      model.put("template", "templates/pm-main.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/pm/update-epic/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Task epic = Task.find(Integer.parseInt(request.params("id")));
+      User user = (request.session().attribute("user"));
+      epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
+      model.put("user", user);
+      response.redirect("/pm/?user=" + user.getId());
       return null;
     });
   }
