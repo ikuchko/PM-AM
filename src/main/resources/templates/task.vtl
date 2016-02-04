@@ -85,6 +85,26 @@
     <li role="presentation" class="active"><a href="#">Messages <span class="badge">$message.all().size()</span></a></li>
     <li role="presentation"><a href="/task/history/$task.getId()">History <span class="badge">$history.all().size()</span></a></li>
   </ul>
+  #foreach ($store in $stores)
+    <div class="panel panel-default">
+      <div class="panel-heading">$store.getName()</a></div>
+      <table class="table fix-width-7p">
+        <thead>
+          <tr>
+            <th>Address</th>
+            <th>Contacts</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="fix-width-7p">$store.getAddress()</td>
+            <td>$store.getPhoneNumber()</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  #end
+
 #else
   <ul class="nav nav-tabs">
     <li role="presentation"><a href="/task/$task.getId()">Messages <span class="badge">$message.all().size()</span></a></li>
