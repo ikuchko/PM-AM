@@ -33,6 +33,7 @@ public class App {
     get("/pm/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = User.find(Integer.parseInt(request.queryParams("user")));
+      request.session().attribute("user", user);
       List epics = Task.allByCreator(2, user.getId());
       model.put("epics", epics);
       model.put("user", user);
