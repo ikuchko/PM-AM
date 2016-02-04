@@ -42,8 +42,8 @@ public class App {
 
     get("/pm/create-epic", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      model.put("createEpic", Task.find(Integer.parseInt(request.params("id"))));
-      response.redirect("/");
+      model.put("createEpic", Task.find(Integer.parseInt(request.params("user"))));
+      response.redirect("/pm/");
       return null;
     });
   }
