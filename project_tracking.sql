@@ -10,14 +10,14 @@ SET check_function_bodies = false;
 SET client_min_messages = warning;
 
 --
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner:
 --
 
 CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
 
 
 --
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner:
 --
 
 COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
@@ -30,7 +30,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: histories; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: histories; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE histories (
@@ -67,7 +67,7 @@ ALTER SEQUENCE histories_id_seq OWNED BY histories.id;
 
 
 --
--- Name: messages; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: messages; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE messages (
@@ -103,7 +103,7 @@ ALTER SEQUENCE messages_id_seq OWNED BY messages.id;
 
 
 --
--- Name: roles; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: roles; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE roles (
@@ -136,7 +136,7 @@ ALTER SEQUENCE role_id_seq OWNED BY roles.id;
 
 
 --
--- Name: status; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: status; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE status (
@@ -169,7 +169,7 @@ ALTER SEQUENCE status_id_seq OWNED BY status.id;
 
 
 --
--- Name: tasks; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE tasks (
@@ -208,7 +208,7 @@ ALTER SEQUENCE tasks_id_seq OWNED BY tasks.id;
 
 
 --
--- Name: tasks_messages; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks_messages; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE tasks_messages (
@@ -242,7 +242,7 @@ ALTER SEQUENCE tasks_messages_id_seq OWNED BY tasks_messages.id;
 
 
 --
--- Name: tasks_relationships; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks_relationships; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE tasks_relationships (
@@ -276,7 +276,7 @@ ALTER SEQUENCE tasks_relationships_id_seq OWNED BY tasks_relationships.id;
 
 
 --
--- Name: type_task; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: type_task; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE type_task (
@@ -309,7 +309,7 @@ ALTER SEQUENCE type_task_id_seq OWNED BY type_task.id;
 
 
 --
--- Name: users; Type: TABLE; Schema: public; Owner: Guest; Tablespace: 
+-- Name: users; Type: TABLE; Schema: public; Owner: Guest; Tablespace:
 --
 
 CREATE TABLE users (
@@ -479,8 +479,10 @@ SELECT pg_catalog.setval('status_id_seq', 4, true);
 --
 
 COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id, status_id, date_created) FROM stdin;
-2	ads	1	ttttt	1	1	1	2016-02-03 08:23:06
-3	sadasdadsad	\N	\N	\N	\N	\N	2016-02-03 11:15:16
+3	Story 1	1	some description	1	1	1	2016-02-03 11:15:16
+2	Epic 1	1	People come to Epicodus with a wide range of experience in and natural aptitude for programming. But the effect of those differences on your pace of learning will pale in comparison to the effect of developing a "growth mindset". Read about the growth mindset and how to develop it. Our teachers at Epicodus will help you develop a growth mindset, and we want you to help your peers develop a growth mindset as well.	2	1	1	2016-02-03 08:23:06
+5	Story 2	1	Some brief description	1	1	1	2016-02-04 11:02:44
+6	Task 1	1	This is task	3	1	1	2016-02-04 11:03:03
 \.
 
 
@@ -488,7 +490,7 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 3, true);
+SELECT pg_catalog.setval('tasks_id_seq', 6, true);
 
 
 --
@@ -511,6 +513,10 @@ SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
 --
 
 COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
+1	2	3
+2	2	4
+3	2	5
+4	3	6
 \.
 
 
@@ -518,7 +524,7 @@ COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
 -- Name: tasks_relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_relationships_id_seq', 1, false);
+SELECT pg_catalog.setval('tasks_relationships_id_seq', 4, true);
 
 
 --
@@ -545,6 +551,7 @@ SELECT pg_catalog.setval('type_task_id_seq', 4, true);
 --
 
 COPY users (id, name, email, role_id) FROM stdin;
+1	John Snow	night@watch.com	1
 \.
 
 
@@ -552,11 +559,11 @@ COPY users (id, name, email, role_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('users_id_seq', 1, false);
+SELECT pg_catalog.setval('users_id_seq', 1, true);
 
 
 --
--- Name: histories_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: histories_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY histories
@@ -564,7 +571,7 @@ ALTER TABLE ONLY histories
 
 
 --
--- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: messages_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY messages
@@ -572,7 +579,7 @@ ALTER TABLE ONLY messages
 
 
 --
--- Name: role_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: role_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY roles
@@ -580,7 +587,7 @@ ALTER TABLE ONLY roles
 
 
 --
--- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: status_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY status
@@ -588,7 +595,7 @@ ALTER TABLE ONLY status
 
 
 --
--- Name: tasks_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks_messages_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY tasks_messages
@@ -596,7 +603,7 @@ ALTER TABLE ONLY tasks_messages
 
 
 --
--- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY tasks
@@ -604,7 +611,7 @@ ALTER TABLE ONLY tasks
 
 
 --
--- Name: tasks_relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: tasks_relationships_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY tasks_relationships
@@ -612,7 +619,7 @@ ALTER TABLE ONLY tasks_relationships
 
 
 --
--- Name: type_task_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: type_task_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY type_task
@@ -620,7 +627,7 @@ ALTER TABLE ONLY type_task
 
 
 --
--- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace: 
+-- Name: users_pkey; Type: CONSTRAINT; Schema: public; Owner: Guest; Tablespace:
 --
 
 ALTER TABLE ONLY users
@@ -640,4 +647,3 @@ GRANT ALL ON SCHEMA public TO PUBLIC;
 --
 -- PostgreSQL database dump complete
 --
-
