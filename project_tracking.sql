@@ -75,7 +75,7 @@ CREATE TABLE messages (
     description text,
     user_id integer,
     task_id integer,
-    date_created timestamp without time zone DEFAULT now()
+    date_created timestamp(0) without time zone DEFAULT now()
 );
 
 
@@ -411,8 +411,6 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 --
 
 COPY histories (id, task_id, change_type, previous_condition, current_condition, created_date) FROM stdin;
-1	2	change status	To Do	Done	2016-02-03 08:08:14
-2	1	\N	\N	\N	2016-02-03 08:08:37
 \.
 
 
@@ -428,6 +426,8 @@ SELECT pg_catalog.setval('histories_id_seq', 2, true);
 --
 
 COPY messages (id, description, user_id, task_id, date_created) FROM stdin;
+1	New message	1	2	2016-02-04 11:59:02
+2	One more message	1	2	2016-02-04 11:59:02
 \.
 
 
@@ -435,7 +435,7 @@ COPY messages (id, description, user_id, task_id, date_created) FROM stdin;
 -- Name: messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('messages_id_seq', 1, false);
+SELECT pg_catalog.setval('messages_id_seq', 2, true);
 
 
 --
@@ -498,6 +498,8 @@ SELECT pg_catalog.setval('tasks_id_seq', 6, true);
 --
 
 COPY tasks_messages (id, task_id, message_id) FROM stdin;
+1	2	1
+2	2	2
 \.
 
 
@@ -505,7 +507,7 @@ COPY tasks_messages (id, task_id, message_id) FROM stdin;
 -- Name: tasks_messages_id_seq; Type: SEQUENCE SET; Schema: public; Owner: Guest
 --
 
-SELECT pg_catalog.setval('tasks_messages_id_seq', 1, false);
+SELECT pg_catalog.setval('tasks_messages_id_seq', 3, true);
 
 
 --
