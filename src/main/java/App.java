@@ -17,6 +17,18 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/transfer", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = User.find(Integer.parseInt(request.queryParams("user")));
+      request.session().attribute("user", user);
+      if (user.getRoleId() == Role.getId("PM")) {
+        response.redirect("/pm/");
+      } else {
+        response.redirect("/dev/main");
+      }
+      return null;
+    });
+
     get("/new-user", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/new-user.vtl");
@@ -32,8 +44,7 @@ public class App {
 
     get("/pm/", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      User user = User.find(Integer.parseInt(request.queryParams("user")));
-      request.session().attribute("user", user);
+      User user = request.session().attribute("user");
       List epics = Task.allByCreator(2, user.getId());
       model.put("report", Report.class);
       model.put("epics", epics);
@@ -87,18 +98,6 @@ public class App {
       return null;
     });
 
-    get("/transfer", (request, response) -> {
-      HashMap<String, Object> model = new HashMap<String, Object>();
-      User user = User.find(Integer.parseInt(request.queryParams("user")));
-      request.session().attribute("user", user);
-      if (user.getRoleId() == Role.getId("PM")) {
-        response.redirect("/pm/");
-      } else {
-        response.redirect("/dev/main");
-      }
-      return null;
-    });
-
     get("/dev/main", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("epics", Task.all(2));
@@ -110,9 +109,13 @@ public class App {
 
     post("/assign-inprogress/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      Task task = Task.find(Integer.parseInt(request.queryParams(":id")));
+      User user = (request.session().attribute("user"));
+      Task task = Task.find(Integer.parseInt(request.params(":id")));
+      task.assignTask(user.getId());
       task.changeStatus();
-      response.redirect("/dev/main");
+      model.put("task", task);
+      model.put("user", user);
+      response.redirect("/dev/main?user=" + "user.getId()");
       return null;
     });
   }

@@ -74,7 +74,7 @@ h3, h4, p {
   font-weight: 300;
 }
 
-#task.div {
-  /*display:inline-block;*/
+#task {
+  display:inline-block;
   display:inline;
 }
