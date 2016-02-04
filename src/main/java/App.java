@@ -94,6 +94,8 @@ public class App {
       User user = request.session().attribute("user");
       epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
 
+      epic.updateImplementor(epic.getId());
+
       model.put("user", user);
       response.redirect("/pm/?user=" + user.getId());
       return null;
