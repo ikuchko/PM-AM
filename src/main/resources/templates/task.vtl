@@ -28,15 +28,24 @@
 </ul>
 
 <br>
+<p class="newUserLabel">Create new story</p>
+<form action="/task/newsubtask/$task.getId()" method="post">
+  <div class="col-md-5">
+    <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
+    
+  </div>
+</form>
+
+<br>
 
 #if ($isHistoryTabActive)
   <ul class="nav nav-tabs">
     <li role="presentation" class="active"><a href="#">Messages <span class="badge">$message.all().size()</span></a></li>
-    <li role="presentation"><a href="/task/history/$task.getId()">Profile <span class="badge">$history.all().size()</span></a></li>
+    <li role="presentation"><a href="/task/history/$task.getId()">History <span class="badge">$history.all().size()</span></a></li>
   </ul>
 #else
   <ul class="nav nav-tabs">
     <li role="presentation"><a href="/task/$task.getId()">Messages <span class="badge">$message.all().size()</span></a></li>
-    <li role="presentation" class="active"><a href="#">Profile <span class="badge">$history.all().size()</span></a></li>
+    <li role="presentation" class="active"><a href="#">History <span class="badge">$history.all().size()</span></a></li>
   </ul>
 #end
