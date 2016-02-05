@@ -1,21 +1,23 @@
-<div class="jumbotron center">
-  <h1>Welcome to PM-AM</h1>
-  <h2 class="italic">The project manager... and more!</h2>
-  <br>
-  <p>Log in to PM-AM</p>
-  <br>
-  <form class="form-inline" action="/transfer" method="get">
-    <div class="form-group">
-      <select class="form-control" name="user" id="user">
-        <option selected="true" disabled="true">Select User</option>
-        #foreach ($user in $users)
-          <option value="$user.getId()">$user.getName()</option>
-        #end
-      </select>
-      <br>
-    </div>
-    <button type="submit" class="btn btn-success">Go!</button>
-  </form>
-  <br>
-  <a href="/new-user" type="button" class="btn btn-info center">Create New Account</a>
+<div class="jumbotron homePage">
+  <div class="container text-center">
+    <h1>Welcome to PM-AM</h1>
+    <h2>The project manager... and more!</h2>
+    <br>
+    <p>Log in to PM-AM</p>
+    <br>
+    <form class="form-inline" action="/transfer" method="get">
+      <div class="form-group">
+        <select class="form-control" name="user" id="user">
+          <option selected="true" disabled="true">Select User</option>
+          #foreach ($user in $users)
+            <option value="$user.getId()">$user.getName()</option>
+          #end
+        </select>
+        <br>
+      </div>
+      <button type="submit" class="btn btn-success">Go!</button>
+    </form>
+    <br>
+    <a href="/new-user" type="button" class="btn btn-info center">Create New Account</a>
+  </div>
 </div>

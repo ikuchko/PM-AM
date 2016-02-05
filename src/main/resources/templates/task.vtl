@@ -28,7 +28,7 @@
       <ul class="nav navbar-nav navbar-right">
         #if ($currentUser.getRole() == "PM")
           <li>
-            <a href="#">Reports</a>
+            <a href="/reports/$task.getId()">Reports</a>
           </li>
           <li>
             <a href="/pm/">Home</a>

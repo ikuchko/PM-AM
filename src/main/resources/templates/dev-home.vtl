@@ -1,50 +1,67 @@
+<nav id="navbar-example" class="navbar navbar-default navbar-static">
+  <div class="container-fluid">
+    <div class="navbar-header">
+
+      <p class="navbar-brand">Developer Home</p>
+    </div>
+    <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+      <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="/board">Board</a>
+          </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
 <div class="jumbotron">
   <h1>$user.getName()</h1>
   <br>
   <br>
   <hr>
-<div class="row">
-  <form action="/dev/new-task" method="post" class="form-inline" role="form" id="dev-add-task">
-    <div class="form-group">
-      <label for="title">Title</label>
-      <input id="title" name="title" type="text" class="form-control" required style="width: 250px;" required>
+  <div class="row">
+    <form action="/dev/new-task" method="post" class="form-inline" role="form" id="dev-add-task">
+      <div class="form-group">
+        <label for="title">Title</label>
+        <input id="title" name="title" type="text" class="form-control" required style="width: 250px;" required>
 
 
-      <label for="developerId">Assign a developer</label>
-      <select id='developerId' name='developerId' type='text'>
-      #foreach($developer in $users)
-        <option value="$developer.getId()">$developer.getName()</option>
-      #end
-      </select>
+        <label for="developerId">Assign a developer</label>
+        <select id='developerId' name='developerId' type='text'>
+        #foreach($developer in $users)
+          <option value="$developer.getId()">$developer.getName()</option>
+        #end
+        </select>
 
 
-      <label for="storyId">Assign a story</label>
-      <select id='storyId' name='storyId' type='text' required>
-      #foreach($story in $stories)
-        <option value="$story.getId()">$story.getTitle()</option>
-      #end
-      </select>
+        <label for="storyId">Assign a story</label>
+        <select id='storyId' name='storyId' type='text' required>
+        #foreach($story in $stories)
+          <option value="$story.getId()">$story.getTitle()</option>
+        #end
+        </select>
 
+        <br>
+        <br>
+        <label for="add-description">Description</label>
+        <textarea type="text" name="add-description" class="form-control" placeholder="Description" required style="margin: 0px; width: 696px; height: 58px;"></textarea>
+
+      </div>
       <br>
       <br>
-      <label for="add-description">Description</label>
-      <textarea type="text" name="add-description" class="form-control" placeholder="Description" required style="margin: 0px; width: 696px; height: 58px;"></textarea>
-
-    </div>
-    <br>
-    <br>
-    <button type="submit" class="btn btn-success">Add Task</button>
-  </form>
-</div>
+      <button type="submit" class="btn btn-success">Add Task</button>
+    </form>
+  </div>
   <hr>
+</div>
   #foreach ($epic in $epics)
-    <div class="row">
     <h1>$epic.getTitle()</h1>
     #foreach ($story in $epic.getAllSubTasks())
-    <div class="col-md-6">
-       <h2><a href="/task/$story.getId()">$story.getTitle()</a></h2>
+
+    <div class="col-md-4">
+       <h2><a class="storyLink" href="/task/$story.getId()">$story.getTitle()</a></h2>
       #foreach ($task in $story.getAllSubTasks(1))
-        <div class="task"><a href="/task/$task.getId()"><h4>$task.getTitle()</a></h4>
+        <div class="task"><a class="taskLink" href="/task/$task.getId()"><h4>$task.getTitle()</a></h4>
           <ul>$task.getDescription()</ul>
           #if ($task.getOnBoard() == false)
           <form action="/dev/assign-toboard/$task.getId()" method="post" class="form-inline">
@@ -66,10 +83,7 @@
           </form>
           #end
         </div>
-        <br>
       #end
     </div>
     #end
-  </div>
   #end
-</div>
