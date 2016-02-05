@@ -107,6 +107,19 @@ h3, h4, p {
   height: 220px;
 }
 
+.inline {
+  float: left;
+
+}
+
+.float-left {
+  float: left;
+
+}
+
+.italic {
+  font-style: italic;
+
 /* unvisited link */
 a.storyLink:link {
     color: #476674;
