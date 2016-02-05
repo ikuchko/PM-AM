@@ -1,0 +1,42 @@
+<div class="jumbotron">
+<h1>Reports:</h1>
+<br>
+<h2>$epic.getTitle()</h2>
+<h3>$status.getStatusName($epic.getId())</h3>
+
+
+<table class="table">
+    <thead>
+      <tr>
+        <th>Start date</th>
+        <th>End Date</th>
+        <th>Duration</th>
+        <th>Developers</th>
+        <th>Tasks Total</th>
+        <th>To Do Tasks</th>
+        <th>In Progress Tasks</th>
+        <th>Test Tasks</th>
+        <th>Finished Tasks</th>
+        <th>Total current bugs</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$epic.getDateCreated()</td>
+        <td>$report.getFinishDate()</td>
+        <td>$report.getDuration()</td>
+        <td>$totalDevelopers</td>
+        <td>$epic.allAssigned(3).size()</td>
+        <td>$epic.allAssigned(3, 1).size()</td>
+        <td>$epic.allAssigned(3, 2).size()</td>
+        <td>$epic.allAssigned(3, 3).size()</td>
+        <td>$epic.allAssigned(3, 4).size()</td>
+        <td>$epic.allAssigned(4).size()</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br>
+<br>
+</div>
