@@ -1,17 +1,47 @@
-<h1 class="center">$epic.getTitle()</h1>
+<h1 class="center">Dev board</h1>
 <br>
   <div class="col-md-3">
     <div class="panel panel-warning">
       <div class="panel-heading"><h3>To Do</h3>
       </div>
       <ul class="list-group">
-        #foreach ($task in $toDoTasks)
-          <div class="panel-body">
-            <form action="$epic.getId()/to-progress/$task.getId()" method="post">
-              <li class="list-group-item"><a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a><button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-right"></span></button>
-              </li>
-            </form>
-          </div>
+        #foreach ($task in $onBoard)
+          #if ($task.getStatus() == 1)
+            #if ($task.getTypeTask() == 3)
+              <div class="panel panel-primary board-task">
+            #else
+              <div class="panel panel-danger">
+            #end
+              <div class="panel-heading board-task">
+                <dl class="dl-horizontal board-task">
+                  <dt>$user.find($task.getImplementorId()).getName()</dt>
+                  <dd>
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                      </button>
+
+                      <ul class="dropdown-menu" aria-labelledby="drop1">
+                        #foreach($stat in $status.all())
+                          <li>
+                            <form action="/task/changeStatus/board/$task.getId()" method="post">
+                              <input type="hidden" name="status" id="status" value="$stat.getId()">
+                              <button type="submit" class="btn btn-default btn-xs" style="width: 100%">$stat.getStatus()</button>
+                            </form>
+                          </li>
+                        #end
+                      </ul>
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+              <div class="board-task-box">
+                <p class="message"><a class="task-board" href="/task/$task.getId()">$task.getTitle()</a></p>
+              </div>
+            </div>
+
+
+          #end
         #end
       </ul>
     </div>
@@ -22,18 +52,41 @@
       <div class="panel-heading"><h3>In Progress</h3>
       </div>
       <ul class="list-group">
-        #foreach ($task in $inProgressTasks)
-          <div class="panel-body">
-            <form action="$epic.getId()/to-do/$task.getId()" method="post">
-              <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-left"></span></button>
-            <li class="list-group-item">
-              <a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a>
-              </form>
-              <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-              <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-right"></span></button>
-              </form>
-            </li>
-          </div>
+        #foreach ($task in $onBoard)
+          #if ($task.getStatus() == 2)
+            #if ($task.getTypeTask() == 3)
+              <div class="panel panel-primary board-task">
+            #else
+              <div class="panel panel-danger">
+            #end
+              <div class="panel-heading board-task">
+                <dl class="dl-horizontal board-task">
+                  <dt>$user.find($task.getImplementorId()).getName()</dt>
+                  <dd>
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                      </button>
+
+                      <ul class="dropdown-menu" aria-labelledby="drop1">
+                        #foreach($stat in $status.all())
+                          <li>
+                            <form action="/task/changeStatus/board/$task.getId()" method="post">
+                              <input type="hidden" name="status" id="status" value="$stat.getId()">
+                              <button type="submit" class="btn btn-default btn-xs" style="width: 100%">$stat.getStatus()</button>
+                            </form>
+                          </li>
+                        #end
+                      </ul>
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+              <div class="board-task-box">
+                <p class="message"><a class="task-board" href="/task/$task.getId()">$task.getTitle()</a></p>
+              </div>
+            </div>
+          #end
         #end
       </ul>
     </div>
@@ -41,22 +94,44 @@
 
   <div class="col-md-3">
     <div class="panel panel-primary">
-      <div class="panel-heading"><h3>Testing</h3>
+      <div class="panel-heading"><h3>Test</h3>
       </div>
       <ul class="list-group">
-        #foreach ($task in $testingTasks)
-          <div class="panel-body">
+        #foreach ($task in $onBoard)
+          #if ($task.getStatus() == 3)
+            #if ($task.getTypeTask() == 3)
+              <div class="panel panel-primary board-task">
+            #else
+              <div class="panel panel-danger">
+            #end
+              <div class="panel-heading board-task">
+                <dl class="dl-horizontal board-task">
+                  <dt>$user.find($task.getImplementorId()).getName()</dt>
+                  <dd>
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                      </button>
 
-            <form action="$epic.getId()/to-progress/$task.getId()" method="post">
-              <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-left"></span></button>
-            </form>
-            <li class="list-group-item">
-              <a type="button" class="btn btn-default center inline" href="/task/$task.getId()">$task.getTitle()</a>
-            </li>
-            <form action="$epic.getId()/to-done/$task.getId()" method="post">
-              <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-right"></span></button>
-            </form>
-        </div>
+                      <ul class="dropdown-menu" aria-labelledby="drop1">
+                        #foreach($stat in $status.all())
+                          <li>
+                            <form action="/task/changeStatus/board/$task.getId()" method="post">
+                              <input type="hidden" name="status" id="status" value="$stat.getId()">
+                              <button type="submit" class="btn btn-default btn-xs" style="width: 100%">$stat.getStatus()</button>
+                            </form>
+                          </li>
+                        #end
+                      </ul>
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+              <div class="board-task-box">
+                <p class="message"><a class="task-board" href="/task/$task.getId()">$task.getTitle()</a></p>
+              </div>
+            </div>
+          #end
         #end
       </ul>
     </div>
@@ -67,15 +142,41 @@
       <div class="panel-heading"><h3>Done</h3>
       </div>
       <ul class="list-group">
-        #foreach ($task in $doneTasks)
-        <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-          <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-left"></span></button>
-        </form>
-            <li class="list-group-item"><a type="button" class="btn btn-default center inline" href="/task/$task.getId()">$task.getTitle()</a>
-              <form action="/task/delete/$task.getId()" method="get">
-                <button class="inline" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
-            </li>
-          </form>
+        #foreach ($task in $onBoard)
+          #if ($task.getStatus() == 4)
+            #if ($task.getTypeTask() == 3)
+              <div class="panel panel-primary board-task">
+            #else
+              <div class="panel panel-danger">
+            #end
+              <div class="panel-heading board-task">
+                <dl class="dl-horizontal board-task">
+                  <dt>$user.find($task.getImplementorId()).getName()</dt>
+                  <dd>
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                      </button>
+
+                      <ul class="dropdown-menu" aria-labelledby="drop1">
+                        #foreach($stat in $status.all())
+                          <li>
+                            <form action="/task/changeStatus/board/$task.getId()" method="post">
+                              <input type="hidden" name="status" id="status" value="$stat.getId()">
+                              <button type="submit" class="btn btn-default btn-xs" style="width: 100%">$stat.getStatus()</button>
+                            </form>
+                          </li>
+                        #end
+                      </ul>
+                    </div>
+                  </dd>
+                </dl>
+              </div>
+              <div class="board-task-box">
+                <p class="message"><a class="task-board" href="/task/$task.getId()">$task.getTitle()</a></p>
+              </div>
+            </div>
+          #end
         #end
       </ul>
     </div>

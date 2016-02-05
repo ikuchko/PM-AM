@@ -7,6 +7,12 @@ h3, h4, p {
   font-family: 'Montserrat', sans-serif;
 }
 
+a.task-board {
+  text-decoration: none !important;
+  color: #751C5C;
+  font-size: 16px;
+}
+
 .center {
   text-align: center;
 }
@@ -80,9 +86,14 @@ h3, h4, p {
 
 .message {
   font-size: 15px !important;
+  margin-bottom: 0px;
 }
 .message-box {
   padding: 10px 20px;
+}
+
+.board-task-box {
+  padding: 10px;
 }
 
 .task .btn {
@@ -105,4 +116,8 @@ h3, h4, p {
 
 .des-text {
   height: 220px;
+}
+
+.board-task {
+  margin: 5px;
 }
