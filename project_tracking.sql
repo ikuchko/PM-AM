@@ -37,9 +37,9 @@ CREATE TABLE histories (
     id integer NOT NULL,
     task_id integer,
     change_type character varying,
-    previous_condition character varying(30),
-    current_condition character varying(30),
-    created_date timestamp(0) without time zone DEFAULT now()
+    created_date timestamp(0) without time zone DEFAULT now(),
+    previous_condition character varying,
+    current_condition character varying
 );
 
 
@@ -411,17 +411,7 @@ ALTER TABLE ONLY users ALTER COLUMN id SET DEFAULT nextval('users_id_seq'::regcl
 -- Data for Name: histories; Type: TABLE DATA; Schema: public; Owner: iliak
 --
 
-COPY histories (id, task_id, change_type, previous_condition, current_condition, created_date) FROM stdin;
-3	2	Update task	last descr	current desc	2016-02-04 14:41:04
-9	2	Update task	To Do	In Progress	2016-02-04 16:24:17
-10	2	Update task	In Progress	Test	2016-02-04 16:24:35
-11	2	Update task	Test	Done	2016-02-04 16:24:37
-12	2	Update task	Done	Done	2016-02-04 16:24:38
-13	2	Update task	Done	Done	2016-02-04 18:31:26
-14	2	Update task	To Do	In Progress	2016-02-04 20:46:08
-15	2	Update task	In Progress	To Do	2016-02-04 20:49:32
-16	2	Update task	To Do	In Progress	2016-02-04 20:49:36
-17	2	Update task	In Progress	To Do	2016-02-04 21:16:41
+COPY histories (id, task_id, change_type, created_date, previous_condition, current_condition) FROM stdin;
 \.
 
 
@@ -429,7 +419,7 @@ COPY histories (id, task_id, change_type, previous_condition, current_condition,
 -- Name: histories_id_seq; Type: SEQUENCE SET; Schema: public; Owner: iliak
 --
 
-SELECT pg_catalog.setval('histories_id_seq', 17, true);
+SELECT pg_catalog.setval('histories_id_seq', 18, true);
 
 
 --
@@ -495,7 +485,9 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 3	Story 1	1	some description	1	1	1	2016-02-03 11:15:16	f
 5	Story 2	1	Some brief description	1	1	1	2016-02-04 11:02:44	f
 6	Task 1	1	This is task	3	1	1	2016-02-04 11:03:03	f
-2	Epic 1	1	People come to Epicodus with a wide range of experience in and natural aptitude for programming. But the effect of those differences on your pace of learning will pale in comparison to the effect of developing a "growth mindset". Read about the growth mindset and how to develop it. Our teachers at Epicodus will help you develop a growth mindset, and we want you to help your peers develop a growth mindset as well.	2	1	1	2016-02-03 08:23:06	f
+8	awd	1	dad	1	1	1	2016-02-04 21:57:19	f
+9	asd	1	asd	3	3	1	2016-02-04 21:57:35	f
+7	Epic task, Products that must be created on 	1	dadawdw d awdawdaw da wd aw d a wd a wd	2	1	2	2016-02-04 21:40:24	f
 \.
 
 
@@ -503,7 +495,7 @@ COPY tasks (id, title, creator_user_id, description, type_task_id, developer_id,
 -- Name: tasks_id_seq; Type: SEQUENCE SET; Schema: public; Owner: iliak
 --
 
-SELECT pg_catalog.setval('tasks_id_seq', 6, true);
+SELECT pg_catalog.setval('tasks_id_seq', 9, true);
 
 
 --
@@ -535,6 +527,8 @@ COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
 2	2	4
 3	2	5
 4	3	6
+5	7	8
+6	8	9
 \.
 
 
@@ -542,7 +536,7 @@ COPY tasks_relationships (id, main_task_id, subtask_id) FROM stdin;
 -- Name: tasks_relationships_id_seq; Type: SEQUENCE SET; Schema: public; Owner: iliak
 --
 
-SELECT pg_catalog.setval('tasks_relationships_id_seq', 4, true);
+SELECT pg_catalog.setval('tasks_relationships_id_seq', 6, true);
 
 
 --
@@ -570,6 +564,7 @@ SELECT pg_catalog.setval('type_task_id_seq', 4, true);
 
 COPY users (id, name, email, role_id) FROM stdin;
 1	John Snow	night@watch.com	1
+2	Petr I	dawd@ddd	2
 \.
 
 
@@ -577,7 +572,7 @@ COPY users (id, name, email, role_id) FROM stdin;
 -- Name: users_id_seq; Type: SEQUENCE SET; Schema: public; Owner: iliak
 --
 
-SELECT pg_catalog.setval('users_id_seq', 1, true);
+SELECT pg_catalog.setval('users_id_seq', 2, true);
 
 
 --
