@@ -232,8 +232,6 @@ public class App {
       // List inProgressTasks = epic.getAllSubTasks(2);
       // List testingTasks = epic.getAllSubTasks(3);
       // List doneTasks = epic.getAllSubTasks(4);
-
-<<<<<<< HEAD
       model.put("onBoard", Task.getAllOnBoard(true));
       model.put("status", Status.class);
       // model.put("epic", epic);
@@ -241,14 +239,6 @@ public class App {
       // model.put("inProgressTasks", inProgressTasks);
       // model.put("testingTasks", testingTasks);
       // model.put("doneTasks", doneTasks);
-=======
-      model.put("epic", epic);
-      model.put("currentUser", request.session().attribute("user"));
-      model.put("toDoTasks", toDoTasks);
-      model.put("inProgressTasks", inProgressTasks);
-      model.put("testingTasks", testingTasks);
-      model.put("doneTasks", doneTasks);
->>>>>>> 0ec71bbc5e3b0d7384d382dff66684b00a9a81d1
       model.put("user", request.session().attribute("user"));
       model.put("template", "templates/board.vtl");
       return new ModelAndView(model, layout);

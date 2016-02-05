@@ -68,6 +68,7 @@
                 <div class="form-group">
                   <label for="developerId">Assign a developer</label>
                   <select id='developerId' name='developerId' type='text'>
+                    <option selected="true" disabled="true">Assign Developer</option>
                   #foreach($developer in $users)
                     <option value="$developer.getId()">$developer.getName()</option>
                   #end
