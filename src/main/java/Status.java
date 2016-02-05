@@ -3,7 +3,19 @@ import java.util.List;
 import org.sql2o.*;
 
 public class Status {
+  private int id;
+  private String status;
 
+  public Status(String statusName) {
+    this.status = statusName;
+  }
+
+  public int getId() {
+    return id;
+  }
+  public String getStatus() {
+    return status;
+  }
 
   public static int getId(String status) {
     String sql = "SELECT id FROM status WHERE status LIKE :input";
@@ -20,6 +32,14 @@ public class Status {
       return con.createQuery(sql)
       .addParameter("statusId", statusId)
       .executeScalar(String.class);
+    }
+  }
+
+  public static List<Status> all() {
+    String sql = "SELECT id, status FROM status";
+    try (Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+      .executeAndFetch(Status.class);
     }
   }
 

@@ -189,8 +189,8 @@ public class Task {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
-        .addParameter("title", mTitle)
-        .addParameter("description", mDescription)
+        .addParameter("title", title)
+        .addParameter("description", description)
         .addParameter("id", this.mId)
         .executeUpdate();
         this.mTitle = title;
@@ -201,7 +201,7 @@ public class Task {
 
 // public History(int taskId, String changeType, String previousCondition, String currentCondition)
 // Use changeStatus() for changing task status
-  private void updateStatus(int statusId) {
+  public void updateStatus(int statusId) {
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
@@ -245,9 +245,9 @@ public class Task {
   }
 
   public List<Message> getMessages() {
-    String sql = "SELECT messages.id AS mId, messages.description AS mMessage FROM tasks " +
+    String sql = "SELECT messages.id AS mId, messages.description AS mMessage, messages.user_id AS mUserId, messages.task_id AS mTaskId, messages.date_created AS mDateCreated FROM tasks " +
                  "INNER JOIN tasks_messages AS t_m ON tasks.id = t_m.task_id " +
-                 "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id";
+                 "INNER JOIN messages ON messages.id = t_m.message_id WHERE tasks.id = :id ORDER BY messages.date_created DESC";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("id", this.mId)
