@@ -336,6 +336,15 @@ public class Task {
     }
   }
 
+  public List<User> getDeveloperList() {
+    String sql = "SELECT (ta.developer_id) FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id";
+    try(Connection con = DB.sql2o.open()) {
+      return con.createQuery(sql)
+        .addParameter("id", this.mId)
+        .executeAndFetch(User.class);
+    }
+  }
+
 
 
 }

@@ -121,3 +121,51 @@ a.task-board {
 .board-task {
   margin: 5px;
 }
+
+.inline {
+  float: left;
+
+}
+
+.float-left {
+  float: left;
+
+}
+
+.italic {
+  font-style: italic;
+
+/* unvisited link */
+a.storyLink:link {
+    color: #476674;
+}
+
+/* visited link */
+a.storyLink:visited {
+    color: #476674;
+}
+
+/* mouse over link */
+a.storyLink:hover {
+    color: #CCCCCC;
+}
+
+/* unvisited link */
+a.taskLink:link {
+    color: #6B8D9C;
+}
+
+/* visited link */
+a.taskLink:visited {
+    color: #6B8D9C;
+}
+
+/* mouse over link */
+a.taskLink:hover {
+    color: #CCCCCC;
+}
+
+.homePage {
+  display: flex;
+  align-items: center;
+}
