@@ -68,7 +68,7 @@
       </div>
       <ul class="list-group">
         #foreach ($task in $doneTasks)
-          <form action="$epic.getId()/deleteTask/$task.getId()" method="post">
+          <form action="/task/delete/$task.getId()" method="get">
             <li class="list-group-item"><a type="button" class="btn btn-default center inline" href="/task/$task.getId()">$task.getTitle()</a>
               <button class="inline" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
             </li>
