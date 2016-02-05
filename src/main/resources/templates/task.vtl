@@ -25,6 +25,20 @@
           <a href="/task/delete/$task.getId()">Delete</a>
         </li>
       </ul>
+      <ul class="nav navbar-nav navbar-right">
+        #if ($currentUser.getRole() == "PM")
+          <li>
+            <a href="#">Reports</a>
+          </li>
+          <li>
+            <a href="/pm/">Home</a>
+          </li>
+        #else
+          <li>
+            <a href="/dev/main">Home</a>
+          </li>
+        #end
+      </ul>
     </div>
   </div>
 </nav>
