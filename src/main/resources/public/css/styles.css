@@ -98,3 +98,7 @@ h3, h4, p {
   width:700px;
   text-align: center;
 }
+
+.panel-heading {
+  text-align: center;
+}

@@ -42,9 +42,9 @@
     <h1>$epic.getTitle()</h1>
     #foreach ($story in $epic.getAllSubTasks())
     <div class="col-md-6">
-       <h2>$story.getTitle()</h2>
+       <h2><a href="/task/$story.getId()">$story.getTitle()</a></h2>
       #foreach ($task in $story.getAllSubTasks(1))
-        <div class="task"><h4>$task.getTitle()</h4>
+        <div class="task"><a href="/task/$task.getId()"><h4>$task.getTitle()</a></h4>
           <ul>$task.getDescription()</ul>
           #if ($task.getOnBoard() == false)
           <form action="/dev/assign-toboard/$task.getId()" method="post" class="form-inline">

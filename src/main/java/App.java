@@ -93,7 +93,7 @@ public class App {
       Task epic = Task.find(Integer.parseInt(request.params("id")));
       User user = request.session().attribute("user");
       epic.update(request.queryParams("updateTitle"), request.queryParams("updateDescription"));
-      epic.updateImplementor(epic.getId());
+
       model.put("user", user);
       response.redirect("/pm/?user=" + user.getId());
       return null;
@@ -224,7 +224,7 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post(":epicId/to-progress/:taskId", (request, response) -> {
+    post("board/:epicId/to-progress/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("epicId")));
       Task task = Task.find(Integer.parseInt(request.params("taskId")));
@@ -234,11 +234,21 @@ public class App {
       return null;
     });
 
-    post(":epicId/to-testing/:taskId", (request, response) -> {
+    post("board/:epicId/to-testing/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("epicId")));
       Task task = Task.find(Integer.parseInt(request.params("taskId")));
       task.updateStatus(3);
+      model.put("user", request.session().attribute("user"));
+      response.redirect("/board/" + epic.getId());
+      return null;
+    });
+
+    post("board/:epicId/to-done/:taskId", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Task epic = Task.find(Integer.parseInt(request.params("epicId")));
+      Task task = Task.find(Integer.parseInt(request.params("taskId")));
+      task.updateStatus(4);
       model.put("user", request.session().attribute("user"));
       response.redirect("/board/" + epic.getId());
       return null;
@@ -270,5 +280,31 @@ public class App {
       return null;
     });
 
+    get("/reports/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Task epic = Task.find(Integer.parseInt(request.params("id")));
+      Integer totalDevelopers = 0;
+      Report epicReport = new Report(epic.getId());
+
+      if(epic.allAssigned(1).size() > 0) {
+        for(Task story : epic.allAssigned(1)) {
+          if(story.allAssigned(3).size() > 0) {
+            totalDevelopers = totalDevelopers + story.getTotalDevelopers();
+            }
+          }
+      }
+
+      model.put("epic", epic);
+      model.put("totalDevelopers", totalDevelopers);
+      model.put("epics", Task.all(2));
+      model.put("stories", Task.all(1));
+      model.put("tasks", Task.class);
+      model.put("status", Status.class);
+      model.put("report", epicReport);
+      model.put("user", request.session().attribute("user"));
+      model.put("users", User.all(2));
+      model.put("template", "templates/reports.vtl");
+      return new ModelAndView(model, layout);
+      }, new VelocityTemplateEngine());
   }
 }
