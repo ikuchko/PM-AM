@@ -116,6 +116,13 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/task/changeStatus/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.updateStatus(Integer.parseInt(request.queryParams("status")));
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
     get("/task/history/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/task.vtl");
@@ -244,6 +251,13 @@ public class App {
       model.put("task", task);
       model.put("user", user);
       response.redirect("/dev/main?user=" + "user.getId()");
+      return null;
+    });
+
+    post("/task/changeStatus/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.changeStatus();
+      response.redirect("/task/" + request.params("id"));
       return null;
     });
 

@@ -197,7 +197,7 @@ public class Task {
         this.mTitle = title;
         this.mDescription = description;
     }
-    History newHistory = new History(this.getId(), "Update Title and Description", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
+    History newHistory = new History(this.getId(), "Update task", mTitle + " | " + mDescription, title + " | " + description);
   }
 
 // public History(int taskId, String changeType, String previousCondition, String currentCondition)
@@ -209,7 +209,7 @@ public class Task {
         .addParameter("statusId", statusId)
         .addParameter("id", this.mId)
         .executeUpdate();
-        History newHistory = new History(this.getId(), "Update Status", Status.getStatusName(mStatus), Status.getStatusName(statusId));
+        History newHistory = new History(this.getId(), "Update task", Status.getStatusName(mStatus), Status.getStatusName(statusId));
         this.mStatus = statusId;
     }
   }
@@ -223,7 +223,7 @@ public class Task {
         .executeUpdate();
         this.mImplementorId = implementorId;
     }
-    History newHistory = new History(this.getId(), "Update Implementor", Status.getStatusName(mStatus), Status.getStatusName(mStatus));
+    History newHistory = new History(this.getId(), "Update task", User.find(this.getImplementorId()).getName(), User.find(implementorId).getName());
   }
 
   public void delete() {
