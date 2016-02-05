@@ -106,3 +106,17 @@ h3, h4, p {
 .des-text {
   height: 220px;
 }
+
+.inline {
+  float: left;
+
+}
+
+.float-left {
+  float: left;
+
+}
+
+.italic {
+  font-style: italic;
+}
