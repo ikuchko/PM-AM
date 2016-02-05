@@ -206,19 +206,20 @@ public class App {
       return null;
     });
 
-    get("/board/:id", (request, response) -> {
+    get("/board", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      Task epic = Task.find(Integer.parseInt(request.params(":id")));
-      List toDoTasks = epic.getAllSubTasks(1);
-      List inProgressTasks = epic.getAllSubTasks(2);
-      List testingTasks = epic.getAllSubTasks(3);
-      List doneTasks = epic.getAllSubTasks(4);
+      // Task epic = Task.find(Integer.parseInt(request.params(":id")));
+      // List toDoTasks = epic.getAllSubTasks(1);
+      // List inProgressTasks = epic.getAllSubTasks(2);
+      // List testingTasks = epic.getAllSubTasks(3);
+      // List doneTasks = epic.getAllSubTasks(4);
 
-      model.put("epic", epic);
-      model.put("toDoTasks", toDoTasks);
-      model.put("inProgressTasks", inProgressTasks);
-      model.put("testingTasks", testingTasks);
-      model.put("doneTasks", doneTasks);
+      model.put("onBoard", Task.getAllOnBoard(true));
+      // model.put("epic", epic);
+      // model.put("toDoTasks", toDoTasks);
+      // model.put("inProgressTasks", inProgressTasks);
+      // model.put("testingTasks", testingTasks);
+      // model.put("doneTasks", doneTasks);
       model.put("user", request.session().attribute("user"));
       model.put("template", "templates/board.vtl");
       return new ModelAndView(model, layout);

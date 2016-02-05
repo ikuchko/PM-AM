@@ -3,13 +3,15 @@
     <div class="panel-heading"><h3>To Do</h3>
     </div>
     <ul class="list-group">
-      #foreach ($task in $toDoTasks)
-        <div class="panel-body">
-          <form action="$epic.getId()/to-progress/$task.getId()" method="post">
-            <li class="list-group-item"><a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a><button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
-            </li>
-          </form>
-        </div>
+      #foreach ($task in $onBoard)
+        #if ($task.getStatus() == 1)
+          <div class="panel-body">
+            <form action="$epic.getId()/to-progress/$task.getId()" method="post">
+              <li class="list-group-item"><a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a><button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+              </li>
+            </form>
+          </div>
+        #end
       #end
     </ul>
   </div>
