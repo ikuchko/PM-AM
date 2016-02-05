@@ -89,6 +89,10 @@ h3, h4, p {
   display:inline;
 }
 
+.left-padding {
+  padding-left: 10px;
+}
+
 #dev-add-task {
   margin: 0 auto;
   width:700px;
