@@ -215,7 +215,7 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-    post(":epicId/to-progress/:taskId", (request, response) -> {
+    post("board/:epicId/to-progress/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("epicId")));
       Task task = Task.find(Integer.parseInt(request.params("taskId")));
@@ -225,7 +225,7 @@ public class App {
       return null;
     });
 
-    post(":epicId/to-testing/:taskId", (request, response) -> {
+    post("board/:epicId/to-testing/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("epicId")));
       Task task = Task.find(Integer.parseInt(request.params("taskId")));

@@ -3,8 +3,8 @@
   <ul class="list-group">
   #foreach ($task in $toDoTasks)
       <form action="$epic.getId()/to-progress/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle</li>
-        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+        </li>
       </form>
   #end
 </ul>
@@ -15,8 +15,8 @@
   <ul class="list-group">
   #foreach ($task in $inProgressTasks)
       <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle</li>
-        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+        </li>
       </form>
   #end
 </ul>
@@ -27,8 +27,8 @@
   <ul class="list-group">
   #foreach ($task in $testingTasks)
       <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle</li>
-        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+        </li>
       </form>
   #end
 </ul>
@@ -39,8 +39,8 @@
   <ul class="list-group">
   #foreach ($task in $doneTasks)
       <form action="$epic.getId()/deleteTask/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle</li>
-        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+        </li>
       </form>
   #end
 </ul>
