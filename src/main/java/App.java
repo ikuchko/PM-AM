@@ -253,11 +253,13 @@ public class App {
       Integer totalDevelopers = 0;
       Report epicReport = new Report(epic.getId());
 
-      // for(Task story : epic.allAssigned(1)) {
-      //   for(Task task : story.allAssigned(3)) {
-      //     totalDevelopers = totalDevelopers + task.getTotalDevelopers();
-      //   }
-      // }
+      if(epic.allAssigned(1).size() > 0) {
+        for(Task story : epic.allAssigned(1)) {
+          for(Task task : story.allAssigned(3)) {
+            totalDevelopers = totalDevelopers + task.getTotalDevelopers();
+          }
+        }
+      }
 
       model.put("epic", epic);
       model.put("totalDevelopers", totalDevelopers);
