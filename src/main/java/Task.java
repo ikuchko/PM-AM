@@ -190,8 +190,8 @@ public class Task {
     String sql = "UPDATE tasks SET title = :title, description = :description WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
-        .addParameter("title", mTitle)
-        .addParameter("description", mDescription)
+        .addParameter("title", title)
+        .addParameter("description", description)
         .addParameter("id", this.mId)
         .executeUpdate();
         this.mTitle = title;
