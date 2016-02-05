@@ -1,0 +1,181 @@
+<nav id="navbar-example" class="navbar navbar-default navbar-static">
+  <div class="container-fluid">
+    <div class="navbar-header">
+
+      <p class="navbar-brand">$task.getTitle()</p>
+    </div>
+    <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+          <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            $status.getStatusName($task.getStatus()) <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="drop1">
+            #foreach($stat in $status.all())
+              <li>
+                <form action="/task/changeStatus/$task.getId()" method="post">
+                  <input type="hidden" name="status" id="status" value="$stat.getId()">
+                  <button type="submit" class="btn btn-default btn-xs" style="width: 100%">$stat.getStatus()</button>
+                </form>
+              </li>
+            #end
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="row">
+  <div class="col-md-7">
+    <dl class="dl-horizontal">
+      <dt>Description</dt>
+      <dd>$task.getDescription()</dd>
+    </dl>
+  </div>
+  <div class="col-md-5">
+    <dl class="dl-horizontal">
+      <dt>Create date</dt>
+      <dd>
+        $task.getDateCreated()
+      </dd>
+      <dt>Author name:</dt>
+      <dd>
+        $userCreator.getName()
+      </dd>
+      <dt>Author email:</dt>
+      <dd>
+        $userCreator.getEmail()
+      </dd>
+      <dt>Task status:</dt>
+      <dd>
+        $status.getStatusName($task.getStatus())
+      </dd>
+      <dt>Implementor:</dt>
+      <dd>
+        $userImplementor.getName()
+      </dd>
+    </dl>
+  </div>
+</div>
+
+<hr>
+<p class="newUserLabel">Subtasks:</p>
+<ul>
+  #if ($taskType.getTypeTaskName($task.getTypeTask()) == "Epic")
+    #foreach($story in $task.allAssigned())
+      <li><a href="/task/$story.getId()">$story.getTitle()</a>
+        <ul>
+          #foreach($subTask in $story.allAssigned())
+            <li><a href="/task/$subTask.getId()">$subTask.getTitle()</a></li>
+          #end
+        </ul>
+      </li>
+    #end
+  #else
+    #foreach($someTask in $task.allAssigned())
+      <li><a href="/task/$someTask.getId()">$someTask.getTitle()</a></li>
+    #end
+  #end
+</ul>
+<hr>
+
+<br>
+<p class="newUserLabel">Create new subtask</p>
+<form action="/task/newsubtask/$task.getId()" method="post" id="newTaskForm">
+  <div class="row">
+    <div class="col-md-5">
+      <input type="text" class="form-control" name="title" id="title" placeholder="Title" required>
+      <label for="description">Description</label>
+      <textarea rows="5" cols="50" name="description" id="description" form="newTaskForm" placeholder="Add description..."></textarea>
+    </div>
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="user">Implementor</label>
+        <select class="form-control" name="user" id="user">
+          <option selected="true" disabled="true">Select User</option>
+          #foreach ($users in $user.all())
+            <option value="$users.getId()">$users.getName()</option>
+          #end
+        </select>
+      </div>
+      <button type="submit" class="btn btn-success">Create</button>
+    </div>
+  </div>
+</form>
+<hr>
+<br>
+
+#if ($isHistoryTabActive)
+  <ul class="nav nav-tabs">
+    <li role="presentation" class="active"><a href="#">Messages <span class="badge">$task.getMessages().size()</span></a></li>
+    <li role="presentation"><a href="/task/history/$task.getId()">History <span class="badge">$history.all().size()</span></a></li>
+  </ul>
+  <br>
+  <div class="row">
+    <div class="col-md-7">
+      #foreach ($message in $task.getMessages())
+        <div class="panel panel-warning">
+          <div class="panel-heading">
+            <dl class="dl-horizontal">
+              <dt>User: $user.find($message.getUserId()).getName()</dt>
+              <dd>Date: $message.getDateCreated()</dd>
+            </dl>
+          </div>
+          <div class="message-box">
+            <p class="message">$message.getMessage()</p>
+          </div>
+        </div>
+      #end
+    </div>
+    <div class="col-md-5">
+      <form action="/task/newmessage/$task.getId()" method="post" id="newMessageForm">
+        <label for="message">Description</label>
+        <textarea rows="5" cols="50" name="message" id="message" form="newMessageForm" placeholder="Add message..."></textarea>
+        <button type="submit" class="btn btn-success">Add</button>
+      </form>
+    </div>
+  </div>
+
+#else
+  <ul class="nav nav-tabs">
+    <li role="presentation"><a href="/task/$task.getId()">Messages <span class="badge">$task.getMessages().size()</span></a></li>
+    <li role="presentation" class="active"><a href="#">History <span class="badge">$history.all().size()</span></a></li>
+  </ul>
+  #foreach ($oneHistory in $history.all($task.getId()))
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-2">
+            <h5>$oneHistory.getChangeType()</h5>
+          </div>
+          <div class="col-md-10">
+            <dl class="dl-horizontal">
+              <dd>Date: $oneHistory.getCreatedDate()</dd>
+            </dl>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <div class="list-group">
+            <div class="left-padding">
+              <h4>Previous condition</h4>
+              <p>
+                $oneHistory.getPreviousCondition();
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-5">
+          <div class="list-group">
+            <h4>Current condition</h4>
+            <p>
+              $oneHistory.getCurrentCondition();
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  #end
+#end
