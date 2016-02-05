@@ -23,7 +23,10 @@ public class Report {
     return mStartDate;
   }
   public String getFinishDate() {
-    return mFinishDate;
+    if (mFinishDate == null){
+      return "N/A";
+    } else {
+    return mFinishDate; }
   }
   public String getDuration() {
     return mDuration;
@@ -58,16 +61,20 @@ public class Report {
   }
 
   public static String formattedDuration(String duration) {
-    if (duration.contains("0 years 0 mons 0 days 0 hours")) {
-      return duration.replace("0 years 0 mons 0 days 0 hours ", "");
-    } else if (duration.contains("0 years 0 mons 0 days")) {
-      return duration.replace("0 years 0 mons 0 days ", "");
-    } else if (duration.contains("0 years 0 mons")) {
-      return duration.replace("0 years 0 mons ", "");
-    } else if (duration.contains("0 years")) {
-     return duration.replace("0 years ", "");
-   } else{
-     return duration;
+    if (!(duration == null)) {
+      if (duration.contains("0 years 0 mons 0 days 0 hours")) {
+        return duration.replace("0 years 0 mons 0 days 0 hours ", "");
+      } else if (duration.contains("0 years 0 mons 0 days")) {
+        return duration.replace("0 years 0 mons 0 days ", "");
+      } else if (duration.contains("0 years 0 mons")) {
+        return duration.replace("0 years 0 mons ", "");
+      } else if (duration.contains("0 years")) {
+       return duration.replace("0 years ", "");
+     } else{
+       return duration;
+     }
+   } else {
+     return "N/A";
    }
   }
 
