@@ -2,7 +2,7 @@
 <h1>Reports:</h1>
 <br>
 <h2>$epic.getTitle()</h2>
-<h3>$status.getStatusName($epic.getId())</h3>
+<h3>$epicStatus.getStatusName($epic.getStatus())</h3>
 
 
 <table class="table">
@@ -39,4 +39,63 @@
 
 <br>
 <br>
-</div>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#developers">Developers</a></li>
+    #foreach($story in $epic.allAssigned(1))
+    <li><a data-toggle="tab" href="#$story.getId()">$story.getTitle()</a></li>
+    #end
+  </ul>
+
+  <div class="tab-content">
+    <div id="developers" class="tab-pane fade in active">
+      <h2>Developers For This Epic:</h2>
+      <table class="table">
+          <thead>
+            <tr>
+              <th>Developer Name</th>
+              <th>Developer Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            #foreach ($story in $epic.allAssigned(1))
+              #foreach ($developer in $story.getDeveloperList)
+                <tr>
+                  <td>$developer.getName()</td>
+                  <td>$developer.getEmail()</td>
+                </tr>
+              #end
+            #end
+          </tbody>
+        </table>
+      </div>
+    #foreach($story in $epic.allAssigned(1))
+      <div id="$story.getId()" class="tab-pane fade">
+        <h2>$story.getTitle()</h2>
+        <h3>$story.getDescription()</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <th>Start date</th>
+                <th>Tasks Total</th>
+                <th>To Do Tasks</th>
+                <th>In Progress Tasks</th>
+                <th>Test Tasks</th>
+                <th>Finished Tasks</th>
+                <th>Total current bugs</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>$story.getDateCreated()</td>
+                <td>$story.allAssigned(3).size()</td>
+                <td>$story.allAssigned(3, 1).size()</td>
+                <td>$story.allAssigned(3, 2).size()</td>
+                <td>$story.allAssigned(3, 3).size()</td>
+                <td>$story.allAssigned(3, 4).size()</td>
+                <td>$story.allAssigned(4).size()</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      #end
+    </div>
