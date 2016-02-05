@@ -102,22 +102,49 @@ public class App {
     get("/dev/main", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("epics", Task.all(2));
+      model.put("stories", Task.all(1));
       model.put("tasks", Task.class);
       model.put("user", request.session().attribute("user"));
+      model.put("users", User.all(2));
       model.put("template", "templates/dev-home.vtl");
       return new ModelAndView(model, layout);
       }, new VelocityTemplateEngine());
 
-    get("/assign-inprogress/:id", (request, response) -> {
+    post("/dev/assign-toboard/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = (request.session().attribute("user"));
       Task task = Task.find(Integer.parseInt(request.params(":id")));
-      task.assignTask(user.getId());
-      task.changeStatus();
+      if (task.getOnBoard()){
+        task.changeOnBoard(false);
+      } else if (!(task.getOnBoard())) {
+        User assignedDev = User.find(Integer.parseInt(request.queryParams("developerId")));
+        task.changeOnBoard(true);
+        task.assignTask(assignedDev.getId());
+      }
       model.put("task", task);
       model.put("user", user);
       response.redirect("/dev/main?user=" + "user.getId()");
       return null;
     });
+
+    post("/dev/new-task", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = (request.session().attribute("user"));
+      int creator = user.getId();
+      String title = request.queryParams("title");
+      String description = request.queryParams("add-description");
+      Task story = Task.find(Integer.parseInt(request.queryParams("storyId")));
+      User implementor = User.find(Integer.parseInt(request.queryParams("developerId")));
+      int implementorId = implementor.getId();
+
+      Task task = new Task (title, creator, description, 3, implementorId);
+      story.assign(task);
+
+      model.put("task", task);
+      model.put("user", user);
+      response.redirect("/dev/main?user=" + "user.getId()");
+      return null;
+    });
+
   }
 }
