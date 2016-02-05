@@ -255,10 +255,10 @@ public class App {
 
       if(epic.allAssigned(1).size() > 0) {
         for(Task story : epic.allAssigned(1)) {
-          for(Task task : story.allAssigned(3)) {
-            totalDevelopers = totalDevelopers + task.getTotalDevelopers();
+          if(story.allAssigned(3).size() > 0) {
+            totalDevelopers = totalDevelopers + story.getTotalDevelopers();
+            }
           }
-        }
       }
 
       model.put("epic", epic);

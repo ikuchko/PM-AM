@@ -327,7 +327,7 @@ public class Task {
   }
 
   public Integer getTotalDevelopers() {
-    String sql = "SELECT COUNT (ta.developer_id) FROM tasks INNER JOIN tasks_relationships AS t_a ON subtask_id = :id WHERE subtask_id = :id";
+    String sql = "SELECT COUNT (ta.developer_id) FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id GROUP BY ta.developer_id";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql)
         .addParameter("id", this.mId)
