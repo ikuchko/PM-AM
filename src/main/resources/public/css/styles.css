@@ -102,3 +102,7 @@ h3, h4, p {
 .panel-heading {
   text-align: center;
 }
+
+.des-text {
+  height: 220px;
+}
