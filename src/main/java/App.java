@@ -107,6 +107,7 @@ public class App {
       model.put("status", Status.class);
       model.put("taskType", TypeTask.class);
       model.put("user", User.class);
+      model.put("userlist", User.all());
       model.put("userCreator", User.find(task.getCreatorId()));
       model.put("userImplementor", User.find(task.getImplementorId()));
       model.put("currentUser", request.session().attribute("user"));
@@ -131,6 +132,7 @@ public class App {
       model.put("status", Status.class);
       model.put("taskType", TypeTask.class);
       model.put("user", User.class);
+      model.put("userlist", User.all());
       model.put("userCreator", User.find(task.getCreatorId()));
       model.put("userImplementor", User.find(task.getImplementorId()));
       model.put("currentUser", request.session().attribute("user"));
@@ -166,6 +168,13 @@ public class App {
       Message newMessage = new Message(request.queryParams("message"), user.getId(), task.getId());
       newMessage.assignTask(task);
       response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
+    get("/task/delete/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.delete();
+      response.redirect("/pm/");
       return null;
     });
 
