@@ -195,7 +195,7 @@ public class Task {
 
 // public History(int taskId, String changeType, String previousCondition, String currentCondition)
 // Use changeStatus() for changing task status
-  private void updateStatus(int statusId) {
+  public void updateStatus(int statusId) {
     String sql = "UPDATE tasks SET status_id = :statusId WHERE id = :id";
     try(Connection con = DB.sql2o.open()) {
       con.createQuery(sql)
