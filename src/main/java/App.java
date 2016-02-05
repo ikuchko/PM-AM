@@ -232,8 +232,10 @@ public class App {
       // List inProgressTasks = epic.getAllSubTasks(2);
       // List testingTasks = epic.getAllSubTasks(3);
       // List doneTasks = epic.getAllSubTasks(4);
+
       model.put("onBoard", Task.getAllOnBoard(true));
       model.put("status", Status.class);
+      model.put("user", User.class);
       // model.put("epic", epic);
       // model.put("toDoTasks", toDoTasks);
       // model.put("inProgressTasks", inProgressTasks);
@@ -321,8 +323,7 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("id")));
       Integer totalDevelopers = 0;
-      Report report = new Report(epic.getId());
-      Status epicStatus = new Status("Epic Status");
+      Report epicReport = new Report(epic.getId());
 
       if(epic.allAssigned(1).size() > 0) {
         for(Task story : epic.allAssigned(1)) {
@@ -337,9 +338,8 @@ public class App {
       model.put("epics", Task.all(2));
       model.put("stories", Task.all(1));
       model.put("tasks", Task.class);
-      model.put("epicStatus", epicStatus);
       model.put("status", Status.class);
-      model.put("report", report);
+      model.put("report", epicReport);
       model.put("user", request.session().attribute("user"));
       model.put("users", User.all(2));
       model.put("template", "templates/reports.vtl");

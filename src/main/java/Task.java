@@ -85,7 +85,7 @@ public class Task {
     if (mTypeId == 4) {
       onBoard = true;
     }
-    
+
     String sql = "INSERT INTO tasks (title, creator_user_id, status_id, description, type_task_id, developer_id, on_board) VALUES (:title, :creatorUser, :statusId, :description, :typeId, :implementorUser, :onBoard)";
     try(Connection con = DB.sql2o.open()) {
       this.mId = (int) con.createQuery(sql, true)
