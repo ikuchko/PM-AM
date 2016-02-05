@@ -184,5 +184,12 @@ public class App {
       response.redirect("/dev/main?user=" + "user.getId()");
       return null;
     });
+
+    post("/task/changeStatus/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.changeStatus();
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
   }
 }
