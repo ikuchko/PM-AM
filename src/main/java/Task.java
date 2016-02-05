@@ -326,4 +326,16 @@ public class Task {
     }
   }
 
+  // public Integer getTotalDevelopers() {
+  //   String sql = "SELECT COUNT (ta.id AS mId) FROM tasks_relationships AS t_r INNER JOIN tasks ON tasks.id = t_r.main_task_id INNER JOIN tasks AS ta ON ta.id = t_r.subtask_id WHERE tasks.id = :id AND ta.type_task_id = :task_type";
+  //   try(Connection con = DB.sql2o.open()) {
+  //     con.createQuery(sql)
+  //       .addParameter("id", this.mId)
+  //       .addParameter("task_type", task_type)
+  //       .executeScalar(Integer.class);
+  //   }
+  // }
+
+
+
 }
