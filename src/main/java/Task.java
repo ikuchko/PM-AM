@@ -267,7 +267,7 @@ public class Task {
        (allAssigned(TypeTask.getId("Bug"), Status.getId("In Progress")).size() == 0) &&
        (allAssigned(TypeTask.getId("Bug"), Status.getId("Test")).size() == 0)) ||
        (!(TypeTask.getTypeTaskName(getTypeTask()).equals("Task")))) {
-      updateStatus(Status.getNextStatus(this));
+      //updateStatus(Status.getNextStatus(this));
       isChanged = true;
     }
     return isChanged;

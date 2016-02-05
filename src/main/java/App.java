@@ -324,6 +324,7 @@ public class App {
       Task epic = Task.find(Integer.parseInt(request.params("id")));
       Integer totalDevelopers = 0;
       Report epicReport = new Report(epic.getId());
+      Status epicStatus = new Status("Epic Status");
 
       if(epic.allAssigned(1).size() > 0) {
         for(Task story : epic.allAssigned(1)) {
@@ -338,6 +339,7 @@ public class App {
       model.put("epics", Task.all(2));
       model.put("stories", Task.all(1));
       model.put("tasks", Task.class);
+      model.put("epicStatus", epicStatus);
       model.put("status", Status.class);
       model.put("report", epicReport);
       model.put("user", request.session().attribute("user"));
