@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
 
-      <p class="navbar-brand">$task.getTitle()</p>
+      <p class="navbar-brand">$taskType.getTypeTaskName($task.getTypeTask())</p>
     </div>
     <div class="collapse navbar-collapse bs-example-js-navbar-collapse">
       <ul class="nav navbar-nav">
@@ -29,6 +29,7 @@
   </div>
 </nav>
 
+<h3>$task.getTitle()</h3>
 <div class="row">
   <div class="col-md-7">
     <dl class="dl-horizontal">
@@ -54,10 +55,12 @@
       <dd>
         $status.getStatusName($task.getStatus())
       </dd>
-      <dt>Implementor:</dt>
-      <dd>
-        $userImplementor.getName()
-      </dd>
+      #if ($userImplementor.getName())
+        <dt>Implementor:</dt>
+        <dd>
+          $userImplementor.getName()
+        </dd>
+      #end
     </dl>
   </div>
 </div>
@@ -76,7 +79,7 @@
       </li>
     #end
   #else
-    #foreach($someTask in $userlist)
+    #foreach($someTask in $task.allAssigned())
       <li><a href="/task/$someTask.getId()">$someTask.getTitle()</a></li>
     #end
   #end
@@ -97,7 +100,7 @@
         <label for="user">Implementor</label>
         <select class="form-control" name="user" id="user">
           <option selected="true" disabled="true">Select User</option>
-          #foreach ($users in $user.all())
+          #foreach ($users in $userlist)
             <option value="$users.getId()">$users.getName()</option>
           #end
         </select>
