@@ -55,7 +55,6 @@ public class Task {
     return mOnBoard;
   }
 
-
   public Task(String title, int creatorId, String description, int type, int implementorId) {
      this.mTitle = title;
      this.mDescription = description;

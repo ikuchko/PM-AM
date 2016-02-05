@@ -145,6 +145,5 @@ public class App {
       response.redirect("/dev/main?user=" + "user.getId()");
       return null;
     });
-
   }
 }
