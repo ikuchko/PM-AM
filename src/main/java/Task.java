@@ -193,10 +193,10 @@ public class Task {
         .addParameter("description", description)
         .addParameter("id", this.mId)
         .executeUpdate();
-        this.mTitle = title;
-        this.mDescription = description;
+      History newHistory = new History(this.getId(), "Update task", mTitle + " | " + mDescription, title + " | " + description);
+      this.mTitle = title;
+      this.mDescription = description;
     }
-    History newHistory = new History(this.getId(), "Update task", mTitle + " | " + mDescription, title + " | " + description);
   }
 
 // public History(int taskId, String changeType, String previousCondition, String currentCondition)
