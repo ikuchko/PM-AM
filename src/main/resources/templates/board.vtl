@@ -1,47 +1,76 @@
 <div class="col-md-3">
-  <h3>To Do</h3>
-  <ul class="list-group">
-  #foreach ($task in $toDoTasks)
-      <form action="$epic.getId()/to-progress/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
-        </li>
-      </form>
-  #end
-</ul>
+  <div class="panel panel-warning">
+    <div class="panel-heading"><h3>To Do</h3>
+    </div>
+    <ul class="list-group">
+      #foreach ($task in $toDoTasks)
+        <div class="panel-body">
+          <form action="$epic.getId()/to-progress/$task.getId()" method="post">
+            <li class="list-group-item"><a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a><button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+            </li>
+          </form>
+        </div>
+      #end
+    </ul>
+  </div>
 </div>
 
 <div class="col-md-3">
-  <h3>In Progress</h3>
-  <ul class="list-group">
-  #foreach ($task in $inProgressTasks)
-      <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
-        </li>
-      </form>
-  #end
-</ul>
+  <div class="panel panel-info">
+    <div class="panel-heading"><h3>In Progress</h3>
+    </div>
+    <ul class="list-group">
+      #foreach ($task in $inProgressTasks)
+        <div class="panel-body">
+          <form action="$epic.getId()/to-do/$task.getId()" method="post">
+          <li class="list-group-item">
+            <a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a>
+            <button type="submit"<span class="glyphicon glyphicon-chevron-left"></span></button>
+            </form>
+            <form action="$epic.getId()/to-testing/$task.getId()" method="post">
+            <button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+            </form>
+          </li>
+        </div>
+      #end
+    </ul>
+  </div>
 </div>
 
 <div class="col-md-3">
-  <h3>Testing</h3>
-  <ul class="list-group">
-  #foreach ($task in $testingTasks)
-      <form action="$epic.getId()/to-testing/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
-        </li>
-      </form>
-  #end
-</ul>
+  <div class="panel panel-primary">
+    <div class="panel-heading"><h3>Testing</h3>
+    </div>
+    <ul class="list-group">
+      #foreach ($task in $testingTasks)
+        <div class="panel-body">
+
+          <form action="$epic.getId()/to-progress/$task.getId()" method="post">
+            <button type="submit"<span class="glyphicon glyphicon-chevron-left"></span></button>
+          </form>
+          <li class="list-group-item">
+            <a type="button" class="btn btn-default center" href="/task/$task.getId()">$task.getTitle()</a>
+          </li>
+          <form action="$epic.getId()/to-done/$task.getId()" method="post">
+            <button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
+          </form>
+      </div>
+      #end
+    </ul>
+  </div>
 </div>
 
 <div class="col-md-3">
-  <h3>Done</h3>
-  <ul class="list-group">
-  #foreach ($task in $doneTasks)
-      <form action="$epic.getId()/deleteTask/$task.getId()" method="post">
-        <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-chevron-right"></span></button>
-        </li>
-      </form>
-  #end
-</ul>
+  <div class="panel panel-success">
+    <div class="panel-heading"><h3>Done</h3>
+    </div>
+    <ul class="list-group">
+      #foreach ($task in $doneTasks)
+        <form action="$epic.getId()/deleteTask/$task.getId()" method="post">
+          <li class="list-group-item">$task.getTitle()<button type="submit"<span class="glyphicon glyphicon-trash"></span></button>
+          </li>
+        </form>
+      #end
+    </ul>
+  </div>
 </div>
