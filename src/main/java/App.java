@@ -225,24 +225,41 @@ public class App {
       return null;
     });
 
-    get("/board/:id", (request, response) -> {
+    get("/board", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-      Task epic = Task.find(Integer.parseInt(request.params(":id")));
-      List toDoTasks = epic.getAllSubTasks(1);
-      List inProgressTasks = epic.getAllSubTasks(2);
-      List testingTasks = epic.getAllSubTasks(3);
-      List doneTasks = epic.getAllSubTasks(4);
+      // Task epic = Task.find(Integer.parseInt(request.params(":id")));
+      // List toDoTasks = epic.getAllSubTasks(1);
+      // List inProgressTasks = epic.getAllSubTasks(2);
+      // List testingTasks = epic.getAllSubTasks(3);
+      // List doneTasks = epic.getAllSubTasks(4);
 
+<<<<<<< HEAD
+      model.put("onBoard", Task.getAllOnBoard(true));
+      model.put("status", Status.class);
+      // model.put("epic", epic);
+      // model.put("toDoTasks", toDoTasks);
+      // model.put("inProgressTasks", inProgressTasks);
+      // model.put("testingTasks", testingTasks);
+      // model.put("doneTasks", doneTasks);
+=======
       model.put("epic", epic);
       model.put("currentUser", request.session().attribute("user"));
       model.put("toDoTasks", toDoTasks);
       model.put("inProgressTasks", inProgressTasks);
       model.put("testingTasks", testingTasks);
       model.put("doneTasks", doneTasks);
+>>>>>>> 0ec71bbc5e3b0d7384d382dff66684b00a9a81d1
       model.put("user", request.session().attribute("user"));
       model.put("template", "templates/board.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/task/changeStatus/board/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.updateStatus(Integer.parseInt(request.queryParams("status")));
+      response.redirect("/board");
+      return null;
+    });
 
     post("board/:epicId/to-do/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -303,12 +320,12 @@ public class App {
       return null;
     });
 
-    post("/task/changeStatus/:id", (request, response) -> {
-      Task task = Task.find(Integer.parseInt(request.params("id")));
-      task.changeStatus();
-      response.redirect("/task/" + request.params("id"));
-      return null;
-    });
+    // post("/task/changeStatus/:id", (request, response) -> {
+    //   Task task = Task.find(Integer.parseInt(request.params("id")));
+    //   task.changeStatus();
+    //   response.redirect("/task/" + request.params("id"));
+    //   return null;
+    // });
 
     get("/reports/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
