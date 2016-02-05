@@ -1,11 +1,47 @@
 <div class="col-md-3">
   <h3>To Do</h3>
+  <ul class="list-group">
   #foreach ($task in $toDoTasks)
-    <ul class="list-group">
-      <form action="$epic.getId()" method="post">
+      <form action="$epic.getId()/to-progress/$task.getId()" method="post">
         <li class="list-group-item">$task.getTitle</li>
         <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
       </form>
-    </ul>
   #end
+</ul>
+</div>
+
+<div class="col-md-3">
+  <h3>In Progress</h3>
+  <ul class="list-group">
+  #foreach ($task in $inProgressTasks)
+      <form action="$epic.getId()/to-testing/$task.getId()" method="post">
+        <li class="list-group-item">$task.getTitle</li>
+        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </form>
+  #end
+</ul>
+</div>
+
+<div class="col-md-3">
+  <h3>Testing</h3>
+  <ul class="list-group">
+  #foreach ($task in $testingTasks)
+      <form action="$epic.getId()/to-testing/$task.getId()" method="post">
+        <li class="list-group-item">$task.getTitle</li>
+        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </form>
+  #end
+</ul>
+</div>
+
+<div class="col-md-3">
+  <h3>Done</h3>
+  <ul class="list-group">
+  #foreach ($task in $doneTasks)
+      <form action="$epic.getId()/deleteTask/$task.getId()" method="post">
+        <li class="list-group-item">$task.getTitle</li>
+        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </form>
+  #end
+</ul>
 </div>
