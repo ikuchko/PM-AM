@@ -118,6 +118,13 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("/task/changeStatus/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.updateStatus(Integer.parseInt(request.queryParams("status")));
+      response.redirect("/task/" + request.params("id"));
+      return null;
+    });
+
     get("/task/history/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       model.put("template", "templates/task.vtl");
