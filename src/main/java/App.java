@@ -251,6 +251,7 @@ public class App {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("id")));
       Integer totalDevelopers = 0;
+      Report epicReport = new Report(epic.getId());
 
       // for(Task story : epic.allAssigned(1)) {
       //   for(Task task : story.allAssigned(3)) {
@@ -263,6 +264,8 @@ public class App {
       model.put("epics", Task.all(2));
       model.put("stories", Task.all(1));
       model.put("tasks", Task.class);
+      model.put("status", Status.class);
+      model.put("report", epicReport);
       model.put("user", request.session().attribute("user"));
       model.put("users", User.all(2));
       model.put("template", "templates/reports.vtl");

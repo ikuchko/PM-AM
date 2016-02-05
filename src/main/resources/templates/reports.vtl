@@ -1,6 +1,6 @@
 <h1>Reports:</h1>
 <br>
-<h2>$epic.getName()</h2>
+<h2>$epic.getTitle()</h2>
 <h3>$status.getStatusName($epic.getId())</h3>
 
 
@@ -21,9 +21,9 @@
     </thead>
     <tbody>
       <tr>
-        <td>$report.getStartDate</td>
-        <td>$report.getFinishDate</td>
-        <td>$report.getDuration</td>
+        <td>$epic.getDateCreated()</td>
+        <td>$report.getFinishDate()</td>
+        <td>$report.getDuration()</td>
         <td>$totalDevelopers</td>
         <td>$epic.allAssigned(3).size()</td>
         <td>$epic.allAssigned(3, 1).size()</td>
