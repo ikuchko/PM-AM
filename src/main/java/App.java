@@ -65,12 +65,31 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/pm/showdescription/", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      User user = request.session().attribute("user");
+      List epics = Task.allByCreator(2, user.getId());
+      model.put("report", Report.class);
+      model.put("epics", epics);
+      model.put("user", user);
+      model.put("showDescription", true);
+      model.put("template", "templates/pm-main.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
     post("/pm/create-epic/:id", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       User user = (request.session().attribute("user"));
       Task task = new Task(request.queryParams("add-title"), user.getId(), request.queryParams("add-description"), 2, user.getId());
       model.put("user", user);
       response.redirect("/pm/?user=" + user.getId());
+      return null;
+    });
+
+    get("/pm/delete-epic/:id", (request, response) -> {
+      Task task = Task.find(Integer.parseInt(request.params("id")));
+      task.delete();
+      response.redirect("/pm/");
       return null;
     });
 
