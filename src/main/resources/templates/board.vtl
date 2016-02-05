@@ -1,0 +1,11 @@
+<div class="col-md-3">
+  <h3>To Do</h3>
+  #foreach ($task in $toDoTasks)
+    <ul class="list-group">
+      <form action="$epic.getId()" method="post">
+        <li class="list-group-item">$task.getTitle</li>
+        <button type="submit" name="button"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </form>
+    </ul>
+  #end
+</div>
