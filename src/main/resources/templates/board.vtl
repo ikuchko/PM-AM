@@ -68,9 +68,12 @@
       </div>
       <ul class="list-group">
         #foreach ($task in $doneTasks)
-          <form action="/task/delete/$task.getId()" method="get">
+        <form action="$epic.getId()/to-testing/$task.getId()" method="post">
+          <button class="inline" type="submit"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        </form>
             <li class="list-group-item"><a type="button" class="btn btn-default center inline" href="/task/$task.getId()">$task.getTitle()</a>
-              <button class="inline" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
+              <form action="/task/delete/$task.getId()" method="get">
+                <button class="inline" type="submit"><span class="glyphicon glyphicon-trash"></span></button>
             </li>
           </form>
         #end

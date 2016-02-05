@@ -243,6 +243,16 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    post("board/:epicId/to-do/:taskId", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Task epic = Task.find(Integer.parseInt(request.params("epicId")));
+      Task task = Task.find(Integer.parseInt(request.params("taskId")));
+      task.updateStatus(1);
+      model.put("user", request.session().attribute("user"));
+      response.redirect("/board/" + epic.getId());
+      return null;
+    });
+
     post("board/:epicId/to-progress/:taskId", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       Task epic = Task.find(Integer.parseInt(request.params("epicId")));
