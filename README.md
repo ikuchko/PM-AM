@@ -30,6 +30,12 @@ Navigate back to the directory where this repository has been cloned and run gra
 $ gradle run
 ```
 
+##Alternative running
+
+Follow this link:
+```
+http://thawing-brook-29610.herokuapp.com/
+```
 ##Database information
 In PSQL:
 ```
@@ -38,7 +44,7 @@ In PSQL:
 
 ## Legal
 
-Copyright (c) 2015 
+Copyright (c) 2015
 
 This software is licensed under the MIT license.
 
