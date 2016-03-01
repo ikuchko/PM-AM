@@ -39,7 +39,7 @@ public class Report {
 
   public static String findFinishDate(int taskId) {
     String sql = "SELECT created_date AS mDateComplete FROM histories WHERE current_condition LIKE :doneStatus AND change_type LIKE :status AND task_id = :taskId";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
       .addParameter("doneStatus", "Done")
       .addParameter("status", "Update Status")
@@ -50,7 +50,7 @@ public class Report {
 
   public static String findDuration(int taskId) {
     String sql = "SELECT (date_created - created_date) AS duration FROM histories INNER JOIN tasks ON tasks.id=histories.task_id WHERE current_condition LIKE :doneStatus AND change_type LIKE :status AND task_id = :taskId";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return (String) con.createQuery(sql)
       .addParameter("doneStatus", "Done")
       .addParameter("status", "Update Status")

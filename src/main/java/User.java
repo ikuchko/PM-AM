@@ -48,7 +48,7 @@ public class User{
 
   public void save() {
     String sql = "INSERT INTO users (name, email, role_id) VALUES (:name, :email, :roleId)";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
         this.id = (int) con.createQuery(sql, true)
           .addParameter("name", this.name)
           .addParameter("email", this.email)
@@ -61,7 +61,7 @@ public class User{
   public static User find(int id) {
     String sql = "SELECT users.id, users.name, users.email, users.role_id AS roleId, roles.name AS role FROM users " +
                  "INNER JOIN roles ON roles.id = users.role_id WHERE users.id = :id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetchFirst(User.class);
@@ -74,13 +74,13 @@ public class User{
     try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
         .executeAndFetch(User.class);
-    } 
+    }
   }
 
   public static List<User> all(int roleId) {
     String sql = "SELECT users.id, users.name, users.email, users.role_id AS roleId, roles.name AS role FROM users " +
                  "INNER JOIN roles ON roles.id = users.role_id WHERE users.role_id = :roleId";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
         .addParameter("roleId", roleId)
         .executeAndFetch(User.class);
@@ -90,7 +90,7 @@ public class User{
   public void update(String role, String name, String email) {
     int roleId = Role.getId(role);
     String sql = "UPDATE users SET role_id = :role, name = :name, email = :email WHERE id = :id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       con.createQuery(sql)
         .addParameter("name", name)
         .addParameter("email", email)
@@ -106,7 +106,7 @@ public class User{
 
   public void delete() {
     String sql = "DELETE FROM users WHERE id = :id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       con.createQuery(sql)
         .addParameter("id", this.id)
         .executeUpdate();

@@ -65,7 +65,7 @@ public class History {
 
   public void save() {
     String sql = "INSERT INTO histories(task_id, change_type, previous_condition, current_condition) VALUES (:taskId, :changeType, :previousCondition, :currentCondition)";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       this.mId = (int) con.createQuery(sql, true)
         .addParameter("taskId", this.mTaskId)
         .addParameter("changeType", this.mChangeType)
@@ -80,7 +80,7 @@ public class History {
 
   public static History find(int id) {
     String sql = "SELECT id AS mId, task_id AS mTaskId, change_type AS mChangeType, previous_condition AS mPreviousCondition, current_condition AS mCurrentCondition, created_date as mCreatedDate FROM histories WHERE id = :id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       History history = con.createQuery(sql)
       .addParameter("id", id)
       .executeAndFetchFirst(History.class);
@@ -90,7 +90,7 @@ public class History {
 
   public static List<History> all(int taskId) {
     String sql = "SELECT id AS mId, task_id AS mTaskId, change_type AS mChangeType, previous_condition AS mPreviousCondition, current_condition AS mCurrentCondition, created_date as mCreatedDate FROM histories WHERE task_id = :taskId";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
         .addParameter("taskId", taskId)
         .executeAndFetch(History.class);
@@ -99,7 +99,7 @@ public class History {
 
   public void delete() {
     String sql = "DELETE FROM histories WHERE id = :id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       con.createQuery(sql)
         .addParameter("id", this.mId)
         .executeUpdate();

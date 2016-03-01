@@ -8,7 +8,7 @@ public class DatabaseRule extends ExternalResource {
    }
 
   protected void after() {
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       String deleteTasksMessagesQuery = "DELETE FROM tasks_messages *;";
       String deleteTasksRelationshipQuery = "DELETE FROM tasks_relationships *;";
       String deleteHistoriesQuery = "DELETE FROM histories *;";
