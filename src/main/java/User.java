@@ -71,10 +71,10 @@ public class User{
   public static List<User> all() {
     String sql = "SELECT users.id, users.name, users.email, users.role_id AS roleId, roles.name AS role FROM users " +
                  "INNER JOIN roles ON roles.id = users.role_id";
-    try(Connection con = DB.sql2o.open()) {
+    try(Connection con = DB.getSql2o().open()) {
       return con.createQuery(sql)
         .executeAndFetch(User.class);
-    }
+    } 
   }
 
   public static List<User> all(int roleId) {
