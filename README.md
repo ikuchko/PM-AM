@@ -1,16 +1,20 @@
 # PMAM
 
-##### Epicodus java team week project using Java and Postgres
+##### Epicodus java team week project using Java, Spark and Postgres
 
 #####
 
 ## Description
 
+PM:AM is a project management web app written in Java and implemented in Spark framework. The intent of this project is to break up larger projects into smaller parts (Epics, Stories, and Tasks respectively), and allow different permissions for project managers and developers. Such functionality includes assigning and completing tasks, viewing the number of tasks and stories on a particular project-- as well as how many developers are assigned to these tasks-- and seeing the efficiency of developers by tracking time completion on assigned tasks.
+
 ## Setup
 
 Clone this repository:
 ```
-
+$ cd ~/Desktop
+$ git clone https://github.com/ikuchko/PM-AM.git
+$ cd hair_salon
 ```
 
 Open terminal and run Postgres:
@@ -18,11 +22,11 @@ Open terminal and run Postgres:
 $ postgres
 ```
 
-Open a new tab in terminal and create the `hair_salon` database:
+Open a new tab in terminal and create the `project_tracking` database:
 ```
 $ psql
-$ CREATE DATABASE ;
-$ psql
+$ CREATE DATABASE project_tracking;
+$ psql project_tracking < project_tracking.sql
 ```
 
 Navigate back to the directory where this repository has been cloned and run gradle:
@@ -36,15 +40,10 @@ Follow this link:
 ```
 http://thawing-brook-29610.herokuapp.com/
 ```
-##Database information
-In PSQL:
-```
-
-```
 
 ## Legal
 
-Copyright (c) 2015
+Copyright (c) 2015 Illia Kuchko
 
 This software is licensed under the MIT license.
 
